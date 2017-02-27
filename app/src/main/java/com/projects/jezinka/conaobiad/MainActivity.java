@@ -3,17 +3,17 @@ package com.projects.jezinka.conaobiad;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateFormat;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> preparedRows = new ArrayList<String>();
         ArrayList<String> weekdays = getListOfWeekdays();
 
+        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl","pl"));
 
         Calendar saturdayDate = getSaturdayDate();
 
@@ -46,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
             row.append(weekdays.get(i));
             row.append(" - ");
             saturdayDate.add(Calendar.DATE, 1);
-            row.append(saturdayDate.getTime().toString());
+
+            row.append(df.format(saturdayDate.getTime()));
             row.append("\n");
             row.append(MEALS.get(i));
 
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             return calendarInstance;
         }
 
-        calendarInstance.add(Calendar.DATE, -todaysday-1);
+        calendarInstance.add(Calendar.DATE, -todaysday - 1);
         return calendarInstance;
 
     }
