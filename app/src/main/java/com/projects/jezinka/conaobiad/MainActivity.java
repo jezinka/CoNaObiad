@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,13 +15,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         MealListHelper mealListHelper = new MealListHelper();
-        ArrayList<String> preparedRows = mealListHelper.getPreparedRows();
+        List<String> preparedRows = mealListHelper.getPreparedRows();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, preparedRows);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, preparedRows);
 
         ListView listView = (ListView) findViewById(R.id.listview);
         listView.setAdapter(adapter);
     }
-
 }
