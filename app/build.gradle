@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'groovyx.android'
 
 android {
     compileSdkVersion 25
@@ -17,6 +18,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    buildTypes {
+        debug {
+            testCoverageEnabled = true
+        }
+    }
 }
 
 dependencies {
@@ -25,6 +34,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.1.1'
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+    testCompile 'cglib:cglib-nodep:3.1'
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:design:25.1.1'
+    testCompile 'org.objenesis:objenesis:2.2'
 }
