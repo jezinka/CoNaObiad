@@ -16,15 +16,17 @@ import java.util.Locale;
  */
 public class MealListHelper {
 
-    private static final List<String> MEALS = Arrays.asList("bigos", "rosół", "zapiekanka", "pierogi", "pomidorowa", "pesto", "meksykański ryż czerwony");
+    static List<String> MEALS = Arrays.asList("bigos", "rosół", "zapiekanka", "pierogi", "pomidorowa", "pesto", "meksykański ryż czerwony");
 
     @NonNull
-    protected ArrayList<String> getPreparedRows() {
+    protected ArrayList<String> getPreparedRows(Date todayDate) {
         ArrayList<String> preparedRows = new ArrayList<String>();
 
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
 
-        Calendar calendarInstance = getSaturdayDate(new Date());
+        Calendar calendarInstance = Calendar.getInstance();
+        calendarInstance.setTime(getSaturdayDate(todayDate));
+
 
         for (int i = 0; i < 7; i++) {
             Date date = calendarInstance.getTime();
@@ -44,16 +46,21 @@ public class MealListHelper {
     }
 
     @NonNull
-    private Calendar getSaturdayDate(Date date) {
+    private Date getSaturdayDate(Date date) {
+
+        if (date == null) {
+            date = new Date();
+        }
+
         Calendar calendarInstance = Calendar.getInstance();
         calendarInstance.setTime(date);
 
         int dayOfWeek = calendarInstance.get(Calendar.DAY_OF_WEEK);
-
-        if (dayOfWeek != Calendar.SATURDAY) {
-            calendarInstance.add(Calendar.DATE, -dayOfWeek);
+        if (dayOfWeek == Calendar.SATURDAY) {
+            return date;
         }
 
-        return calendarInstance;
+        calendarInstance.add(Calendar.DAY_OF_WEEK, -dayOfWeek);
+        return calendarInstance.getTime();
     }
 }
