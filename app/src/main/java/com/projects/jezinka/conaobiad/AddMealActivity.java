@@ -1,6 +1,7 @@
 package com.projects.jezinka.conaobiad;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -14,5 +15,10 @@ public class AddMealActivity extends AppCompatActivity {
 
     public void addMeal(View view) {
         finish();
+    }
+
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 }
