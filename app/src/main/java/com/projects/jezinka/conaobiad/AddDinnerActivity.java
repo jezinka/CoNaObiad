@@ -5,15 +5,15 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class AddMealActivity extends AppCompatActivity {
+public class AddDinnerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_meal);
+        setContentView(R.layout.activity_add_dinner);
     }
 
-    public void addMeal(View view) {
+    public void addDinner(View view) {
         finish();
     }
 

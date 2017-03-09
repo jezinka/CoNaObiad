@@ -17,8 +17,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MealListHelper mealListHelper = new MealListHelper();
-        List<String> preparedRows = mealListHelper.getPreparedRows(new Date());
+        DinnerListHelper dinnerListHelper = new DinnerListHelper();
+        List<String> preparedRows = dinnerListHelper.getPreparedRows(new Date());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, preparedRows);
 
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addNew(View view) {
-        Intent intent = new Intent(this, AddMealActivity.class);
+        Intent intent = new Intent(this, AddDinnerActivity.class);
         startActivity(intent);
     }
 }

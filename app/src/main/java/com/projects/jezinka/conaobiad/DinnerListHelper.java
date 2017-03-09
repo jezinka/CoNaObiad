@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * Created by jezinka on 28.02.17.
  */
-public class MealListHelper {
+public class DinnerListHelper {
 
     static List<String> MEALS = Arrays.asList("bigos", "rosół", "zapiekanka", "pierogi", "pomidorowa", "pesto", "meksykański ryż czerwony");
 
@@ -26,7 +26,6 @@ public class MealListHelper {
 
         Calendar calendarInstance = Calendar.getInstance();
         calendarInstance.setTime(getSaturdayDate(todayDate));
-
 
         for (int i = 0; i < 7; i++) {
             Date date = calendarInstance.getTime();
