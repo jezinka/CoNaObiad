@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -16,10 +15,8 @@ import java.util.Locale;
  */
 public class DinnerListHelper {
 
-    static List<String> MEALS = Arrays.asList("bigos", "rosół", "zapiekanka", "pierogi", "pomidorowa", "pesto", "meksykański ryż czerwony");
-
     @NonNull
-    protected ArrayList<String> getPreparedRows(Date todayDate) {
+    protected static ArrayList<String> getPreparedRows(Date todayDate, List meals) {
         ArrayList<String> preparedRows = new ArrayList<String>();
 
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
@@ -36,7 +33,7 @@ public class DinnerListHelper {
 
             row.append(df.format(date));
             row.append("\n");
-            row.append(MEALS.get(i));
+            row.append(meals.get(i));
             preparedRows.add(row.toString());
 
             calendarInstance.roll(Calendar.DATE, true);
@@ -45,7 +42,7 @@ public class DinnerListHelper {
     }
 
     @NonNull
-    private Date getSaturdayDate(Date date) {
+    private static Date getSaturdayDate(Date date) {
 
         if (date == null) {
             date = new Date();
