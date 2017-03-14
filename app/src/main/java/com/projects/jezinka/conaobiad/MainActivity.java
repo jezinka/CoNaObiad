@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.projects.jezinka.conaobiad.model.MealContract;
+
 import java.util.Date;
 import java.util.List;
 
@@ -21,9 +23,11 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper = new CoNaObiadDbHelper(this);
         dbHelper.cleanData();
-        dbHelper.initializeMealTable();
 
-        List<String> preparedRows = DinnerListHelper.getPreparedRows(new Date(), dbHelper.getAllMeals());
+        MealContract mealContract = new MealContract();
+        mealContract.initializeMealTable(dbHelper);
+
+        List<String> preparedRows = DinnerListHelper.getPreparedRows(new Date(), mealContract.getAllMeals(dbHelper));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, preparedRows);
 
