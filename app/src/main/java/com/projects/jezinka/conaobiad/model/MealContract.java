@@ -11,8 +11,6 @@ import android.provider.BaseColumns;
 import com.projects.jezinka.conaobiad.CoNaObiadDbHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by jezinka on 11.03.17.
@@ -58,13 +56,6 @@ public class MealContract extends BaseTable implements BaseColumns {
         db.close();
 
         return array_list;
-    }
-
-    public void initializeMealTable(CoNaObiadDbHelper coNaObiadDbHelper) {
-        List<String> meals = Arrays.asList("bigos", "rosół", "zapiekanka", "pierogi", "pomidorowa", "pesto", "meksykański ryż czerwony");
-        for (int i = 0; i < meals.size(); i++) {
-            insertMeal(coNaObiadDbHelper, meals.get(i));
-        }
     }
 
     public boolean isAnyMealSaved(SQLiteOpenHelper sqLiteOpenHelper) {
