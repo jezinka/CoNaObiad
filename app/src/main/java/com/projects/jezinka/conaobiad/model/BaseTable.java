@@ -20,4 +20,8 @@ public abstract class BaseTable {
     public String getCreateEntriesQuery() {
         return this.SQL_CREATE_ENTRIES;
     }
+
+    public String getTableName() {
+        return this.TABLE_NAME;
+    }
 }
