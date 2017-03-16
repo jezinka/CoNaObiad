@@ -33,7 +33,10 @@ public class DinnerListHelper {
 
             row.append(df.format(date));
             row.append("\n");
-            row.append(meals.get(i));
+            //TODO: fix this -> use dinners instead of meals
+            if (meals.size() > i) {
+                row.append(meals.get(i));
+            }
             preparedRows.add(row.toString());
 
             calendarInstance.roll(Calendar.DATE, true);
