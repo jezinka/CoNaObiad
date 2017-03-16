@@ -1,5 +1,6 @@
 package com.projects.jezinka.conaobiad;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -42,5 +43,11 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         BaseTable table = new MealContract();
         db.execSQL(table.getDeleteEntriesQuery());
+    }
+
+    public void insertValuesDbHelper(String tableName, ContentValues contentValues) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(tableName, null, contentValues);
+        db.close();
     }
 }

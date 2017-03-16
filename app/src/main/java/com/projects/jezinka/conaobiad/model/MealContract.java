@@ -1,6 +1,7 @@
 package com.projects.jezinka.conaobiad.model;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,12 +30,14 @@ public class MealContract extends BaseTable implements BaseColumns {
                 COLUMN_NAME_NAME + " TEXT)";
     }
 
-    public boolean insertMeal(CoNaObiadDbHelper coNaObiadDbHelper, String name) {
-        SQLiteDatabase db = coNaObiadDbHelper.getWritableDatabase();
+    public boolean insertMeal(Context context, String name) {
+        String tableName = this.getTableName();
+
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
-        db.insert(this.TABLE_NAME, null, contentValues);
-        db.close();
+
+        CoNaObiadDbHelper coNaObiadDbHelper = new CoNaObiadDbHelper(context);
+        coNaObiadDbHelper.insertValuesDbHelper(tableName, contentValues);
         return true;
     }
 
