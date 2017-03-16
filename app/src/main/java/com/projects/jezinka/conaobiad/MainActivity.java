@@ -45,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
     private void showEmptyMealListMessage(Context context) {
         final AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
 
-        builder1.setMessage("Nie masz żadnego zapisanego obiadu. Czy przejść do ekranu dodawania?");
+        builder1.setMessage(R.string.EmptyMealListMessage);
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
-                "Yes",
+                R.string.yes,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(builder1.getContext(), MealListActivity.class);
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         builder1.setNegativeButton(
-                "No",
+                R.string.no,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();

@@ -26,13 +26,13 @@ public class MealListActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Wpisz nazwę obiadu");
+                builder.setTitle(R.string.putMealName);
 
                 final EditText input = new EditText(v.getContext());
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
 
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mealName = input.getText().toString();
@@ -40,7 +40,7 @@ public class MealListActivity extends AppCompatActivity {
                         meal.insertMeal(builder.getContext(), mealName);
                     }
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();

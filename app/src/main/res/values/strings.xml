@@ -5,4 +5,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="pick_date">Wybierz datę</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="EmptyMealListMessage">Nie masz żadnego zapisanego obiadu. Czy przejść do ekranu dodawania?</string>
+    <string name="putMealName">Wpisz nazwę obiadu</string>
+    <string name="cancel">Cancel</string>
 </resources>
