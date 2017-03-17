@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -16,6 +15,7 @@ import com.projects.jezinka.conaobiad.model.MealContract;
 
 public class MealListActivity extends AppCompatActivity {
 
+    MealListAdapter adapter;
     private CoNaObiadDbHelper dbHelper;
     private String mealName = "";
 
@@ -24,10 +24,10 @@ public class MealListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_list);
 
-        MealContract mealContract = new MealContract();
+        final MealContract mealContract = new MealContract();
         dbHelper = new CoNaObiadDbHelper(this);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mealContract.getAllMeals(dbHelper));
+        adapter = new MealListAdapter(this, mealContract.getAllMeals(dbHelper));
 
         ListView listView = (ListView) findViewById(R.id.meal_list_view);
         listView.setAdapter(adapter);
@@ -50,6 +50,7 @@ public class MealListActivity extends AppCompatActivity {
                         mealName = input.getText().toString();
                         MealContract meal = new MealContract();
                         meal.insertMeal(builder.getContext(), mealName);
+                        adapter.updateResults(mealContract.getAllMeals(dbHelper));
                     }
                 });
                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

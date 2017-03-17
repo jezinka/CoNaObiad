@@ -44,7 +44,7 @@ public class MealContract extends BaseTable implements BaseColumns {
         ArrayList<String> array_list = new ArrayList<String>();
 
         SQLiteDatabase db = sqLiteOpenHelper.getReadableDatabase();
-        Cursor res = db.rawQuery("select * from " + this.TABLE_NAME, null);
+        Cursor res = db.rawQuery("select " + this.COLUMN_NAME_NAME + " from " + this.TABLE_NAME + " order by " + this.COLUMN_NAME_NAME, null);
         if (res != null && res.getCount() > 0) {
             res.moveToFirst();
 
