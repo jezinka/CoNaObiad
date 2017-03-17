@@ -10,7 +10,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.projects.jezinka.conaobiad.MainActivity">
 
-    <include layout="@layout/my_toolbar" />
+    <include
+        android:id="@+id/my_toolbar"
+        layout="@layout/my_toolbar" />
 
     <ListView
         android:id="@+id/dinner_list_view"
