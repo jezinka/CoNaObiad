@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, preparedRows);
 
-        ListView listView = (ListView) findViewById(R.id.listview);
+        ListView listView = (ListView) findViewById(R.id.dinner_list_view);
         listView.setAdapter(adapter);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.meal_list_item:
+                Intent intent = new Intent(this, MealListActivity.class);
+                startActivity(intent);
                 return true;
 
             default:
