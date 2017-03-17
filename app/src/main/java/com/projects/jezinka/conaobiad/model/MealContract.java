@@ -3,7 +3,6 @@ package com.projects.jezinka.conaobiad.model;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
@@ -11,6 +10,8 @@ import android.provider.BaseColumns;
 import com.projects.jezinka.conaobiad.CoNaObiadDbHelper;
 
 import java.util.ArrayList;
+
+import static android.database.DatabaseUtils.queryNumEntries;
 
 /**
  * Created by jezinka on 11.03.17.
@@ -58,9 +59,8 @@ public class MealContract extends BaseTable implements BaseColumns {
         return array_list;
     }
 
-    public boolean isAnyMealSaved(SQLiteOpenHelper sqLiteOpenHelper) {
-        SQLiteDatabase db = sqLiteOpenHelper.getReadableDatabase();
-        long count = DatabaseUtils.queryNumEntries(db, "meal");
-        return count > 0;
+    public boolean isAnyMealSaved(SQLiteOpenHelper helper) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        return queryNumEntries(db, "meal") > 0;
     }
 }
