@@ -35,15 +35,15 @@ public class MealContract extends BaseTable implements BaseColumns {
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
-        CoNaObiadDbHelper coNaObiadDbHelper = new CoNaObiadDbHelper(context);
-        coNaObiadDbHelper.insertValuesDbHelper(tableName, contentValues);
+        CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
+        helper.insertValuesDbHelper(tableName, contentValues);
         return true;
     }
 
-    public ArrayList<String> getAllMeals(SQLiteOpenHelper sqLiteOpenHelper) {
+    public ArrayList<String> getAllMeals(SQLiteOpenHelper helper) {
         ArrayList<String> array_list = new ArrayList<String>();
 
-        SQLiteDatabase db = sqLiteOpenHelper.getReadableDatabase();
+        SQLiteDatabase db = helper.getReadableDatabase();
         Cursor res = db.rawQuery("select " + this.COLUMN_NAME_NAME + " from " + this.TABLE_NAME + " order by " + this.COLUMN_NAME_NAME, null);
         if (res != null && res.getCount() > 0) {
             res.moveToFirst();
