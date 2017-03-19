@@ -65,7 +65,7 @@ public class MealListActivity extends AppCompatActivity {
             }
         });
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar2);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.meal_list_toolbar);
         setSupportActionBar(myToolbar);
 
         ActionBar ab = getSupportActionBar();

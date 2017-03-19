@@ -11,14 +11,14 @@
     tools:context="com.projects.jezinka.conaobiad.MainActivity">
 
     <include
-        android:id="@+id/my_toolbar"
-        layout="@layout/my_toolbar" />
+        android:id="@+id/main_activity_toolbar"
+        layout="@layout/main_app_toolbar" />
 
     <ListView
         android:id="@+id/dinner_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/my_toolbar" />
+        android:layout_below="@+id/main_activity_toolbar" />
 
     <Button
         android:id="@+id/button"
