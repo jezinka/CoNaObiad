@@ -33,7 +33,7 @@ public class MealListActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.meal_list_view);
         listView.setAdapter(adapter);
 
-        Button button = (Button) findViewById(R.id.button4);
+        Button button = (Button) findViewById(R.id.addMealButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
