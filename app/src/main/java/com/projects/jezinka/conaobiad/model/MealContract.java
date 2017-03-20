@@ -13,20 +13,20 @@ import java.util.ArrayList;
 
 import static android.database.DatabaseUtils.queryNumEntries;
 
-/**
- * Created by jezinka on 11.03.17.
- */
-
 public class MealContract extends BaseTable implements BaseColumns {
 
     String COLUMN_NAME_NAME;
+    private String SQL_GET_ALL_RECORD;
 
     public MealContract() {
         this.TABLE_NAME = "meal";
         this.COLUMN_NAME_NAME = "name";
+
         this.SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
                 COLUMN_NAME_NAME + " TEXT)";
+
+        this.SQL_GET_ALL_RECORD = "select " + this.COLUMN_NAME_NAME + " from " + this.TABLE_NAME + " order by " + this.COLUMN_NAME_NAME;
     }
 
     public boolean insertMeal(Context context, String name) {
@@ -44,7 +44,7 @@ public class MealContract extends BaseTable implements BaseColumns {
         ArrayList<String> array_list = new ArrayList<String>();
 
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor res = db.rawQuery("select " + this.COLUMN_NAME_NAME + " from " + this.TABLE_NAME + " order by " + this.COLUMN_NAME_NAME, null);
+        Cursor res = db.rawQuery(this.SQL_GET_ALL_RECORD, null);
         if (res != null && res.getCount() > 0) {
             res.moveToFirst();
 
