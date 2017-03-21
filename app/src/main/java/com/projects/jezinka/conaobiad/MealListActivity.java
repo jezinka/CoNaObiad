@@ -39,7 +39,7 @@ public class MealListActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle(R.string.putMealName);
+                builder.setTitle(R.string.put_meal_name);
 
                 final EditText input = new EditText(v.getContext());
                 input.setInputType(InputType.TYPE_CLASS_TEXT);

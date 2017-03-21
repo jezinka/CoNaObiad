@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private void showEmptyMealListMessage(Context context) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        builder.setMessage(R.string.EmptyMealListMessage);
+        builder.setMessage(R.string.empty_meal_list_message);
         builder.setCancelable(true);
 
         builder.setPositiveButton(

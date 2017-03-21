@@ -5,7 +5,7 @@
     <!-- Settings, should always be in the overflow -->
     <item
         android:id="@+id/meal_list_item"
-        android:title="@string/Meal_list"
+        android:title="@string/meal_list"
         app:showAsAction="never" />
 
 </menu>
