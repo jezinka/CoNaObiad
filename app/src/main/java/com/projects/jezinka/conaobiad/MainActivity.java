@@ -49,21 +49,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showEmptyMealListMessage(Context context) {
-        final AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        builder1.setMessage(R.string.EmptyMealListMessage);
-        builder1.setCancelable(true);
+        builder.setMessage(R.string.EmptyMealListMessage);
+        builder.setCancelable(true);
 
-        builder1.setPositiveButton(
+        builder.setPositiveButton(
                 R.string.yes,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(builder1.getContext(), MealListActivity.class);
+                        Intent intent = new Intent(builder.getContext(), MealListActivity.class);
                         startActivity(intent);
                     }
                 });
 
-        builder1.setNegativeButton(
+        builder.setNegativeButton(
                 R.string.no,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     public void addNew(View view) {
