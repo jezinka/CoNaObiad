@@ -14,7 +14,7 @@
         android:id="@+id/meal_list_toolbar" />
 
     <Button
-        android:id="@+id/addMealButton"
+        android:id="@+id/add_meal_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
