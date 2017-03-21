@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -30,8 +31,20 @@ public class MealListActivity extends AppCompatActivity {
 
         adapter = new MealListAdapter(this, mealContract.getAllMeals(dbHelper));
 
-        ListView listView = (ListView) findViewById(R.id.meal_list_view);
+        final ListView listView = (ListView) findViewById(R.id.meal_list_view);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Button deleteMealButton = (Button) findViewById(R.id.delete_meal_button);
+                if (listView.getCheckedItemCount() == 0) {
+                    deleteMealButton.setVisibility(View.INVISIBLE);
+                } else {
+                    deleteMealButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         Button button = (Button) findViewById(R.id.add_meal_button);
         button.setOnClickListener(new View.OnClickListener() {

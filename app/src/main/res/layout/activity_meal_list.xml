@@ -22,11 +22,20 @@
         android:onClick="showAddMealDialog"
         android:text="@string/add" />
 
+    <Button
+        android:id="@+id/delete_meal_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:text="@string/delete" />
+
     <ListView
         android:id="@+id/meal_list_view"
         android:layout_width="368dp"
         android:layout_height="495dp"
         android:layout_below="@+id/meal_list_toolbar"
+        android:choiceMode="multipleChoice"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />

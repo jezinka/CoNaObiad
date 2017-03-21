@@ -9,10 +9,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by jezinka on 17.03.17.
- */
-
 public class MealListAdapter extends BaseAdapter {
 
     private ArrayList<String> searchArrayList;
@@ -49,7 +45,7 @@ public class MealListAdapter extends BaseAdapter {
         ViewHolder holder;
 
         if (convertView == null) {
-            convertView = mInflater.inflate(android.R.layout.simple_list_item_1, null);
+            convertView = mInflater.inflate(android.R.layout.simple_list_item_multiple_choice, null);
             holder = new ViewHolder();
             holder.titleNameView = (TextView) convertView.findViewById(android.R.id.text1);
             convertView.setTag(holder);
