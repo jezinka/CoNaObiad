@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.text.TextUtils;
 
 import com.projects.jezinka.conaobiad.CoNaObiadDbHelper;
 
@@ -62,5 +63,11 @@ public class MealContract extends BaseTable implements BaseColumns {
     public boolean isAnyMealSaved(SQLiteOpenHelper helper) {
         SQLiteDatabase db = helper.getReadableDatabase();
         return queryNumEntries(db, "meal") > 0;
+    }
+
+    public void deleteMeals(ArrayList<String> names, SQLiteOpenHelper helper) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String query = "Delete from " + this.getTableName() + " where " + this.COLUMN_NAME_NAME + " in ('" + TextUtils.join("', '", names) + "')";
+        db.execSQL(query);
     }
 }
