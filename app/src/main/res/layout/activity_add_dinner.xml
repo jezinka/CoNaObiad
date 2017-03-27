@@ -10,9 +10,8 @@
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/editText"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="19dp"
+        android:layout_alignEnd="@+id/meal_name_text"
+        android:layout_marginBottom="398dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:onClick="addDinner"
@@ -20,46 +19,56 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:src="@android:drawable/ic_menu_my_calendar"
+        android:layout_width="72dp"
+        android:layout_height="45dp"
         android:text="@string/pick_date"
         android:onClick="showDatePickerDialog"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="78dp"
+        android:layout_marginTop="45dp"
         android:id="@+id/button2"
         android:layout_marginRight="16dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/dateView"
-        android:layout_marginLeft="16dp" />
+        android:layout_marginLeft="16dp"
+        app:layout_constraintHorizontal_bias="1.0" />
+
 
     <EditText
-        android:id="@+id/editText"
-        android:layout_width="352dp"
-        android:layout_height="45dp"
+        android:id="@+id/meal_name_text"
+        android:layout_width="249dp"
+        android:layout_height="68dp"
         android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="16dp"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/button2"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="36dp"
+        android:text="@string/pick_meal"
+        android:textAlignment="center"
+        android:textSize="32sp"
+        android:onClick="showDinnersDialog"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
 
     <TextView
         android:id="@+id/dateView"
         android:layout_width="222dp"
         android:layout_height="47dp"
-        android:text="TextView"
-        android:textAlignment="center"
-        android:textSize="24sp"
+        android:textAlignment="textEnd"
+        android:textSize="32sp"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="78dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginTop="121dp"
+        android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0" />
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/addButton"
+        app:layout_constraintHorizontal_bias="0.123" />
 
 </android.support.constraint.ConstraintLayout>
