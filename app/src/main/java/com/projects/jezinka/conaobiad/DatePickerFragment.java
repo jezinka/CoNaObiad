@@ -27,7 +27,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        TextView dateView = (TextView) getActivity().findViewById(R.id.dateView);
+        TextView dateView = (TextView) getActivity().findViewById(R.id.date_view);
         Calendar c = Calendar.getInstance();
         c.set(year, month, day);
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
