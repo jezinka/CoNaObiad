@@ -32,7 +32,7 @@ public class MealListActivity extends AppCompatActivity {
         final MealContract mealContract = new MealContract();
         dbHelper = new CoNaObiadDbHelper(this);
 
-        adapter = new MealListAdapter(this, mealContract.getAllMeals(dbHelper));
+        adapter = new MealListAdapter(this, android.R.layout.simple_list_item_multiple_choice, mealContract.getAllMealsArray(dbHelper));
 
         final ListView listView = (ListView) findViewById(R.id.meal_list_view);
         listView.setAdapter(adapter);
@@ -67,7 +67,7 @@ public class MealListActivity extends AppCompatActivity {
                         mealName = input.getText().toString();
                         MealContract meal = new MealContract();
                         meal.insertMeal(builder.getContext(), mealName);
-                        adapter.updateResults(mealContract.getAllMeals(dbHelper));
+                        adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
                     }
                 });
                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -95,7 +95,7 @@ public class MealListActivity extends AppCompatActivity {
                 listView.clearChoices();
                 deleteMealButton.setVisibility(View.INVISIBLE);
                 mealContract.deleteMeals(mealNames, dbHelper);
-                adapter.updateResults(mealContract.getAllMeals(dbHelper));
+                adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
             }
         });
 

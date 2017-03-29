@@ -1,38 +1,39 @@
 package com.projects.jezinka.conaobiad;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+public class MealListAdapter extends ArrayAdapter<String> {
 
-public class MealListAdapter extends BaseAdapter {
+    String[] data;
+    Context context;
+    int layoutResourceId;
 
-    private ArrayList<String> searchArrayList;
-
-    private LayoutInflater mInflater;
-
-    public MealListAdapter(Context context, ArrayList<String> initialResults) {
-        this.searchArrayList = initialResults;
-        mInflater = LayoutInflater.from(context);
+    public MealListAdapter(Context context, int layoutResourceId, String[] data) {
+        super(context, layoutResourceId, data);
+        this.layoutResourceId = layoutResourceId;
+        this.context = context;
+        this.data = data;
     }
 
-    public void updateResults(ArrayList<String> results) {
-        searchArrayList = results;
+    public void updateResults(String[] results) {
+        data = results;
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return searchArrayList.size();
+        return data.length;
     }
 
     @Override
-    public Object getItem(int position) {
-        return searchArrayList.get(position);
+    public String getItem(int position) {
+        return data[position];
     }
 
     @Override
@@ -45,7 +46,9 @@ public class MealListAdapter extends BaseAdapter {
         ViewHolder holder;
 
         if (convertView == null) {
-            convertView = mInflater.inflate(android.R.layout.simple_list_item_multiple_choice, null);
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            convertView = inflater.inflate(layoutResourceId, parent, false);
+
             holder = new ViewHolder();
             holder.titleNameView = (TextView) convertView.findViewById(android.R.id.text1);
             convertView.setTag(holder);
@@ -53,7 +56,7 @@ public class MealListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.titleNameView.setText(searchArrayList.get(position));
+        holder.titleNameView.setText(data[position]);
         return convertView;
     }
 
