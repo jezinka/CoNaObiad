@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import com.projects.jezinka.conaobiad.CoNaObiadDbHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static android.database.DatabaseUtils.queryNumEntries;
 
@@ -42,8 +41,8 @@ public class MealContract extends BaseTable implements BaseColumns {
         return true;
     }
 
-    public ArrayList<String> getAllMeals(SQLiteOpenHelper helper) {
-        ArrayList<String> array_list = new ArrayList<String>();
+    public ArrayList<Meal> getAllMeals(SQLiteOpenHelper helper) {
+        ArrayList<Meal> array_list = new ArrayList<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor res = db.rawQuery(this.SQL_GET_ALL_RECORD, null);
@@ -51,8 +50,9 @@ public class MealContract extends BaseTable implements BaseColumns {
             res.moveToFirst();
 
             do {
-                String mealName = res.getString(res.getColumnIndex(this.COLUMN_NAME_NAME));
-                array_list.add(mealName);
+                String name = res.getString(res.getColumnIndex(this.COLUMN_NAME_NAME));
+                int id = res.getInt(res.getColumnIndex(this._ID));
+                array_list.add(new Meal(id, name));
             } while (res.moveToNext());
         }
 
@@ -61,28 +61,9 @@ public class MealContract extends BaseTable implements BaseColumns {
         return array_list;
     }
 
-    public String[] getAllMealsArray(SQLiteOpenHelper helper) {
-        ArrayList<String> result = getAllMeals(helper);
-        return result.toArray(new String[result.size()]);
-    }
-
-    public HashMap<Integer, String> getAllMealsWithId(SQLiteOpenHelper helper) {
-        HashMap<Integer, String> allMeals = new HashMap<Integer, String>();
-        SQLiteDatabase db = helper.getReadableDatabase();
-
-        Cursor res = db.rawQuery(this.SQL_GET_ALL_RECORD, null);
-        if (res != null && res.getCount() > 0) {
-            res.moveToFirst();
-
-            do {
-                String mealName = res.getString(res.getColumnIndex(this.COLUMN_NAME_NAME));
-                Integer mealId = res.getInt(res.getColumnIndex(this._ID));
-                allMeals.put(mealId, mealName);
-            } while (res.moveToNext());
-        }
-
-        db.close();
-        return allMeals;
+    public Meal[] getAllMealsArray(SQLiteOpenHelper helper) {
+        ArrayList<Meal> result = getAllMeals(helper);
+        return result.toArray(new Meal[result.size()]);
     }
 
     public boolean isAnyMealSaved(SQLiteOpenHelper helper) {
@@ -90,9 +71,9 @@ public class MealContract extends BaseTable implements BaseColumns {
         return queryNumEntries(db, "meal") > 0;
     }
 
-    public void deleteMeals(ArrayList<String> names, SQLiteOpenHelper helper) {
+    public void deleteMeals(Long[] mealIds, SQLiteOpenHelper helper) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        String query = "Delete from " + this.getTableName() + " where " + this.COLUMN_NAME_NAME + " in ('" + TextUtils.join("', '", names) + "')";
+        String query = "Delete from " + this.getTableName() + " where " + this._ID + " in (" + TextUtils.join(",", mealIds) + ")";
         db.execSQL(query);
     }
 }

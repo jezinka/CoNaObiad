@@ -2,6 +2,8 @@ package com.projects.jezinka.conaobiad;
 
 import android.support.annotation.NonNull;
 
+import com.projects.jezinka.conaobiad.model.Meal;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,13 +12,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by jezinka on 28.02.17.
- */
 public class DinnerListHelper {
 
     @NonNull
-    protected static ArrayList<String> getPreparedRows(Date todayDate, List meals) {
+    protected static ArrayList<String> getPreparedRows(Date todayDate, List<Meal> meals) {
         ArrayList<String> preparedRows = new ArrayList<String>();
 
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
@@ -35,7 +34,7 @@ public class DinnerListHelper {
             row.append("\n");
             //TODO: fix this -> use dinners instead of meals
             if (meals.size() > i) {
-                row.append(meals.get(i));
+                row.append(meals.get(i).getName());
             }
             preparedRows.add(row.toString());
 

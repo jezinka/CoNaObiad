@@ -86,15 +86,15 @@ public class MealListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SparseBooleanArray positions = listView.getCheckedItemPositions();
-                ArrayList mealNames = new ArrayList();
+                ArrayList<Long> mealIds = new ArrayList<Long>();
                 for (int i = 0; i < listView.getCount(); i++) {
                     if (positions.get(i)) {
-                        mealNames.add(listView.getItemAtPosition(i));
+                        mealIds.add(adapter.getItemId(i));
                     }
                 }
                 listView.clearChoices();
                 deleteMealButton.setVisibility(View.INVISIBLE);
-                mealContract.deleteMeals(mealNames, dbHelper);
+                mealContract.deleteMeals(mealIds.toArray(new Long[mealIds.size()]), dbHelper);
                 adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
             }
         });

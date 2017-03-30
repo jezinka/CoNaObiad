@@ -8,20 +8,22 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class MealListAdapter extends ArrayAdapter<String> {
+import com.projects.jezinka.conaobiad.model.Meal;
 
-    String[] data;
+public class MealListAdapter extends ArrayAdapter<Meal> {
+
+    Meal[] data;
     Context context;
     int layoutResourceId;
 
-    public MealListAdapter(Context context, int layoutResourceId, String[] data) {
+    public MealListAdapter(Context context, int layoutResourceId, Meal[] data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
         this.data = data;
     }
 
-    public void updateResults(String[] results) {
+    public void updateResults(Meal[] results) {
         data = results;
         notifyDataSetChanged();
     }
@@ -32,13 +34,13 @@ public class MealListAdapter extends ArrayAdapter<String> {
     }
 
     @Override
-    public String getItem(int position) {
+    public Meal getItem(int position) {
         return data[position];
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return data[position].getId();
     }
 
     @Override
@@ -56,7 +58,7 @@ public class MealListAdapter extends ArrayAdapter<String> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.titleNameView.setText(data[position]);
+        holder.titleNameView.setText(data[position].getName());
         return convertView;
     }
 
