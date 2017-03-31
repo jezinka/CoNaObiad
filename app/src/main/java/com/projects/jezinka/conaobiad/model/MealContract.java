@@ -41,6 +41,17 @@ public class MealContract extends BaseTable implements BaseColumns {
         return true;
     }
 
+    public boolean updateMeal(Context context, String name, Meal meal) {
+        String tableName = this.getTableName();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", name);
+
+        CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
+        helper.updateValuesDbHelper(tableName, contentValues, meal);
+        return true;
+    }
+
     public ArrayList<Meal> getAllMeals(SQLiteOpenHelper helper) {
         ArrayList<Meal> array_list = new ArrayList<>();
 
