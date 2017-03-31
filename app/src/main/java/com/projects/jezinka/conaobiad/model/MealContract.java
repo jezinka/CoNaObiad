@@ -48,7 +48,7 @@ public class MealContract extends BaseTable implements BaseColumns {
         contentValues.put("name", name);
 
         CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
-        helper.updateValuesDbHelper(tableName, contentValues, meal);
+        helper.updateValuesDbHelper(tableName, contentValues, meal.getId());
         return true;
     }
 
