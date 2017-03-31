@@ -13,9 +13,8 @@ public class Meal {
     }
 
     public Meal(int id, String name) {
-        super();
-        this.setId(id);
-        this.setName(name);
+        this.id = id;
+        this.name = name;
     }
 
     public int getId() {
