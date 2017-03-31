@@ -31,7 +31,7 @@ public class MealPickerFragment extends DialogFragment {
         CoNaObiadDbHelper dbHelper = new CoNaObiadDbHelper(getContext());
         MealContract mealContract = new MealContract();
         Meal[] meals = mealContract.getAllMealsArray(dbHelper);
-        final View view = getActivity().getLayoutInflater().inflate(R.layout.filterable_list_view, new LinearLayout(getActivity()), false);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.filterable_list_view, new LinearLayout(getActivity()), false);
 
         final MealListAdapter adapter = new MealListAdapter(getContext(), android.R.layout.simple_list_item_1, meals);
 

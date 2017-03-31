@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.projects.jezinka.conaobiad.model.BaseTable;
+import com.projects.jezinka.conaobiad.model.Meal;
 import com.projects.jezinka.conaobiad.model.MealContract;
 
 /**
@@ -48,6 +49,13 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
     public void insertValuesDbHelper(String tableName, ContentValues contentValues) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(tableName, null, contentValues);
+        db.close();
+    }
+
+    public void updateValuesDbHelper(String tableName, ContentValues contentValues, Meal meal) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = {Integer.toString(meal.getId())};
+        db.update(tableName, contentValues, "_ID = ?", args);
         db.close();
     }
 }

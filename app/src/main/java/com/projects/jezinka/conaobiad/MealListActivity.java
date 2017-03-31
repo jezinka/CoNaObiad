@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.projects.jezinka.conaobiad.model.Meal;
 import com.projects.jezinka.conaobiad.model.MealContract;
 
 import java.util.ArrayList;
@@ -49,34 +50,22 @@ public class MealListActivity extends AppCompatActivity {
             }
         });
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Meal meal = adapter.getItem(position);
+                final AlertDialog.Builder builder = getAlertBuilder(view, mealContract, meal);
+                builder.show();
+                return true;
+            }
+        });
+
         Button button = (Button) findViewById(R.id.add_meal_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle(R.string.put_meal_name);
-
-                final EditText input = new EditText(v.getContext());
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
-
-                builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mealName = input.getText().toString();
-                        MealContract meal = new MealContract();
-                        meal.insertMeal(builder.getContext(), mealName);
-                        adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
-                    }
-                });
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
+                final AlertDialog.Builder builder = getAlertBuilder(v, mealContract, null);
                 builder.show();
             }
         });
@@ -104,5 +93,38 @@ public class MealListActivity extends AppCompatActivity {
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private AlertDialog.Builder getAlertBuilder(View v, final MealContract mealContract, final Meal meal) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+        builder.setTitle(R.string.put_meal_name);
+
+        final EditText input = new EditText(v.getContext());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        if (meal != null) {
+            input.setText(meal.getName());
+        }
+        builder.setView(input);
+
+        builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mealName = input.getText().toString();
+                if (meal != null) {
+                    mealContract.updateMeal(builder.getContext(), mealName, meal);
+                } else {
+                    mealContract.insertMeal(builder.getContext(), mealName);
+                }
+                adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        return builder;
     }
 }
