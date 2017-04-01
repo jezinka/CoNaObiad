@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.projects.jezinka.conaobiad.model.BaseTable;
+import com.projects.jezinka.conaobiad.model.DinnerContract;
 import com.projects.jezinka.conaobiad.model.MealContract;
 
 /**
@@ -14,7 +15,7 @@ import com.projects.jezinka.conaobiad.model.MealContract;
 
 public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "CoNaObiad.db";
 
     public CoNaObiadDbHelper(Context context) {
@@ -23,20 +24,22 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        BaseTable table = new MealContract();
-        db.execSQL(table.getCreateEntriesQuery());
+        StringBuffer createTableQueries = new StringBuffer();
+
+        createTableQueries.append(new MealContract().getCreateEntriesQuery());
+        createTableQueries.append(new DinnerContract().getCreateEntriesQuery());
+        db.execSQL(createTableQueries.toString());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        BaseTable table = new MealContract();
-        db.execSQL(table.getDropTableQuery());
-        onCreate(db);
-    }
+        StringBuffer dropTableQueries = new StringBuffer();
 
-    @Override
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onUpgrade(db, oldVersion, newVersion);
+        dropTableQueries.append(new MealContract().getDropTableQuery());
+        dropTableQueries.append(new DinnerContract().getDropTableQuery());
+        db.execSQL(dropTableQueries.toString());
+
+        onCreate(db);
     }
 
     public void cleanData() {

@@ -1,7 +1,7 @@
 package com.projects.jezinka.conaobiad.model;
 
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Context;
 import android.provider.BaseColumns;
 
 import com.projects.jezinka.conaobiad.CoNaObiadDbHelper;
@@ -28,13 +28,28 @@ public class DinnerContract extends BaseTable implements BaseColumns {
                 COLUMN_DATE_NAME + " INT)"; // System.currentTimeMillis()
     }
 
-    public boolean insertDinner(CoNaObiadDbHelper coNaObiadDbHelper, int mealID, Date date) {
-        SQLiteDatabase db = coNaObiadDbHelper.getWritableDatabase();
+    public boolean insertDinner(Context context, int mealID, Date date) {
+        String tableName = this.getTableName();
+
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_MEAL_ID, mealID);
-        contentValues.put(COLUMN_DATE_NAME, date.getTime());
-        db.insert(this.TABLE_NAME, null, contentValues);
-        db.close();
+        contentValues.put("meal_id", mealID);
+        contentValues.put("date", date.getTime());
+
+        CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
+        helper.insertValuesDbHelper(tableName, contentValues);
         return true;
     }
+
+    public boolean updateDinner(Context context, Dinner dinner) {
+        String tableName = this.getTableName();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("meal_id", dinner.getMeal().getId());
+        contentValues.put("date", dinner.getDate().getTime());
+
+        CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
+        helper.updateValuesDbHelper(tableName, contentValues, dinner.getId());
+        return true;
+    }
+
 }

@@ -44,6 +44,8 @@ public class MealPickerFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View dialogView, int position, long id) {
                 TextView mealName = (TextView) getActivity().findViewById(R.id.meal_name_text);
                 mealName.setText(adapter.getItem(position).getName());
+                TextView mealId = (TextView) getActivity().findViewById(R.id.meal_name_id);
+                mealId.setText(String.valueOf(adapter.getItem(position).getId()));
                 MealPickerFragment.this.dismiss();
             }
         });
