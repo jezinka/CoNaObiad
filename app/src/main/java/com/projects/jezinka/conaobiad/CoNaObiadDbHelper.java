@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.projects.jezinka.conaobiad.model.BaseTable;
 import com.projects.jezinka.conaobiad.model.DinnerContract;
 import com.projects.jezinka.conaobiad.model.MealContract;
 
@@ -15,8 +14,8 @@ import com.projects.jezinka.conaobiad.model.MealContract;
 
 public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 7;
-    public static final String DATABASE_NAME = "CoNaObiad.db";
+    public static final int DATABASE_VERSION = 2;
+    private static final String DATABASE_NAME = "CoNaObiad.db";
 
     public CoNaObiadDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -24,28 +23,16 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        StringBuffer createTableQueries = new StringBuffer();
-
-        createTableQueries.append(new MealContract().getCreateEntriesQuery());
-        createTableQueries.append(new DinnerContract().getCreateEntriesQuery());
-        db.execSQL(createTableQueries.toString());
+        db.execSQL(new MealContract().getCreateEntriesQuery());
+        db.execSQL(new DinnerContract().getCreateEntriesQuery());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        StringBuffer dropTableQueries = new StringBuffer();
-
-        dropTableQueries.append(new MealContract().getDropTableQuery());
-        dropTableQueries.append(new DinnerContract().getDropTableQuery());
-        db.execSQL(dropTableQueries.toString());
+        db.execSQL(new MealContract().getDropTableQuery());
+        db.execSQL(new DinnerContract().getDropTableQuery());
 
         onCreate(db);
-    }
-
-    public void cleanData() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        BaseTable table = new MealContract();
-        db.execSQL(table.getDeleteEntriesQuery());
     }
 
     public void insertValuesDbHelper(String tableName, ContentValues contentValues) {
