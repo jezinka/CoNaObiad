@@ -79,7 +79,7 @@ public class MealContract extends BaseTable implements BaseColumns {
 
     public boolean isAnyMealSaved(SQLiteOpenHelper helper) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        return queryNumEntries(db, "meal") > 0;
+        return queryNumEntries(db, this.getTableName()) > 0;
     }
 
     public void deleteMeals(Long[] mealIds, SQLiteOpenHelper helper) {
