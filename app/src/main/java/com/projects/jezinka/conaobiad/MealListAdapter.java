@@ -2,6 +2,7 @@ package com.projects.jezinka.conaobiad;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +15,15 @@ import com.projects.jezinka.conaobiad.model.Meal;
 
 import java.util.ArrayList;
 
-public class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
+class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
 
-    Meal[] data;
-    Meal[] filteredData;
+    private Meal[] data;
+    private Meal[] filteredData;
 
-    Context context;
-    int layoutResourceId;
+    private Context context;
+    private int layoutResourceId;
 
-    public MealListAdapter(Context context, int layoutResourceId, Meal[] data) {
+    MealListAdapter(Context context, int layoutResourceId, Meal[] data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -30,7 +31,7 @@ public class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
         this.filteredData = data;
     }
 
-    public void updateResults(Meal[] results) {
+    void updateResults(Meal[] results) {
         this.data = results;
         this.filteredData = results;
         notifyDataSetChanged();
@@ -51,8 +52,9 @@ public class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
         return filteredData[position].getId();
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
 
         if (convertView == null) {
@@ -70,10 +72,11 @@ public class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
         return convertView;
     }
 
-    static class ViewHolder {
+    private static class ViewHolder {
         TextView titleNameView;
     }
 
+    @NonNull
     @Override
     public Filter getFilter() {
         return new Filter() {
