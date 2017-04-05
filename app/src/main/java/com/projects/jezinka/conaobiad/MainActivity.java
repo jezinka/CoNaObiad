@@ -13,15 +13,16 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.projects.jezinka.conaobiad.model.DinnerContract;
 import com.projects.jezinka.conaobiad.model.MealContract;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private CoNaObiadDbHelper dbHelper;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,15 +32,16 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new CoNaObiadDbHelper(this);
 
         MealContract mealContract = new MealContract();
+        DinnerContract dinnerContract = new DinnerContract();
         List<String> preparedRows = new ArrayList<>();
 
         if (!mealContract.isAnyMealSaved(dbHelper)) {
             showEmptyMealListMessage(this);
         } else {
-            preparedRows = DinnerListHelper.getPreparedRows(new Date(), mealContract.getAllMeals(dbHelper));
+            preparedRows = DinnerListHelper.getPreparedRows(dinnerContract.getDinnersByDate(dbHelper, null));
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, preparedRows);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, preparedRows);
 
         ListView listView = (ListView) findViewById(R.id.dinner_list_view);
         listView.setAdapter(adapter);

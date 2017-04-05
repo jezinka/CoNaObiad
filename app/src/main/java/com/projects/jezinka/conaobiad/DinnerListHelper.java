@@ -1,8 +1,9 @@
 package com.projects.jezinka.conaobiad;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
-import com.projects.jezinka.conaobiad.model.Meal;
+import com.projects.jezinka.conaobiad.model.Dinner;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,50 +16,34 @@ import java.util.Locale;
 public class DinnerListHelper {
 
     @NonNull
-    protected static ArrayList<String> getPreparedRows(Date todayDate, List<Meal> meals) {
-        ArrayList<String> preparedRows = new ArrayList<String>();
+    protected static ArrayList<String> getPreparedRows(List<Dinner> dinners) {
+        ArrayList<String> preparedRows = new ArrayList<>();
 
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
 
         Calendar calendarInstance = Calendar.getInstance();
-        calendarInstance.setTime(getSaturdayDate(todayDate));
+        calendarInstance.setTime(TimeUtils.getSaturdayDate(new Date()));
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < TimeUtils.DAYS_IN_PLANNER; i++) {
             Date date = calendarInstance.getTime();
 
             StringBuffer row = new StringBuffer();
             row.append(new SimpleDateFormat("EEEE").format(date));
             row.append(" - ");
-
             row.append(df.format(date));
             row.append("\n");
-            //TODO: fix this -> use dinners instead of meals
-            if (meals.size() > i) {
-                row.append(meals.get(i).getName());
+
+            List<String> dinnersName = new ArrayList<>();
+            for (Dinner dinner : dinners) {
+                if (dinner.getDate().getTime() == date.getTime()) {
+                    dinnersName.add(dinner.getMeal().getName());
+                }
             }
+            row.append(TextUtils.join(",", dinnersName.toArray(new String[dinnersName.size()])));
             preparedRows.add(row.toString());
 
             calendarInstance.roll(Calendar.DATE, true);
         }
         return preparedRows;
-    }
-
-    @NonNull
-    private static Date getSaturdayDate(Date date) {
-
-        if (date == null) {
-            date = new Date();
-        }
-
-        Calendar calendarInstance = Calendar.getInstance();
-        calendarInstance.setTime(date);
-
-        int dayOfWeek = calendarInstance.get(Calendar.DAY_OF_WEEK);
-        if (dayOfWeek == Calendar.SATURDAY) {
-            return date;
-        }
-
-        calendarInstance.add(Calendar.DAY_OF_WEEK, -dayOfWeek);
-        return calendarInstance.getTime();
     }
 }
