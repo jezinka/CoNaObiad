@@ -27,7 +27,9 @@ public class MealContract extends BaseTable implements BaseColumns {
                 _ID + " INTEGER PRIMARY KEY," +
                 COLUMN_NAME_NAME + " TEXT)";
 
-        this.SQL_GET_ALL_RECORD = "select " + this._ID + ", " + this.COLUMN_NAME_NAME + " from " + this.TABLE_NAME + " order by " + this.COLUMN_NAME_NAME;
+        this.SQL_GET_ALL_RECORD = "select " + this._ID + ", " + this.COLUMN_NAME_NAME +
+                " from " + this.TABLE_NAME +
+                " order by " + this.COLUMN_NAME_NAME + " COLLATE NOCASE";
     }
 
     public boolean insertMeal(Context context, String name) {
