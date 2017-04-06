@@ -6,6 +6,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="pick_date">Wybierz datę</string>
     <string name="pick_meal">Wybierz posiłek</string>
+    <string name="add_dinner">Dodaj obiad</string>
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="empty_meal_list_message">Nie masz żadnego zapisanego obiadu. Czy przejść do ekranu dodawania?</string>
