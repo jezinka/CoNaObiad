@@ -41,7 +41,8 @@ public class DinnerContract extends BaseTable implements BaseColumns {
                 " from " + this.TABLE_NAME +
                 " join " + this.mealContract.TABLE_NAME +
                 " on " + this.TABLE_NAME + "." + this.COLUMN_MEAL_ID + "= " + this.mealContract.TABLE_NAME + "." + this.mealContract._ID +
-                " where " + this.COLUMN_DATE_NAME + " between ? and ?";
+                " where " + this.COLUMN_DATE_NAME + " between ? and ?" +
+                " order by " + this.COLUMN_DATE_NAME;
     }
 
     public boolean insertDinner(Context context, int mealID, Date date) {
@@ -94,4 +95,8 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         return array_list;
     }
 
+    public Dinner[] getDinnersByDateArray(SQLiteOpenHelper helper, Date date) {
+        ArrayList<Dinner> result = getDinnersByDate(helper, date);
+        return result.toArray(new Dinner[result.size()]);
+    }
 }

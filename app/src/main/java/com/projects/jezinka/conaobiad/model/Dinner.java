@@ -1,10 +1,9 @@
 package com.projects.jezinka.conaobiad.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-
-/**
- * Created by jezinka on 31.03.17.
- */
+import java.util.Locale;
 
 public class Dinner {
 
@@ -44,5 +43,15 @@ public class Dinner {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getDateString() {
+        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
+        StringBuffer row = new StringBuffer();
+
+        row.append(new SimpleDateFormat("EEEE").format(date));
+        row.append(" - ");
+        row.append(df.format(date));
+        return row.toString();
     }
 }

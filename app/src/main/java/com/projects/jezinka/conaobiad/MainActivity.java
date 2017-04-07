@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -30,10 +29,8 @@ import com.projects.jezinka.conaobiad.model.MealContract;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private CoNaObiadDbHelper dbHelper;
     private MealContract mealContract;
     private DinnerContract dinnerContract;
+    private DinnerListAdapter dinnerListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +49,14 @@ public class MainActivity extends AppCompatActivity {
         mealContract = new MealContract();
         dinnerContract = new DinnerContract();
 
-        List<String> preparedRows = new ArrayList<>();
-
         if (!mealContract.isAnyMealSaved(dbHelper)) {
             showEmptyMealListMessage(this);
-        } else {
-            preparedRows = DinnerListHelper.getPreparedRows(dinnerContract.getDinnersByDate(dbHelper, null));
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, preparedRows);
+        dinnerListAdapter = new DinnerListAdapter(this, R.layout.dinner_list, dinnerContract.getDinnersByDateArray(dbHelper, null));
 
         ListView listView = (ListView) findViewById(R.id.dinner_list_view);
-        listView.setAdapter(adapter);
+        listView.setAdapter(dinnerListAdapter);
 
         Button addDinnerButton = (Button) findViewById(R.id.new_dinner_button);
         addDinnerButton.setOnClickListener(new View.OnClickListener() {
@@ -163,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 dinnerContract.insertDinner(view.getContext(), Integer.parseInt(mealIdText), date);
+                dinnerListAdapter.updateResults(dinnerContract.getDinnersByDateArray(dbHelper, null));
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
