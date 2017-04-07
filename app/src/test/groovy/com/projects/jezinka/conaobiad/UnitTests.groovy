@@ -7,11 +7,8 @@ class UnitTests extends Specification {
 
     def "GetSaturdayDate"() {
 
-        setup:
-        DinnerListHelper dinnerListHelper = new DinnerListHelper()
-
         when:
-        Date resultDate = dinnerListHelper.getSaturdayDate(date)
+        Date resultDate = TimeUtils.getSaturdayDate(date)
 
         then:
         Assert.notNull(resultDate)
@@ -34,11 +31,8 @@ class UnitTests extends Specification {
 
     def "GetSaturdayDate no exception thrown for null parameter"() {
 
-        setup:
-        DinnerListHelper dinnerListHelper = new DinnerListHelper()
-
         when:
-        dinnerListHelper.getSaturdayDate()
+        TimeUtils.getSaturdayDate()
 
         then:
         noExceptionThrown()
