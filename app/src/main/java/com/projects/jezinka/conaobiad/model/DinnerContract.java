@@ -69,7 +69,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         return true;
     }
 
-    public ArrayList<Dinner> getDinnersByDate(SQLiteOpenHelper helper, Date date) {
+    private ArrayList<Dinner> getDinnersByDate(SQLiteOpenHelper helper, Date date) {
 
         ArrayList<Dinner> array_list = new ArrayList<>();
         long saturdayDate = TimeUtils.getSaturdayDate(date).getTime();
@@ -95,7 +95,11 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         return array_list;
     }
 
-    public Dinner[] getDinnersByDateArray(SQLiteOpenHelper helper, Date date) {
+    public Dinner[] getDinners(SQLiteOpenHelper helper) {
+        return getDinnersByDateArray(helper, new Date());
+    }
+
+    private Dinner[] getDinnersByDateArray(SQLiteOpenHelper helper, Date date) {
         ArrayList<Dinner> result = getDinnersByDate(helper, date);
         return result.toArray(new Dinner[result.size()]);
     }

@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private CoNaObiadDbHelper dbHelper;
     private MealContract mealContract;
     private DinnerContract dinnerContract;
-    private DinnerListAdapter dinnerListAdapter;
+    private DinnerExpandableListAdapter dinnerExpandableListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +54,10 @@ public class MainActivity extends AppCompatActivity {
             showEmptyMealListMessage(this);
         }
 
-        dinnerListAdapter = new DinnerListAdapter(this, R.layout.dinner_list, dinnerContract.getDinnersByDateArray(dbHelper, null));
+        dinnerExpandableListAdapter = new DinnerExpandableListAdapter(this, dinnerContract.getDinners(dbHelper));
 
-        ListView listView = (ListView) findViewById(R.id.dinner_list_view);
-        listView.setAdapter(dinnerListAdapter);
+        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandable_dinner_list_view);
+        expandableListView.setAdapter(dinnerExpandableListAdapter);
 
         Button addDinnerButton = (Button) findViewById(R.id.new_dinner_button);
         addDinnerButton.setOnClickListener(new View.OnClickListener() {
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 dinnerContract.insertDinner(view.getContext(), Integer.parseInt(mealIdText), date);
-                dinnerListAdapter.updateResults(dinnerContract.getDinnersByDateArray(dbHelper, null));
+                dinnerExpandableListAdapter.updateResults(dinnerContract.getDinners(dbHelper));
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

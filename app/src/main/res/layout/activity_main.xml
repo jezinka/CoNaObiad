@@ -14,11 +14,14 @@
         android:id="@+id/main_activity_toolbar"
         layout="@layout/main_app_toolbar" />
 
-    <ListView
-        android:id="@+id/dinner_list_view"
+    <ExpandableListView
+        android:id="@+id/expandable_dinner_list_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/main_activity_toolbar" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/main_activity_toolbar"
+        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="0.5dp" />
 
     <Button
         android:id="@+id/new_dinner_button"
