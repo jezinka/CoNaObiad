@@ -66,7 +66,7 @@ public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Object getGroup(int listPosition) {
+    public Date getGroup(int listPosition) {
         return this.expandableListTitle.get(listPosition);
     }
 
@@ -94,7 +94,7 @@ public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
 
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
 
-        Date listTitle = (Date) getGroup(listPosition);
+        Date listTitle = getGroup(listPosition);
 
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
