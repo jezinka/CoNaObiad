@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="dinner_child_actions">
+        <item>Dodaj</item>
+        <item>Usuń</item>
+        <!--<item>Zmień datę</item>-->
+    </string-array>
+    <string-array name="dinner_parent_actions">
+        <item>Dodaj</item>
+    </string-array>
+</resources>

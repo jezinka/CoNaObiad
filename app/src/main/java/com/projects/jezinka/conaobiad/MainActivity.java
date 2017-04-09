@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private DinnerContract dinnerContract;
     private DinnerExpandableListAdapter dinnerExpandableListAdapter;
 
+    private final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,11 +61,55 @@ public class MainActivity extends AppCompatActivity {
         ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandable_dinner_list_view);
         expandableListView.setAdapter(dinnerExpandableListAdapter);
 
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, final View v, final int groupPosition, final int childPosition, final long id) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setItems(R.array.dinner_child_actions, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                final AlertDialog.Builder builder = addNewDinnerBuilder(v, dinnerExpandableListAdapter.getGroup(groupPosition));
+                                builder.show();
+                                break;
+                            case 1:
+                                dinnerContract.deleteDinner(id, dbHelper);
+                                dinnerExpandableListAdapter.updateResults(dinnerContract.getDinners(dbHelper));
+                                break;
+                            case 2:
+                                // showDatePickerDialog(v, dateView);
+                                // after date choosing update with new date
+                            default:
+
+                        }
+                    }
+                });
+                builder.show();
+                return true;
+            }
+        });
+
+        expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                int itemType = ExpandableListView.getPackedPositionType(id);
+                if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+                    Date date = dinnerExpandableListAdapter.getGroup(position);
+                    final AlertDialog.Builder builder = addNewDinnerBuilder(view, date);
+                    builder.show();
+                    return true;
+                }
+
+                return false;
+
+            }
+        });
+
         Button addDinnerButton = (Button) findViewById(R.id.new_dinner_button);
         addDinnerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder builder = addNewDinnerBuilder(v);
+                final AlertDialog.Builder builder = addNewDinnerBuilder(v, null);
                 builder.show();
             }
         });
@@ -119,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private AlertDialog.Builder addNewDinnerBuilder(View v) {
+    private AlertDialog.Builder addNewDinnerBuilder(View v, final Date date) {
         final View view = getLayoutInflater().inflate(R.layout.custom_dialog_add_dinner, new LinearLayout(v.getContext()), false);
         final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
         builder.setTitle(R.string.add_dinner);
@@ -129,6 +175,10 @@ public class MainActivity extends AppCompatActivity {
         final TextView mealName = (TextView) view.findViewById(R.id.meal_name_text);
         final TextView mealId = (TextView) view.findViewById(R.id.meal_name_id);
         final ImageButton datePickerButton = (ImageButton) view.findViewById(R.id.calendar_button);
+
+        if (date != null) {
+            dateView.setText(df.format(date));
+        }
 
         datePickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,7 +269,6 @@ public class MainActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar calendarInstance = Calendar.getInstance();
                 calendarInstance.set(year, monthOfYear, dayOfMonth);
-                DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
                 dateView.setText(df.format(calendarInstance.getTime()));
             }
         }, todayCalendarInstance.get(Calendar.YEAR), todayCalendarInstance.get(Calendar.MONTH), todayCalendarInstance.get(Calendar.DATE));
