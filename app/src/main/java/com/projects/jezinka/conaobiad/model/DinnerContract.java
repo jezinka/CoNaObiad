@@ -32,15 +32,17 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         this.SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
                 COLUMN_MEAL_ID + " INT, " +
-                COLUMN_DATE_NAME + " INT)"; // System.currentTimeMillis()
+                COLUMN_DATE_NAME + " INT," +
+                " FOREIGN KEY(" + COLUMN_MEAL_ID + ") REFERENCES " + this.mealContract.getTableName() + "(" + this.COLUMN_MEAL_ID + ")" +
+                ")";
 
         this.SQL_GET_RECORDS_BY_DATE = "select " + this.TABLE_NAME + "." + this._ID + ", " +
                 this.COLUMN_MEAL_ID + ", " +
                 this.COLUMN_DATE_NAME + ", " +
                 this.mealContract.COLUMN_NAME_NAME +
                 " from " + this.TABLE_NAME +
-                " join " + this.mealContract.TABLE_NAME +
-                " on " + this.TABLE_NAME + "." + this.COLUMN_MEAL_ID + "= " + this.mealContract.TABLE_NAME + "." + this.mealContract._ID +
+                " join " + this.mealContract.getTableName() +
+                " on " + this.TABLE_NAME + "." + this.COLUMN_MEAL_ID + "= " + this.mealContract.getTableName() + "." + this.mealContract._ID +
                 " where " + this.COLUMN_DATE_NAME + " between ? and ?" +
                 " order by " + this.COLUMN_DATE_NAME;
     }
@@ -102,5 +104,11 @@ public class DinnerContract extends BaseTable implements BaseColumns {
     private Dinner[] getDinnersByDateArray(SQLiteOpenHelper helper, Date date) {
         ArrayList<Dinner> result = getDinnersByDate(helper, date);
         return result.toArray(new Dinner[result.size()]);
+    }
+
+    public void deleteDinner(Long dinnerId, SQLiteOpenHelper helper) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String query = "Delete from " + this.getTableName() + " where " + this._ID + " = " + dinnerId;
+        db.execSQL(query);
     }
 }

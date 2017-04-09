@@ -8,13 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.projects.jezinka.conaobiad.model.DinnerContract;
 import com.projects.jezinka.conaobiad.model.MealContract;
 
-/**
- * Created by jezinka on 09.03.17.
- */
-
 public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "CoNaObiad.db";
 
     public CoNaObiadDbHelper(Context context) {
