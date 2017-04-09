@@ -106,7 +106,7 @@ public class MealListActivity extends AppCompatActivity {
         }
         builder.setView(input);
 
-        builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(meal == null ? R.string.add : R.string.edit, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mealName = input.getText().toString();
