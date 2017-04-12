@@ -22,30 +22,30 @@ import java.util.TreeMap;
 public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private List<Date> expandableListTitle;
-    private TreeMap<Date, List<Dinner>> expandableListDetail;
+    private List<Date> listTitle;
+    private TreeMap<Date, List<Dinner>> listDetail;
 
     public DinnerExpandableListAdapter(Context context, Dinner[] dinners) {
         this.context = context;
-        this.expandableListDetail = getPreparedHashMap(dinners);
-        this.expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+        this.listDetail = getPreparedHashMap(dinners);
+        this.listTitle = new ArrayList<>(listDetail.keySet());
     }
 
     void updateResults(Dinner[] dinners) {
         TreeMap<Date, List<Dinner>> expandableListDetail = getPreparedHashMap(dinners);
-        this.expandableListDetail = expandableListDetail;
-        this.expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+        this.listDetail = expandableListDetail;
+        this.listTitle = new ArrayList<>(expandableListDetail.keySet());
         this.notifyDataSetChanged();
     }
 
     @Override
     public Dinner getChild(int listPosition, int expandedListPosition) {
-        return this.expandableListDetail.get(this.expandableListTitle.get(listPosition)).get(expandedListPosition);
+        return this.listDetail.get(this.listTitle.get(listPosition)).get(expandedListPosition);
     }
 
     @Override
     public long getChildId(int listPosition, int expandedListPosition) {
-        return this.expandableListDetail.get(this.expandableListTitle.get(listPosition)).get(expandedListPosition).getId();
+        return this.listDetail.get(this.listTitle.get(listPosition)).get(expandedListPosition).getId();
     }
 
     @Override
@@ -62,26 +62,26 @@ public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int listPosition) {
-        return this.expandableListDetail.get(this.expandableListTitle.get(listPosition)).size();
+        return this.listDetail.get(this.listTitle.get(listPosition)).size();
     }
 
     @Override
     public Date getGroup(int listPosition) {
-        return this.expandableListTitle.get(listPosition);
+        return this.listTitle.get(listPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return this.expandableListTitle.size();
+        return this.listTitle.size();
     }
 
     @Override
     public long getGroupId(int listPosition) {
-        return this.expandableListTitle.get(listPosition).getTime();
+        return this.listTitle.get(listPosition).getTime();
     }
 
-    public String getChildsName(Date key) {
-        List<Dinner> dinners = this.expandableListDetail.get(key);
+    public String getChildrensName(Date key) {
+        List<Dinner> dinners = this.listDetail.get(key);
         List<String> dinnersNames = new ArrayList<>();
         for (Dinner dinner : dinners) {
             dinnersNames.add(dinner.getMeal().getName());
@@ -103,7 +103,7 @@ public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView listTitleTextView = (TextView) convertView.findViewById(R.id.listTitle);
         listTitleTextView.setTypeface(null, Typeface.BOLD);
-        listTitleTextView.setText(df.format(listTitle) + ":" + getChildsName(listTitle));
+        listTitleTextView.setText(df.format(listTitle) + ":" + getChildrensName(listTitle));
         return convertView;
     }
 
@@ -116,7 +116,6 @@ public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int listPosition, int expandedListPosition) {
         return true;
     }
-
 
     private TreeMap<Date, List<Dinner>> getPreparedHashMap(Dinner[] dinners) {
         TreeMap<Date, List<Dinner>> preparedRows = new TreeMap<>();

@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private CoNaObiadDbHelper dbHelper;
     private MealContract mealContract;
     private DinnerContract dinnerContract;
-    private DinnerExpandableListAdapter dinnerExpandableListAdapter;
+    private DinnerExpandableListAdapter dinnerAdapter;
 
     private final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
 
@@ -56,10 +56,10 @@ public class MainActivity extends AppCompatActivity {
             showEmptyMealListMessage(this);
         }
 
-        dinnerExpandableListAdapter = new DinnerExpandableListAdapter(this, dinnerContract.getDinners(dbHelper));
+        dinnerAdapter = new DinnerExpandableListAdapter(this, dinnerContract.getDinners(dbHelper));
 
         ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandable_dinner_list_view);
-        expandableListView.setAdapter(dinnerExpandableListAdapter);
+        expandableListView.setAdapter(dinnerAdapter);
 
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setItems(R.array.dinner_child_actions, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Date date = dinnerExpandableListAdapter.getGroup(groupPosition);
+                        Date date = dinnerAdapter.getGroup(groupPosition);
                         switch (which) {
                             case 0:
                                 final AlertDialog.Builder builder = addNewDinnerBuilder(v, date);
@@ -75,10 +75,10 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 dinnerContract.deleteDinner(id, dbHelper);
-                                dinnerExpandableListAdapter.updateResults(dinnerContract.getDinners(dbHelper));
+                                dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
                                 break;
                             case 2:
-                                Dinner dinner = dinnerExpandableListAdapter.getChild(groupPosition, childPosition);
+                                Dinner dinner = dinnerAdapter.getChild(groupPosition, childPosition);
                                 final AlertDialog.Builder builder2 = addNewDinnerBuilder(v, date, dinner);
                                 builder2.show();
                                 break;
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 int itemType = ExpandableListView.getPackedPositionType(id);
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    Date date = dinnerExpandableListAdapter.getGroup(position);
+                    Date date = dinnerAdapter.getGroup(position);
                     final AlertDialog.Builder builder = addNewDinnerBuilder(view, date);
                     builder.show();
                     return true;
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
 
                 dinnerContract.insertDinner(view.getContext(), Integer.parseInt(mealIdText), date);
                 }
-                dinnerExpandableListAdapter.updateResults(dinnerContract.getDinners(dbHelper));
+                dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showMealPickerDialog(View v, final TextView mealName, final TextView mealId) {
         View addDinnerView = getLayoutInflater().inflate(R.layout.filterable_list_view, new LinearLayout(v.getContext()), false);
-        final MealListAdapter adapter = new MealListAdapter(v.getContext(), android.R.layout.simple_list_item_1, mealContract.getAllMealsArray(dbHelper));
+        final MealListAdapter mealAdapter = new MealListAdapter(v.getContext(), android.R.layout.simple_list_item_1, mealContract.getAllMealsArray(dbHelper));
 
         final AlertDialog.Builder addDinnerDialogBuilder = new AlertDialog.Builder(v.getContext());
         addDinnerDialogBuilder.setView(addDinnerView);
@@ -254,12 +254,12 @@ public class MainActivity extends AppCompatActivity {
         final AlertDialog alertDialog = addDinnerDialogBuilder.create();
 
         ListView mealListView = (ListView) addDinnerView.findViewById(R.id.filterable_meal_list_view);
-        mealListView.setAdapter(adapter);
+        mealListView.setAdapter(mealAdapter);
         mealListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View dialogView, int position, long id) {
-                mealName.setText(adapter.getItem(position).getName());
-                mealId.setText(String.valueOf(adapter.getItem(position).getId()));
+                mealName.setText(mealAdapter.getItem(position).getName());
+                mealId.setText(String.valueOf(mealAdapter.getItem(position).getId()));
                 alertDialog.dismiss();
             }
         });
@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
         filterEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Filter filter = adapter.getFilter();
+                Filter filter = mealAdapter.getFilter();
                 filter.filter(s);
             }
 
