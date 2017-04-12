@@ -64,14 +64,14 @@ public class MainActivity extends AppCompatActivity {
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, final View v, final int groupPosition, final int childPosition, final long id) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setItems(R.array.dinner_child_actions, new DialogInterface.OnClickListener() {
+                AlertDialog.Builder childContextMenuBuilder = new AlertDialog.Builder(v.getContext());
+                childContextMenuBuilder.setItems(R.array.dinner_child_actions, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Date date = dinnerAdapter.getGroup(groupPosition);
                         switch (which) {
                             case 0:
-                                final AlertDialog.Builder builder = addNewDinnerBuilder(v, date);
-                                builder.show();
+                                AlertDialog.Builder addBuilder = addNewDinnerBuilder(v, date);
+                                addBuilder.show();
                                 break;
                             case 1:
                                 dinnerContract.deleteDinner(id, dbHelper);
@@ -79,13 +79,13 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 Dinner dinner = dinnerAdapter.getChild(groupPosition, childPosition);
-                                final AlertDialog.Builder builder2 = addNewDinnerBuilder(v, date, dinner);
-                                builder2.show();
+                                AlertDialog.Builder editBuilder = addNewDinnerBuilder(v, date, dinner);
+                                editBuilder.show();
                                 break;
                         }
                     }
                 });
-                builder.show();
+                childContextMenuBuilder.show();
                 return true;
             }
         });
