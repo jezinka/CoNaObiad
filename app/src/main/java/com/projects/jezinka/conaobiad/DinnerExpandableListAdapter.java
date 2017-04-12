@@ -80,7 +80,7 @@ public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
         return this.listTitle.get(listPosition).getTime();
     }
 
-    public String getChildrensName(Date key) {
+    private String getChildrenNames(Date key) {
         List<Dinner> dinners = this.listDetail.get(key);
         List<String> dinnersNames = new ArrayList<>();
         for (Dinner dinner : dinners) {
@@ -103,7 +103,7 @@ public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView listTitleTextView = (TextView) convertView.findViewById(R.id.listTitle);
         listTitleTextView.setTypeface(null, Typeface.BOLD);
-        listTitleTextView.setText(df.format(listTitle) + ":" + getChildrensName(listTitle));
+        listTitleTextView.setText(df.format(listTitle) + ":" + getChildrenNames(listTitle));
         return convertView;
     }
 
