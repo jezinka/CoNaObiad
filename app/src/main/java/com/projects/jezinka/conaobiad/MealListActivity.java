@@ -109,7 +109,7 @@ public class MealListActivity extends AppCompatActivity {
         builder.setPositiveButton(meal == null ? R.string.add : R.string.edit, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mealName = input.getText().toString();
+                mealName = input.getText().toString().trim();
                 if (meal != null) {
                     mealContract.updateMeal(builder.getContext(), mealName, meal);
                 } else {
