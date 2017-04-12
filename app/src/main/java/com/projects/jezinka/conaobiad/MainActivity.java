@@ -95,14 +95,14 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 int itemType = ExpandableListView.getPackedPositionType(id);
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    Date date = dinnerAdapter.getGroup(position);
+                    long packedPos = ((ExpandableListView) parent).getExpandableListPosition(position);
+                    int groupPosition = ExpandableListView.getPackedPositionGroup(packedPos);
+                    Date date = dinnerAdapter.getGroup(groupPosition);
                     final AlertDialog.Builder builder = addNewDinnerBuilder(view, date);
                     builder.show();
                     return true;
                 }
-
                 return false;
-
             }
         });
 
