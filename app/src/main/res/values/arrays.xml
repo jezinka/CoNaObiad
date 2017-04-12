@@ -3,7 +3,7 @@
     <string-array name="dinner_child_actions">
         <item>Dodaj</item>
         <item>Usuń</item>
-        <!--<item>Zmień datę</item>-->
+        <item>Zmień datę</item>
     </string-array>
     <string-array name="dinner_parent_actions">
         <item>Dodaj</item>

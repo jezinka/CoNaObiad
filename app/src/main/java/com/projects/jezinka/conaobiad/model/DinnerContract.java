@@ -59,12 +59,11 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         return true;
     }
 
-    public boolean updateDinner(Context context, Dinner dinner) {
+    public boolean updateDinner(Context context, Dinner dinner, Date date) {
         String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("meal_id", dinner.getMeal().getId());
-        contentValues.put("date", dinner.getDate().getTime());
+        contentValues.put("date", date.getTime());
 
         CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
         helper.updateValuesDbHelper(tableName, contentValues, dinner.getId());

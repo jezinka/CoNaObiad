@@ -19,11 +19,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.Filter;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.projects.jezinka.conaobiad.model.Dinner;
 import com.projects.jezinka.conaobiad.model.DinnerContract;
 import com.projects.jezinka.conaobiad.model.MealContract;
 
@@ -67,9 +67,10 @@ public class MainActivity extends AppCompatActivity {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setItems(R.array.dinner_child_actions, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        Date date = dinnerExpandableListAdapter.getGroup(groupPosition);
                         switch (which) {
                             case 0:
-                                final AlertDialog.Builder builder = addNewDinnerBuilder(v, dinnerExpandableListAdapter.getGroup(groupPosition));
+                                final AlertDialog.Builder builder = addNewDinnerBuilder(v, date);
                                 builder.show();
                                 break;
                             case 1:
@@ -77,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
                                 dinnerExpandableListAdapter.updateResults(dinnerContract.getDinners(dbHelper));
                                 break;
                             case 2:
-                                // showDatePickerDialog(v, dateView);
-                                // after date choosing update with new date
-                            default:
-
+                                Dinner dinner = dinnerExpandableListAdapter.getChild(groupPosition, childPosition);
+                                final AlertDialog.Builder builder2 = addNewDinnerBuilder(v, date, dinner);
+                                builder2.show();
+                                break;
                         }
                     }
                 });
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         addDinnerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder builder = addNewDinnerBuilder(v, null);
+                final AlertDialog.Builder builder = addNewDinnerBuilder(v);
                 builder.show();
             }
         });
@@ -165,7 +166,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private AlertDialog.Builder addNewDinnerBuilder(View v, final Date date) {
+    private AlertDialog.Builder addNewDinnerBuilder(View v) {
+        return addNewDinnerBuilder(v, null, null);
+    }
+
+    private AlertDialog.Builder addNewDinnerBuilder(View v, Date date) {
+        return addNewDinnerBuilder(v, date, null);
+    }
+
+    private AlertDialog.Builder addNewDinnerBuilder(View v, final Date date, final Dinner dinner) {
         final View view = getLayoutInflater().inflate(R.layout.custom_dialog_add_dinner, new LinearLayout(v.getContext()), false);
         final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
         builder.setTitle(R.string.add_dinner);
@@ -174,25 +183,33 @@ public class MainActivity extends AppCompatActivity {
         final TextView dateView = (TextView) view.findViewById(R.id.date_view);
         final TextView mealName = (TextView) view.findViewById(R.id.meal_name_text);
         final TextView mealId = (TextView) view.findViewById(R.id.meal_name_id);
-        final ImageButton datePickerButton = (ImageButton) view.findViewById(R.id.calendar_button);
 
         if (date != null) {
             dateView.setText(df.format(date));
+        } else {
+            dateView.setText(df.format(new Date()));
         }
 
-        datePickerButton.setOnClickListener(new View.OnClickListener() {
+        if (dinner != null) {
+            mealName.setText(dinner.getMeal().getName());
+            mealId.setText(String.valueOf(dinner.getMeal().getId()));
+        }
+
+        dateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog(v, dateView);
+                showDatePickerDialog(v, dateView, date);
             }
         });
 
-        mealName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showMealPickerDialog(v, mealName, mealId);
-            }
-        });
+        if (dinner == null) {
+            mealName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showMealPickerDialog(v, mealName, mealId);
+                }
+            });
+        }
 
         builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
             @Override
@@ -207,7 +224,12 @@ public class MainActivity extends AppCompatActivity {
                     date = new Date();
                 }
 
+                if (dinner != null) {
+                    dinnerContract.updateDinner(view.getContext(), dinner, date);
+                } else {
+
                 dinnerContract.insertDinner(view.getContext(), Integer.parseInt(mealIdText), date);
+                }
                 dinnerExpandableListAdapter.updateResults(dinnerContract.getDinners(dbHelper));
             }
         });
@@ -261,8 +283,13 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void showDatePickerDialog(View v, final TextView dateView) {
+    private void showDatePickerDialog(View v, final TextView dateView, Date date) {
         Calendar todayCalendarInstance = Calendar.getInstance();
+
+        if (date != null) {
+            todayCalendarInstance.setTime(date);
+        }
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
 
             @Override
