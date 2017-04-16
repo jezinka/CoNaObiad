@@ -1,5 +1,8 @@
 package com.projects.jezinka.conaobiad;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import java.util.Calendar;
@@ -7,11 +10,8 @@ import java.util.Date;
 
 public class TimeUtils {
 
-    public static final int DAYS_IN_PLANNER = 7;
-    public final static int SEVEN_DAYS_IN_MILLISECONDS = 1000 * 60 * 60 * 24 * DAYS_IN_PLANNER;
-
     @NonNull
-    public static Date getSaturdayDate(Date date) {
+    public static Date getSaturdayDate(Date date, Context context) {
 
         if (date == null) {
             date = new Date();
@@ -23,7 +23,8 @@ public class TimeUtils {
         clearTime(calendarInstance);
 
         int dayOfWeek = calendarInstance.get(Calendar.DAY_OF_WEEK);
-        if (dayOfWeek == Calendar.SATURDAY) {
+
+        if (dayOfWeek == getFirstDay(context)) {
             return calendarInstance.getTime();
         }
 
@@ -36,5 +37,21 @@ public class TimeUtils {
         calendarInstance.set(Calendar.MINUTE, 0);
         calendarInstance.set(Calendar.SECOND, 0);
         calendarInstance.set(Calendar.MILLISECOND, 0);
+    }
+
+    public static int getTimeDeltaMilliseconds(Context context) {
+        return 1000 * 60 * 60 * 24 * getDaysInPlanner(context);
+    }
+
+    public static int getDaysInPlanner(Context context) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String daysNoPrefs = sharedPref.getString(SettingsActivity.PREFS_DAYS_NO, "7");
+        return Integer.parseInt(daysNoPrefs);
+    }
+
+    private static int getFirstDay(Context context) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String firstDayPrefs = sharedPref.getString(SettingsActivity.PREFS_FIRST_DAY, "7");
+        return Integer.parseInt(firstDayPrefs);
     }
 }

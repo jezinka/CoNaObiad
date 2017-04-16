@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private MealContract mealContract;
     private DinnerContract dinnerContract;
     private DinnerExpandableListAdapter dinnerAdapter;
+    static boolean preferenceChanged = false;
 
     private final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
 
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             showEmptyMealListMessage(this);
         }
 
-        dinnerAdapter = new DinnerExpandableListAdapter(this, dinnerContract.getDinners(dbHelper));
+        dinnerAdapter = new DinnerExpandableListAdapter(this, dinnerContract.getDinners(this, dbHelper));
 
         ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandable_dinner_list_view);
         expandableListView.setAdapter(dinnerAdapter);
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 dinnerContract.deleteDinner(id, dbHelper);
-                                dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
+                                dinnerAdapter.updateResults(dinnerContract.getDinners(v.getContext(), dbHelper));
                                 break;
                             case 2:
                                 Dinner dinner = dinnerAdapter.getChild(groupPosition, childPosition);
@@ -119,6 +120,15 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (preferenceChanged) {
+            preferenceChanged = false;
+            recreate();
+        }
+    }
+
     private void showEmptyMealListMessage(Context context) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
@@ -160,6 +170,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
+            case R.id.settings_item:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -174,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         return addNewDinnerBuilder(v, date, null);
     }
 
-    private AlertDialog.Builder addNewDinnerBuilder(View v, final Date date, final Dinner dinner) {
+    private AlertDialog.Builder addNewDinnerBuilder(final View v, final Date date, final Dinner dinner) {
         final View view = getLayoutInflater().inflate(R.layout.custom_dialog_add_dinner, new LinearLayout(v.getContext()), false);
         final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
         builder.setTitle(R.string.add_dinner);
@@ -230,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
 
                 dinnerContract.insertDinner(view.getContext(), Integer.parseInt(mealIdText), date);
                 }
-                dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
+                dinnerAdapter.updateResults(dinnerContract.getDinners(v.getContext(), dbHelper));
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

@@ -70,11 +70,11 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         return true;
     }
 
-    private ArrayList<Dinner> getDinnersByDate(SQLiteOpenHelper helper, Date date) {
+    private ArrayList<Dinner> getDinnersByDate(Context context, SQLiteOpenHelper helper, Date date) {
 
         ArrayList<Dinner> array_list = new ArrayList<>();
-        long saturdayDate = TimeUtils.getSaturdayDate(date).getTime();
-        String[] sqlArgs = {String.valueOf(saturdayDate), String.valueOf(saturdayDate + TimeUtils.SEVEN_DAYS_IN_MILLISECONDS)};
+        long saturdayDate = TimeUtils.getSaturdayDate(date, context).getTime();
+        String[] sqlArgs = {String.valueOf(saturdayDate), String.valueOf(saturdayDate + TimeUtils.getTimeDeltaMilliseconds(context))};
 
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor res = db.rawQuery(this.SQL_GET_RECORDS_BY_DATE, sqlArgs);
@@ -96,12 +96,12 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         return array_list;
     }
 
-    public Dinner[] getDinners(SQLiteOpenHelper helper) {
-        return getDinnersByDateArray(helper, new Date());
+    public Dinner[] getDinners(Context context, SQLiteOpenHelper helper) {
+        return getDinnersByDateArray(context, helper, new Date());
     }
 
-    private Dinner[] getDinnersByDateArray(SQLiteOpenHelper helper, Date date) {
-        ArrayList<Dinner> result = getDinnersByDate(helper, date);
+    private Dinner[] getDinnersByDateArray(Context context, SQLiteOpenHelper helper, Date date) {
+        ArrayList<Dinner> result = getDinnersByDate(context, helper, date);
         return result.toArray(new Dinner[result.size()]);
     }
 
