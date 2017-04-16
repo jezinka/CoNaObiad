@@ -5,4 +5,22 @@
         <item>Usuń</item>
         <item>Zmień datę</item>
     </string-array>
+    <string-array name="week_days_list_preference">
+        <item>Poniedziałek</item>
+        <item>Wtorek</item>
+        <item>Środa</item>
+        <item>Czwartek</item>
+        <item>Piątek</item>
+        <item>Sobota</item>
+        <item>Niedziela</item>
+    </string-array>
+    <string-array name="week_days_entryvalues_list_preference">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>1</item>
+    </string-array>
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="PREFS_FIRST_DAY"
+        android:title="@string/first_day"
+        android:summary="Obecny początek tygodnia: %s"
+        android:entries="@array/week_days_list_preference"
+        android:entryValues="@array/week_days_entryvalues_list_preference"
+        android:defaultValue="7" />
+
+    <EditTextPreference
+        android:key="PREFS_DAYS_NO"
+        android:title="@string/days_no"
+        android:summary=""
+        android:inputType="number"
+        android:defaultValue="7" />
+</PreferenceScreen>

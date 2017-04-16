@@ -9,8 +9,11 @@
     <string name="empty_meal_list_message">Nie masz żadnego zapisanego posiłku. Czy przejść do ekranu dodawania?</string>
     <string name="put_meal_name">Wpisz nazwę posiłku</string>
     <string name="cancel">Anuluj</string>
-    <string name="action_settings">Ustawienia</string>
+    <string name="settings">Ustawienia</string>
     <string name="meal_list">Posiłki</string>
     <string name="delete">Usuń</string>
     <string name="edit">Zmień</string>
+    <string name="first_day">Pierwszy dzień</string>
+    <string name="first_day_summ">Wybierz początek tygodnia</string>
+    <string name="days_no">Liczba dni</string>
 </resources>
