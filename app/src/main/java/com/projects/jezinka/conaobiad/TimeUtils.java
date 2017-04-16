@@ -11,7 +11,7 @@ import java.util.Date;
 public class TimeUtils {
 
     @NonNull
-    public static Date getSaturdayDate(Date date, Context context) {
+    public static Date getWeekStartDate(Date date, Context context) {
 
         if (date == null) {
             date = new Date();

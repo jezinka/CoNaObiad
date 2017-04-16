@@ -8,7 +8,7 @@ class UnitTests extends Specification {
     def "GetSaturdayDate"() {
 
         when:
-        Date resultDate = TimeUtils.getSaturdayDate(date)
+        Date resultDate = TimeUtils.getWeekStartDate(date)
 
         then:
         Assert.notNull(resultDate)
@@ -34,7 +34,7 @@ class UnitTests extends Specification {
     def "GetSaturdayDate no exception thrown for null parameter"() {
 
         when:
-        TimeUtils.getSaturdayDate()
+        TimeUtils.getWeekStartDate()
 
         then:
         noExceptionThrown()
@@ -42,7 +42,7 @@ class UnitTests extends Specification {
 
     def "GetSaturdayDate time always cleared"() {
         when:
-        def result = TimeUtils.getSaturdayDate()
+        def result = TimeUtils.getWeekStartDate()
         Calendar calendarInstance = Calendar.getInstance()
         calendarInstance.setTime(result)
 

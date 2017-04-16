@@ -73,8 +73,8 @@ public class DinnerContract extends BaseTable implements BaseColumns {
     private ArrayList<Dinner> getDinnersByDate(Context context, SQLiteOpenHelper helper, Date date) {
 
         ArrayList<Dinner> array_list = new ArrayList<>();
-        long saturdayDate = TimeUtils.getSaturdayDate(date, context).getTime();
-        String[] sqlArgs = {String.valueOf(saturdayDate), String.valueOf(saturdayDate + TimeUtils.getTimeDeltaMilliseconds(context))};
+        long weekStartDate = TimeUtils.getWeekStartDate(date, context).getTime();
+        String[] sqlArgs = {String.valueOf(weekStartDate), String.valueOf(weekStartDate + TimeUtils.getTimeDeltaMilliseconds(context))};
 
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor res = db.rawQuery(this.SQL_GET_RECORDS_BY_DATE, sqlArgs);
