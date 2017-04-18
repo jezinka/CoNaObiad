@@ -1,21 +1,26 @@
 <resources>
     <string name="app_name">CoNaObiad</string>
     <string name="add">Dodaj</string>
+    <string name="ok">OK</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="cancel">Anuluj</string>
+    <string name="delete">Usuń</string>
+    <string name="edit">Zmień</string>
+
+    <string name="settings">Ustawienia</string>
+
     <string name="pick_date">Wybierz datę</string>
     <string name="pick_meal">Wybierz posiłek</string>
     <string name="add_dinner">Dodaj obiad</string>
-    <string name="yes">Tak</string>
-    <string name="no">Nie</string>
     <string name="empty_meal_list_message">Nie masz żadnego zapisanego posiłku. Czy przejść do ekranu dodawania?</string>
     <string name="put_meal_name">Wpisz nazwę posiłku</string>
-    <string name="cancel">Anuluj</string>
-    <string name="settings">Ustawienia</string>
     <string name="meal_list">Posiłki</string>
-    <string name="delete">Usuń</string>
-    <string name="edit">Zmień</string>
     <string name="first_day">Pierwszy dzień</string>
     <string name="first_day_summ">Wybierz początek tygodnia</string>
     <string name="days_no">Liczba dni</string>
+    <string name="info">O programie</string>
+    <string name="info_message">Aplikacja została stworzona na potrzeby konkursu Daj Się Poznać 2017</string>
 
     <string name="monday">Poniedziałek</string>
     <string name="tuesday">Wtorek</string>

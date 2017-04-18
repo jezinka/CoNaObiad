@@ -9,7 +9,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -175,10 +178,35 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(settingsIntent);
                 return true;
 
+            case R.id.application_info_item:
+                showInfoDialog();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private void showInfoDialog() {
+        final AlertDialog d = new AlertDialog.Builder(this)
+                .setPositiveButton(android.R.string.ok, null)
+                .setMessage(getDSPMessage())
+                .create();
+        d.show();
+
+        ((TextView) d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    @SuppressWarnings("deprecation")
+    private Spanned getDSPMessage() {
+        String html = "Aplikacja została stworzona na potrzeby konkursu <a href=\"http://dajsiepoznac.pl\">DSP 2017</a>";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            return Html.fromHtml(html);
+        }
+
     }
 
     private AlertDialog.Builder addNewDinnerBuilder(View v) {
