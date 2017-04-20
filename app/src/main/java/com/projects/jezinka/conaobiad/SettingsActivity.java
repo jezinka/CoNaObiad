@@ -1,5 +1,6 @@
 package com.projects.jezinka.conaobiad;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
@@ -47,5 +48,19 @@ public class SettingsActivity extends PreferenceActivity {
 
             addPreferencesFromResource(R.xml.preferences);
         }
+    }
+
+    private static int takeFromPreferences(String key, Context context) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String daysNoPrefs = sharedPref.getString(key, "7");
+        return Integer.parseInt(daysNoPrefs);
+    }
+
+    public static int getPlanLength(Context context) {
+        return takeFromPreferences(SettingsActivity.PREFS_DAYS_NO, context);
+    }
+
+    public static int getFirstDay(Context context) {
+        return takeFromPreferences(SettingsActivity.PREFS_FIRST_DAY, context);
     }
 }

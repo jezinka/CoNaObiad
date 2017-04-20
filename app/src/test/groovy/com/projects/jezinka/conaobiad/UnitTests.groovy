@@ -7,6 +7,10 @@ class UnitTests extends Specification {
 
     def "GetSaturdayDate"() {
 
+        setup:
+        MainActivity.firstDayOfWeek = 7
+        MainActivity.planLength = 7
+
         when:
         Date resultDate = TimeUtils.getWeekStartDate(date)
 

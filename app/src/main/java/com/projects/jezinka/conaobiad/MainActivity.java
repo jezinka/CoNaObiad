@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private DinnerContract dinnerContract;
     private DinnerExpandableListAdapter dinnerAdapter;
     static boolean preferenceChanged = false;
+    static int firstDayOfWeek;
+    static int planLength;
 
     private final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
 
@@ -60,7 +62,10 @@ public class MainActivity extends AppCompatActivity {
             showEmptyMealListMessage(this);
         }
 
-        dinnerAdapter = new DinnerExpandableListAdapter(this, dinnerContract.getDinners(this, dbHelper));
+        planLength = SettingsActivity.getPlanLength(this);
+        firstDayOfWeek = SettingsActivity.getFirstDay(this);
+
+        dinnerAdapter = new DinnerExpandableListAdapter(this, dinnerContract.getDinners(dbHelper));
 
         ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandable_dinner_list_view);
         expandableListView.setAdapter(dinnerAdapter);
@@ -79,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             case 1:
                                 dinnerContract.deleteDinner(id, dbHelper);
-                                dinnerAdapter.updateResults(dinnerContract.getDinners(v.getContext(), dbHelper));
+                                dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
                                 break;
                             case 2:
                                 Dinner dinner = dinnerAdapter.getChild(groupPosition, childPosition);
@@ -273,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
 
                 dinnerContract.insertDinner(view.getContext(), Integer.parseInt(mealIdText), date);
                 }
-                dinnerAdapter.updateResults(dinnerContract.getDinners(v.getContext(), dbHelper));
+                dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

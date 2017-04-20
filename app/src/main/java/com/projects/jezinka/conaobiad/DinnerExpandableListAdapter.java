@@ -121,9 +121,9 @@ public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
         TreeMap<Date, List<Dinner>> preparedRows = new TreeMap<>();
 
         Calendar calendarInstance = Calendar.getInstance();
-        calendarInstance.setTime(TimeUtils.getWeekStartDate(new Date(), this.context));
+        calendarInstance.setTime(TimeUtils.getWeekStartDate(new Date()));
 
-        for (int i = 0; i < TimeUtils.getDaysInPlanner(context); i++) {
+        for (int i = 0; i < MainActivity.planLength; i++) {
             Date date = calendarInstance.getTime();
 
             List<Dinner> dinnersList = new ArrayList<>();
