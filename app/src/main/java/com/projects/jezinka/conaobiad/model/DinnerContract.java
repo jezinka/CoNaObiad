@@ -1,7 +1,6 @@
 package com.projects.jezinka.conaobiad.model;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -47,26 +46,24 @@ public class DinnerContract extends BaseTable implements BaseColumns {
                 " order by " + this.COLUMN_DATE_NAME;
     }
 
-    public boolean insertDinner(Context context, int mealID, Date date) {
+    public boolean insert(CoNaObiadDbHelper helper, int mealID, Date date) {
         String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("meal_id", mealID);
         contentValues.put("date", date.getTime());
 
-        CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
-        helper.insertValuesDbHelper(tableName, contentValues);
+        helper.insert(tableName, contentValues);
         return true;
     }
 
-    public boolean updateDinner(Context context, Dinner dinner, Date date) {
+    public boolean update(CoNaObiadDbHelper helper, Dinner dinner, Date date) {
         String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("date", date.getTime());
 
-        CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
-        helper.updateValuesDbHelper(tableName, contentValues, dinner.getId());
+        helper.update(tableName, contentValues, dinner.getId());
         return true;
     }
 
@@ -103,11 +100,5 @@ public class DinnerContract extends BaseTable implements BaseColumns {
     private Dinner[] getDinnersByDateArray(SQLiteOpenHelper helper, Date date) {
         ArrayList<Dinner> result = getDinnersByDate(helper, date);
         return result.toArray(new Dinner[result.size()]);
-    }
-
-    public void deleteDinner(Long dinnerId, SQLiteOpenHelper helper) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        String query = "Delete from " + this.getTableName() + " where " + this._ID + " = " + dinnerId;
-        db.execSQL(query);
     }
 }

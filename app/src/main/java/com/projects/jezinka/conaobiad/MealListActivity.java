@@ -83,7 +83,7 @@ public class MealListActivity extends AppCompatActivity {
                 }
                 listView.clearChoices();
                 deleteMealButton.setVisibility(View.INVISIBLE);
-                mealContract.deleteMeals(mealIds.toArray(new Long[mealIds.size()]), dbHelper);
+                mealContract.delete(mealIds.toArray(new Long[mealIds.size()]), dbHelper);
                 adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
             }
         });
@@ -111,9 +111,9 @@ public class MealListActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 mealName = input.getText().toString().trim();
                 if (meal != null) {
-                    mealContract.updateMeal(builder.getContext(), mealName, meal);
+                    mealContract.update(dbHelper, mealName, meal);
                 } else {
-                    mealContract.insertMeal(builder.getContext(), mealName);
+                    mealContract.insert(dbHelper, mealName);
                 }
                 adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
             }

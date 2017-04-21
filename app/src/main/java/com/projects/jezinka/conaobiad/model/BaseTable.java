@@ -1,16 +1,14 @@
 package com.projects.jezinka.conaobiad.model;
 
-/**
- * Created by jezinka on 12.03.17.
- */
+import com.projects.jezinka.conaobiad.CoNaObiadDbHelper;
 
 public abstract class BaseTable {
 
     String TABLE_NAME;
     String SQL_CREATE_ENTRIES;
 
-    public String getDeleteEntriesQuery() {
-        return "delete from " + this.TABLE_NAME;
+    String getTableName() {
+        return this.TABLE_NAME;
     }
 
     public String getDropTableQuery() {
@@ -21,7 +19,11 @@ public abstract class BaseTable {
         return this.SQL_CREATE_ENTRIES;
     }
 
-    public String getTableName() {
-        return this.TABLE_NAME;
+    public void delete(Long[] ids, CoNaObiadDbHelper helper) {
+        helper.delete(this.getTableName(), ids);
+    }
+
+    public void delete(Long id, CoNaObiadDbHelper helper) {
+        helper.delete(this.getTableName(), id);
     }
 }

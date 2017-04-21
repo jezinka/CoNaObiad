@@ -1,12 +1,10 @@
 package com.projects.jezinka.conaobiad.model;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
-import android.text.TextUtils;
 
 import com.projects.jezinka.conaobiad.CoNaObiadDbHelper;
 
@@ -32,25 +30,23 @@ public class MealContract extends BaseTable implements BaseColumns {
                 " order by " + this.COLUMN_NAME_NAME + " COLLATE NOCASE";
     }
 
-    public boolean insertMeal(Context context, String name) {
+    public boolean insert(CoNaObiadDbHelper helper, String name) {
         String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
-        CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
-        helper.insertValuesDbHelper(tableName, contentValues);
+        helper.insert(tableName, contentValues);
         return true;
     }
 
-    public boolean updateMeal(Context context, String name, Meal meal) {
+    public boolean update(CoNaObiadDbHelper helper, String name, Meal meal) {
         String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
-        CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
-        helper.updateValuesDbHelper(tableName, contentValues, meal.getId());
+        helper.update(tableName, contentValues, meal.getId());
         return true;
     }
 
@@ -82,11 +78,5 @@ public class MealContract extends BaseTable implements BaseColumns {
     public boolean isAnyMealSaved(SQLiteOpenHelper helper) {
         SQLiteDatabase db = helper.getReadableDatabase();
         return queryNumEntries(db, this.getTableName()) > 0;
-    }
-
-    public void deleteMeals(Long[] mealIds, SQLiteOpenHelper helper) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        String query = "Delete from " + this.getTableName() + " where " + this._ID + " in (" + TextUtils.join(",", mealIds) + ")";
-        db.execSQL(query);
     }
 }

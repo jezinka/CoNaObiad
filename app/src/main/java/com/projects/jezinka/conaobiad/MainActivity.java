@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                                 addBuilder.show();
                                 break;
                             case 1:
-                                dinnerContract.deleteDinner(id, dbHelper);
+                                dinnerContract.delete(id, dbHelper);
                                 dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
                                 break;
                             case 2:
@@ -273,10 +273,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (dinner != null) {
-                    dinnerContract.updateDinner(view.getContext(), dinner, date);
+                    dinnerContract.update(dbHelper, dinner, date);
                 } else {
 
-                dinnerContract.insertDinner(view.getContext(), Integer.parseInt(mealIdText), date);
+                    dinnerContract.insert(dbHelper, Integer.parseInt(mealIdText), date);
                 }
                 dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
             }

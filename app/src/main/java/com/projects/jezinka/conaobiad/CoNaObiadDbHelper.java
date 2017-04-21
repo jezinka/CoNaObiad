@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
+import android.text.TextUtils;
 
 import com.projects.jezinka.conaobiad.model.DinnerContract;
 import com.projects.jezinka.conaobiad.model.MealContract;
@@ -31,16 +33,28 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertValuesDbHelper(String tableName, ContentValues contentValues) {
+    public void insert(String tableName, ContentValues contentValues) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(tableName, null, contentValues);
         db.close();
     }
 
-    public void updateValuesDbHelper(String tableName, ContentValues contentValues, int id) {
+    public void update(String tableName, ContentValues contentValues, int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String[] args = {Integer.toString(id)};
         db.update(tableName, contentValues, "_ID = ?", args);
         db.close();
+    }
+
+    public void delete(String tableName, Long[] ids) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "Delete from " + tableName + " where " + BaseColumns._ID + " in (" + TextUtils.join(",", ids) + ")";
+        db.execSQL(query);
+    }
+
+    public void delete(String tableName, Long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] args = {Long.toString(id)};
+        db.delete(tableName, "_ID = ?", args);
     }
 }
