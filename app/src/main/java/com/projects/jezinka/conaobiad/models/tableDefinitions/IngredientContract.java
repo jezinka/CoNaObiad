@@ -1,24 +1,24 @@
-package com.projects.jezinka.conaobiad.models;
+package com.projects.jezinka.conaobiad.models.tableDefinitions;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
+import com.projects.jezinka.conaobiad.models.Ingredient;
 
 import java.util.ArrayList;
 
-import static android.database.DatabaseUtils.queryNumEntries;
-
-public class MealContract extends BaseTable implements BaseColumns {
+public class IngredientContract extends BaseTable implements BaseColumns {
 
     String COLUMN_NAME_NAME;
     private String SQL_GET_ALL_RECORD;
 
-    public MealContract() {
-        this.TABLE_NAME = "meal";
+    public IngredientContract() {
+        this.TABLE_NAME = "ingredient";
         this.COLUMN_NAME_NAME = "name";
 
         this.SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " (" +
@@ -30,28 +30,30 @@ public class MealContract extends BaseTable implements BaseColumns {
                 " order by " + this.COLUMN_NAME_NAME + " COLLATE NOCASE";
     }
 
-    public boolean insert(CoNaObiadDbHelper helper, String name) {
+    public boolean insert(Context context, String name) {
         String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
+        CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
         helper.insert(tableName, contentValues);
         return true;
     }
 
-    public boolean update(CoNaObiadDbHelper helper, String name, Meal meal) {
+    public boolean update(Context context, String name, Ingredient ingredient) {
         String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
-        helper.update(tableName, contentValues, meal.getId());
+        CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
+        helper.update(tableName, contentValues, ingredient.getId());
         return true;
     }
 
-    public ArrayList<Meal> getAllMeals(SQLiteOpenHelper helper) {
-        ArrayList<Meal> array_list = new ArrayList<>();
+    public ArrayList<Ingredient> getAllIngredients(SQLiteOpenHelper helper) {
+        ArrayList<Ingredient> array_list = new ArrayList<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor res = db.rawQuery(this.SQL_GET_ALL_RECORD, null);
@@ -61,7 +63,7 @@ public class MealContract extends BaseTable implements BaseColumns {
             do {
                 String name = res.getString(res.getColumnIndex(this.COLUMN_NAME_NAME));
                 int id = res.getInt(res.getColumnIndex(this._ID));
-                array_list.add(new Meal(id, name));
+                array_list.add(new Ingredient(id, name));
             } while (res.moveToNext());
         }
 
@@ -70,13 +72,8 @@ public class MealContract extends BaseTable implements BaseColumns {
         return array_list;
     }
 
-    public Meal[] getAllMealsArray(SQLiteOpenHelper helper) {
-        ArrayList<Meal> result = getAllMeals(helper);
-        return result.toArray(new Meal[result.size()]);
-    }
-
-    public boolean isAnyMealSaved(SQLiteOpenHelper helper) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        return queryNumEntries(db, this.getTableName()) > 0;
+    public Ingredient[] getAllIngredientsArray(SQLiteOpenHelper helper) {
+        ArrayList<Ingredient> result = getAllIngredients(helper);
+        return result.toArray(new Ingredient[result.size()]);
     }
 }

@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad.models;
+package com.projects.jezinka.conaobiad.models.tableDefinitions;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
+import com.projects.jezinka.conaobiad.models.Dinner;
+import com.projects.jezinka.conaobiad.models.Meal;
 import com.projects.jezinka.conaobiad.utils.TimeUtils;
 
 import java.util.ArrayList;

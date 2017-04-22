@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad.models;
+package com.projects.jezinka.conaobiad.models.tableDefinitions;
 
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 

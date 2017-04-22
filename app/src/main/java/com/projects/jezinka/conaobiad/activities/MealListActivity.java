@@ -18,7 +18,7 @@ import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.adapters.MealListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.Meal;
-import com.projects.jezinka.conaobiad.models.MealContract;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
 
 import java.util.ArrayList;
 
