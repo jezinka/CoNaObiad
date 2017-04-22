@@ -137,7 +137,7 @@ public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
             }
             preparedRows.put(date, dinnersList);
 
-            calendarInstance.roll(Calendar.DATE, true);
+            calendarInstance.add(Calendar.DATE, 1);
         }
         return preparedRows;
     }
