@@ -1,18 +1,15 @@
-package com.projects.jezinka.conaobiad.model;
+package com.projects.jezinka.conaobiad.models;
 
-/**
- * Created by jezinka on 30.03.17.
- */
 
-public class Meal {
+public class Ingredient {
     private int id;
     private String name;
 
-    public Meal() {
+    public Ingredient() {
         super();
     }
 
-    public Meal(int id, String name) {
+    public Ingredient(int id, String name) {
         this.id = id;
         this.name = name;
     }

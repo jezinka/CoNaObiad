@@ -1,8 +1,8 @@
-package com.projects.jezinka.conaobiad;
+package com.projects.jezinka.conaobiad.utils;
 
 import android.support.annotation.NonNull;
 
-import com.projects.jezinka.conaobiad.activity.MainActivity;
+import com.projects.jezinka.conaobiad.activities.MainActivity;
 
 import java.util.Calendar;
 import java.util.Date;

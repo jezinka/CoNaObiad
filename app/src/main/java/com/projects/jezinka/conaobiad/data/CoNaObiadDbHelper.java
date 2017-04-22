@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad;
+package com.projects.jezinka.conaobiad.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
-import com.projects.jezinka.conaobiad.model.DinnerContract;
-import com.projects.jezinka.conaobiad.model.MealContract;
+import com.projects.jezinka.conaobiad.models.DinnerContract;
+import com.projects.jezinka.conaobiad.models.MealContract;
 
 public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 

@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad.activity;
+package com.projects.jezinka.conaobiad.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

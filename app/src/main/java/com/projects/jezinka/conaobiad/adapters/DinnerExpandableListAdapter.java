@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad.adapter;
+package com.projects.jezinka.conaobiad.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -10,9 +10,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.projects.jezinka.conaobiad.R;
-import com.projects.jezinka.conaobiad.TimeUtils;
-import com.projects.jezinka.conaobiad.activity.MainActivity;
-import com.projects.jezinka.conaobiad.model.Dinner;
+import com.projects.jezinka.conaobiad.activities.MainActivity;
+import com.projects.jezinka.conaobiad.models.Dinner;
+import com.projects.jezinka.conaobiad.utils.TimeUtils;
 
 import java.text.DateFormat;
 import java.util.ArrayList;

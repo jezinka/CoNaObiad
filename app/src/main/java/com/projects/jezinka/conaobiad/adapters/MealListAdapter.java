@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad.adapter;
+package com.projects.jezinka.conaobiad.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.projects.jezinka.conaobiad.model.Meal;
+import com.projects.jezinka.conaobiad.models.Meal;
 
 import java.util.ArrayList;
 

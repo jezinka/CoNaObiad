@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad.activity;
+package com.projects.jezinka.conaobiad.activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;

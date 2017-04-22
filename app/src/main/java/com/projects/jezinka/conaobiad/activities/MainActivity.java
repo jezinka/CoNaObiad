@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad.activity;
+package com.projects.jezinka.conaobiad.activities;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -26,13 +26,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.projects.jezinka.conaobiad.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.R;
-import com.projects.jezinka.conaobiad.adapter.DinnerExpandableListAdapter;
-import com.projects.jezinka.conaobiad.adapter.MealListAdapter;
-import com.projects.jezinka.conaobiad.model.Dinner;
-import com.projects.jezinka.conaobiad.model.DinnerContract;
-import com.projects.jezinka.conaobiad.model.MealContract;
+import com.projects.jezinka.conaobiad.adapters.DinnerExpandableListAdapter;
+import com.projects.jezinka.conaobiad.adapters.MealListAdapter;
+import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
+import com.projects.jezinka.conaobiad.models.Dinner;
+import com.projects.jezinka.conaobiad.models.DinnerContract;
+import com.projects.jezinka.conaobiad.models.MealContract;
 
 import java.text.DateFormat;
 import java.text.ParseException;

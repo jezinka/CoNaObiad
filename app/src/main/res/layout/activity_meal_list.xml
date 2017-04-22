@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.projects.jezinka.conaobiad.activity.MealListActivity">
+    tools:context="com.projects.jezinka.conaobiad.activities.MealListActivity">
 
     <include
         layout="@layout/main_app_toolbar"

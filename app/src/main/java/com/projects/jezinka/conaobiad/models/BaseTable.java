@@ -1,6 +1,6 @@
-package com.projects.jezinka.conaobiad.model;
+package com.projects.jezinka.conaobiad.models;
 
-import com.projects.jezinka.conaobiad.CoNaObiadDbHelper;
+import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 
 public abstract class BaseTable {
 

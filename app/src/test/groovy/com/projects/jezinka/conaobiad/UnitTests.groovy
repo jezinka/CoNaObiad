@@ -1,6 +1,7 @@
 package com.projects.jezinka.conaobiad
 
-import com.projects.jezinka.conaobiad.activity.MainActivity
+import com.projects.jezinka.conaobiad.activities.MainActivity
+import com.projects.jezinka.conaobiad.utils.TimeUtils
 import org.spockframework.util.Assert
 import spock.lang.Specification
 

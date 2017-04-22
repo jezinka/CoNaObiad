@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad.model;
+package com.projects.jezinka.conaobiad.models;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
