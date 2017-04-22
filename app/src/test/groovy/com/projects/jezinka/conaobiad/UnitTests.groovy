@@ -1,5 +1,6 @@
 package com.projects.jezinka.conaobiad
 
+import com.projects.jezinka.conaobiad.activity.MainActivity
 import org.spockframework.util.Assert
 import spock.lang.Specification
 

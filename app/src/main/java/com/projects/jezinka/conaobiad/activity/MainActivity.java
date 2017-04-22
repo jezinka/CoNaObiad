@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad;
+package com.projects.jezinka.conaobiad.activity;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -26,6 +26,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.projects.jezinka.conaobiad.CoNaObiadDbHelper;
+import com.projects.jezinka.conaobiad.R;
+import com.projects.jezinka.conaobiad.adapter.DinnerExpandableListAdapter;
+import com.projects.jezinka.conaobiad.adapter.MealListAdapter;
 import com.projects.jezinka.conaobiad.model.Dinner;
 import com.projects.jezinka.conaobiad.model.DinnerContract;
 import com.projects.jezinka.conaobiad.model.MealContract;
@@ -44,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private DinnerContract dinnerContract;
     private DinnerExpandableListAdapter dinnerAdapter;
     static boolean preferenceChanged = false;
-    static int firstDayOfWeek;
-    static int planLength;
+    public static int firstDayOfWeek;
+    public static int planLength;
 
     private final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
 
@@ -176,6 +180,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.meal_list_item:
                 Intent intent = new Intent(this, MealListActivity.class);
                 startActivity(intent);
+                return true;
+
+            case R.id.ingredient_list_item:
+                Intent ingredientsIntent = new Intent(this, IngredientListActivity.class);
+                startActivity(ingredientsIntent);
                 return true;
 
             case R.id.settings_item:

@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad;
+package com.projects.jezinka.conaobiad.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,7 +15,7 @@ import com.projects.jezinka.conaobiad.model.Meal;
 
 import java.util.ArrayList;
 
-class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
+public class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
 
     private Meal[] data;
     private Meal[] filteredData;
@@ -23,7 +23,7 @@ class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
     private Context context;
     private int layoutResourceId;
 
-    MealListAdapter(Context context, int layoutResourceId, Meal[] data) {
+    public MealListAdapter(Context context, int layoutResourceId, Meal[] data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -31,7 +31,7 @@ class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
         this.filteredData = data;
     }
 
-    void updateResults(Meal[] results) {
+    public void updateResults(Meal[] results) {
         this.data = results;
         this.filteredData = results;
         notifyDataSetChanged();

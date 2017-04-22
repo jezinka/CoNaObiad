@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad;
+package com.projects.jezinka.conaobiad.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,6 +8,8 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+
+import com.projects.jezinka.conaobiad.R;
 
 public class SettingsActivity extends PreferenceActivity {
 

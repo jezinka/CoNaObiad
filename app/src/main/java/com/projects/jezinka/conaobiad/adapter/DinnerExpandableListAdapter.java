@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad;
+package com.projects.jezinka.conaobiad.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.projects.jezinka.conaobiad.R;
+import com.projects.jezinka.conaobiad.TimeUtils;
+import com.projects.jezinka.conaobiad.activity.MainActivity;
 import com.projects.jezinka.conaobiad.model.Dinner;
 
 import java.text.DateFormat;
@@ -31,7 +34,7 @@ public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
         this.listTitle = new ArrayList<>(listDetail.keySet());
     }
 
-    void updateResults(Dinner[] dinners) {
+    public void updateResults(Dinner[] dinners) {
         TreeMap<Date, List<Dinner>> expandableListDetail = getPreparedHashMap(dinners);
         this.listDetail = expandableListDetail;
         this.listTitle = new ArrayList<>(expandableListDetail.keySet());

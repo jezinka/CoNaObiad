@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad;
+package com.projects.jezinka.conaobiad.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.projects.jezinka.conaobiad.CoNaObiadDbHelper;
+import com.projects.jezinka.conaobiad.R;
+import com.projects.jezinka.conaobiad.adapter.MealListAdapter;
 import com.projects.jezinka.conaobiad.model.Meal;
 import com.projects.jezinka.conaobiad.model.MealContract;
 
