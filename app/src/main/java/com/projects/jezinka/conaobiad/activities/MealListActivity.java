@@ -2,6 +2,7 @@ package com.projects.jezinka.conaobiad.activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -63,7 +64,7 @@ public class MealListActivity extends AppCompatActivity {
             }
         });
 
-        Button button = (Button) findViewById(R.id.add_meal_button);
+        FloatingActionButton button = (FloatingActionButton) findViewById(R.id.add_meal_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

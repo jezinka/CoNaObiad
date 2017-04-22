@@ -23,11 +23,8 @@
         android:divider="@android:color/darker_gray"
         android:dividerHeight="@dimen/expandable_list_divider_height" />
 
-    <Button
+    <include
         android:id="@+id/new_dinner_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:text="@string/add" />
+        layout="@layout/button_floating_add" />
+
 </RelativeLayout>
