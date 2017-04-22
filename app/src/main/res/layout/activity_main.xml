@@ -21,7 +21,7 @@
         android:layout_below="@+id/main_activity_toolbar"
         android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
         android:divider="@android:color/darker_gray"
-        android:dividerHeight="0.5dp" />
+        android:dividerHeight="@dimen/expandable_list_divider_height" />
 
     <Button
         android:id="@+id/new_dinner_button"
