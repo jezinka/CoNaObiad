@@ -11,7 +11,6 @@ import android.text.InputType;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -42,10 +41,11 @@ public class MealListActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.meal_list_view);
         listView.setAdapter(adapter);
 
+        final FloatingActionButton deleteMealButton = (FloatingActionButton) findViewById(R.id.delete_meal_button);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Button deleteMealButton = (Button) findViewById(R.id.delete_meal_button);
                 if (listView.getCheckedItemCount() == 0) {
                     deleteMealButton.setVisibility(View.INVISIBLE);
                 } else {
@@ -74,7 +74,6 @@ public class MealListActivity extends AppCompatActivity {
             }
         });
 
-        final Button deleteMealButton = (Button) findViewById(R.id.delete_meal_button);
         deleteMealButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

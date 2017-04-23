@@ -17,13 +17,9 @@
         layout="@layout/button_floating_add"
         android:id="@+id/add_meal_button" />
 
-    <Button
-        android:id="@+id/delete_meal_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:visibility="invisible"
-        android:text="@string/delete" />
+    <include
+        layout="@layout/button_floating_delete"
+        android:id="@+id/delete_meal_button" />
 
     <ListView
         android:id="@+id/meal_list_view"
