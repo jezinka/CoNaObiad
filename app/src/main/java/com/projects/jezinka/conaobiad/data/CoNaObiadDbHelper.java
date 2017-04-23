@@ -8,11 +8,12 @@ import android.provider.BaseColumns;
 import android.text.TextUtils;
 
 import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
 
 public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "CoNaObiad.db";
 
     public CoNaObiadDbHelper(Context context) {
@@ -23,13 +24,14 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(new MealContract().getCreateEntriesQuery());
         db.execSQL(new DinnerContract().getCreateEntriesQuery());
+        db.execSQL(new IngredientContract().getCreateEntriesQuery());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(new MealContract().getDropTableQuery());
         db.execSQL(new DinnerContract().getDropTableQuery());
-
+        db.execSQL(new IngredientContract().getDropTableQuery());
         onCreate(db);
     }
 

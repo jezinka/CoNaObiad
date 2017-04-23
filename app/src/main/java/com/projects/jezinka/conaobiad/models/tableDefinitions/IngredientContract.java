@@ -1,7 +1,6 @@
 package com.projects.jezinka.conaobiad.models.tableDefinitions;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 
 public class IngredientContract extends BaseTable implements BaseColumns {
 
-    String COLUMN_NAME_NAME;
+    private String COLUMN_NAME_NAME;
     private String SQL_GET_ALL_RECORD;
 
     public IngredientContract() {
@@ -25,34 +24,32 @@ public class IngredientContract extends BaseTable implements BaseColumns {
                 _ID + " INTEGER PRIMARY KEY," +
                 COLUMN_NAME_NAME + " TEXT)";
 
-        this.SQL_GET_ALL_RECORD = "select " + this._ID + ", " + this.COLUMN_NAME_NAME +
+        this.SQL_GET_ALL_RECORD = "select " + _ID + ", " + this.COLUMN_NAME_NAME +
                 " from " + this.TABLE_NAME +
                 " order by " + this.COLUMN_NAME_NAME + " COLLATE NOCASE";
     }
 
-    public boolean insert(Context context, String name) {
+    public boolean insert(CoNaObiadDbHelper dbHelper, String name) {
         String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
-        CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
-        helper.insert(tableName, contentValues);
+        dbHelper.insert(tableName, contentValues);
         return true;
     }
 
-    public boolean update(Context context, String name, Ingredient ingredient) {
+    public boolean update(CoNaObiadDbHelper dbHelper, String name, Ingredient ingredient) {
         String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
-        CoNaObiadDbHelper helper = new CoNaObiadDbHelper(context);
-        helper.update(tableName, contentValues, ingredient.getId());
+        dbHelper.update(tableName, contentValues, ingredient.getId());
         return true;
     }
 
-    public ArrayList<Ingredient> getAllIngredients(SQLiteOpenHelper helper) {
+    private ArrayList<Ingredient> getAllIngredients(SQLiteOpenHelper helper) {
         ArrayList<Ingredient> array_list = new ArrayList<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -62,7 +59,7 @@ public class IngredientContract extends BaseTable implements BaseColumns {
 
             do {
                 String name = res.getString(res.getColumnIndex(this.COLUMN_NAME_NAME));
-                int id = res.getInt(res.getColumnIndex(this._ID));
+                int id = res.getInt(res.getColumnIndex(_ID));
                 array_list.add(new Ingredient(id, name));
             } while (res.moveToNext());
         }

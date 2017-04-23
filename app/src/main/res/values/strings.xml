@@ -15,6 +15,7 @@
     <string name="add_dinner">Dodaj obiad</string>
     <string name="empty_meal_list_message">Nie masz żadnego zapisanego posiłku. Czy przejść do ekranu dodawania?</string>
     <string name="put_meal_name">Wpisz nazwę posiłku</string>
+    <string name="put_ingredient_name">Wpisz nazwę składnika</string>
     <string name="meal_list">Posiłki</string>
     <string name="ingredient_list">Składniki</string>
     <string name="first_day">Pierwszy dzień</string>
