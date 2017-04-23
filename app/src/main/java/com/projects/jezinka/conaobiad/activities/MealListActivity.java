@@ -26,7 +26,6 @@ public class MealListActivity extends AppCompatActivity {
 
     MealListAdapter adapter;
     private CoNaObiadDbHelper dbHelper;
-    private String mealName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +40,15 @@ public class MealListActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.meal_list_view);
         listView.setAdapter(adapter);
 
-        final FloatingActionButton deleteMealButton = (FloatingActionButton) findViewById(R.id.delete_meal_button);
+        final FloatingActionButton deleteButton = (FloatingActionButton) findViewById(R.id.delete_meal_button);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (listView.getCheckedItemCount() == 0) {
-                    deleteMealButton.setVisibility(View.INVISIBLE);
+                    deleteButton.setVisibility(View.INVISIBLE);
                 } else {
-                    deleteMealButton.setVisibility(View.VISIBLE);
+                    deleteButton.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -64,8 +63,8 @@ public class MealListActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton button = (FloatingActionButton) findViewById(R.id.add_meal_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.add_meal_button);
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -74,7 +73,7 @@ public class MealListActivity extends AppCompatActivity {
             }
         });
 
-        deleteMealButton.setOnClickListener(new View.OnClickListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SparseBooleanArray positions = listView.getCheckedItemPositions();
@@ -85,7 +84,7 @@ public class MealListActivity extends AppCompatActivity {
                     }
                 }
                 listView.clearChoices();
-                deleteMealButton.setVisibility(View.INVISIBLE);
+                deleteButton.setVisibility(View.INVISIBLE);
                 mealContract.delete(mealIds.toArray(new Long[mealIds.size()]), dbHelper);
                 adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
             }
@@ -112,7 +111,7 @@ public class MealListActivity extends AppCompatActivity {
         builder.setPositiveButton(meal == null ? R.string.add : R.string.edit, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mealName = input.getText().toString().trim();
+                String mealName = input.getText().toString().trim();
                 if (meal != null) {
                     mealContract.update(dbHelper, mealName, meal);
                 } else {
