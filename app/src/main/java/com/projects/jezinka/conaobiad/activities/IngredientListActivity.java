@@ -40,6 +40,7 @@ public class IngredientListActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.ingredient_list_toolbar);
+        myToolbar.setTitle(R.string.ingredient_list);
         setSupportActionBar(myToolbar);
 
         FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.add_ingredient_button);
