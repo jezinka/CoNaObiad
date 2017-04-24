@@ -47,7 +47,6 @@ public class IngredientListActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 final AlertDialog.Builder builder = getAlertBuilder(v, ingredientContract, null);
                 builder.show();
             }
@@ -58,11 +57,7 @@ public class IngredientListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (listView.getCheckedItemCount() == 0) {
-                    deleteButton.setVisibility(View.INVISIBLE);
-                } else {
-                    deleteButton.setVisibility(View.VISIBLE);
-                }
+                deleteButton.setVisibility(listView.getCheckedItemCount() == 0 ? View.INVISIBLE : View.VISIBLE);
             }
         });
 
