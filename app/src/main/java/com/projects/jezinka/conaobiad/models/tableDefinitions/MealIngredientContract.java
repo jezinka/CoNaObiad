@@ -27,9 +27,9 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
 
         this.SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
-                this.COLUMN_INGREDIENT_ID + " int" +
-                this.COLUMN_MEAL_ID + " int" +
-                " FOREIGN KEY(" + COLUMN_MEAL_ID + ") REFERENCES " + this.mealContract.getTableName() + "(" + _ID + ")" +
+                this.COLUMN_INGREDIENT_ID + " int, " +
+                this.COLUMN_MEAL_ID + " int, " +
+                " FOREIGN KEY(" + COLUMN_MEAL_ID + ") REFERENCES " + this.mealContract.getTableName() + "(" + _ID + ")," +
                 " FOREIGN KEY(" + COLUMN_INGREDIENT_ID + ") REFERENCES " + this.ingredientContract.getTableName() + "(" + _ID + ")" +
                 ")";
     }

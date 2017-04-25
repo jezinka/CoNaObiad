@@ -13,20 +13,20 @@ import java.util.ArrayList;
 
 public class IngredientContract extends BaseTable implements BaseColumns {
 
-    private String COLUMN_NAME_NAME;
+    private String COLUMN_NAME;
     private String SQL_GET_ALL_RECORD;
 
     public IngredientContract() {
         this.TABLE_NAME = "ingredient";
-        this.COLUMN_NAME_NAME = "name";
+        this.COLUMN_NAME = "name";
 
         this.SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
-                COLUMN_NAME_NAME + " TEXT)";
+                COLUMN_NAME + " TEXT)";
 
-        this.SQL_GET_ALL_RECORD = "select " + _ID + ", " + this.COLUMN_NAME_NAME +
+        this.SQL_GET_ALL_RECORD = "select " + _ID + ", " + this.COLUMN_NAME +
                 " from " + this.TABLE_NAME +
-                " order by " + this.COLUMN_NAME_NAME + " COLLATE NOCASE";
+                " order by " + this.COLUMN_NAME + " COLLATE NOCASE";
     }
 
     public boolean insert(CoNaObiadDbHelper dbHelper, String name) {
@@ -56,7 +56,7 @@ public class IngredientContract extends BaseTable implements BaseColumns {
 
     @NonNull
     Ingredient getFromCursor(Cursor res) {
-        String name = res.getString(res.getColumnIndex(this.COLUMN_NAME_NAME));
+        String name = res.getString(res.getColumnIndex(this.COLUMN_NAME));
         int id = res.getInt(res.getColumnIndex(_ID));
         return new Ingredient(id, name);
     }

@@ -19,7 +19,7 @@ public abstract class BaseTable {
     }
 
     public String getDropTableQuery() {
-        return "drop table if exists " + this.TABLE_NAME;
+        return "DROP TABLE IF EXISTS " + this.TABLE_NAME;
     }
 
     public String getCreateEntriesQuery() {

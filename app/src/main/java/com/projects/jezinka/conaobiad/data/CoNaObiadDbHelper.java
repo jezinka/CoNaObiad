@@ -10,10 +10,11 @@ import android.text.TextUtils;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
 
 public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "CoNaObiad.db";
 
     public CoNaObiadDbHelper(Context context) {
@@ -25,6 +26,7 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
         db.execSQL(new MealContract().getCreateEntriesQuery());
         db.execSQL(new DinnerContract().getCreateEntriesQuery());
         db.execSQL(new IngredientContract().getCreateEntriesQuery());
+        db.execSQL(new MealIngredientContract().getCreateEntriesQuery());
     }
 
     @Override
@@ -32,6 +34,7 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
         db.execSQL(new MealContract().getDropTableQuery());
         db.execSQL(new DinnerContract().getDropTableQuery());
         db.execSQL(new IngredientContract().getDropTableQuery());
+        db.execSQL(new MealIngredientContract().getDropTableQuery());
         onCreate(db);
     }
 
@@ -50,7 +53,7 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
     public void delete(String tableName, Long[] ids) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "Delete from " + tableName + " where " + BaseColumns._ID + " in (" + TextUtils.join(",", ids) + ")";
+        String query = "DELETE FROM " + tableName + " WHERE " + BaseColumns._ID + " IN (" + TextUtils.join(",", ids) + ")";
         db.execSQL(query);
     }
 
