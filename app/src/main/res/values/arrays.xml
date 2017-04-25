@@ -5,6 +5,11 @@
         <item>Usuń</item>
         <item>Zmień datę</item>
     </string-array>
+    <string-array name="meal_actions">
+        <item>Edytuj</item>
+        <item>Dodaj składniki</item>
+        <item>Wyświetl składniki</item>
+    </string-array>
     <string-array name="week_days_list_preference">
         <item>@string/monday</item>
         <item>@string/tuesday</item>

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class IngredientContract extends BaseTable implements BaseColumns {
 
-    private String COLUMN_NAME;
+    String COLUMN_NAME;
     private String SQL_GET_ALL_RECORD;
 
     public IngredientContract() {

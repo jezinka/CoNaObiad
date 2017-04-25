@@ -1,12 +1,11 @@
 package com.projects.jezinka.conaobiad.models;
 
-/**
- * Created by jezinka on 30.03.17.
- */
+import java.util.List;
 
 public class Meal {
     private int id;
     private String name;
+    List<Ingredient> ingredients;
 
     public Meal() {
         super();
@@ -16,6 +15,13 @@ public class Meal {
         this.id = id;
         this.name = name;
     }
+
+    public Meal(int id, String name, List<Ingredient> ingredients) {
+        this.id = id;
+        this.name = name;
+        this.ingredients = ingredients;
+    }
+
 
     public int getId() {
         return id;
