@@ -34,7 +34,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
                 _ID + " INTEGER PRIMARY KEY," +
                 COLUMN_MEAL_ID + " INT, " +
                 COLUMN_DATE_NAME + " INT," +
-                " FOREIGN KEY(" + COLUMN_MEAL_ID + ") REFERENCES " + this.mealContract.getTableName() + "(" + this.COLUMN_MEAL_ID + ")" +
+                " FOREIGN KEY(" + COLUMN_MEAL_ID + ") REFERENCES " + this.mealContract.getTableName() + "(" + _ID + ")" +
                 ")";
 
         this.SQL_GET_RECORDS_BY_DATE = "select " + this.TABLE_NAME + "." + _ID + ", " +
@@ -75,7 +75,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         long weekStartDate = TimeUtils.getWeekStartDate(date).getTime();
         String[] sqlArgs = {String.valueOf(weekStartDate), String.valueOf(weekStartDate + TimeUtils.getTimeDeltaMilliseconds())};
 
-        return getArrayList(helper, sqlArgs, this.SQL_GET_RECORDS_BY_DATE);
+        return getArrayList(helper, sqlArgs, this.getRecordsByDateSql());
     }
 
     @NonNull
@@ -92,8 +92,13 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         return getDinnersByDateArray(helper, new Date());
     }
 
+    @NonNull
     private Dinner[] getDinnersByDateArray(SQLiteOpenHelper helper, Date date) {
         ArrayList<Dinner> result = getDinnersByDate(helper, date);
         return result.toArray(new Dinner[result.size()]);
+    }
+
+    public String getRecordsByDateSql() {
+        return SQL_GET_RECORDS_BY_DATE;
     }
 }
