@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <EditText
-        android:id="@+id/meal_name_filter"
+        android:id="@+id/name_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -14,12 +14,13 @@
         android:layout_marginBottom="@dimen/activity_vertical_margin" />
 
     <ListView
-        android:id="@+id/filterable_meal_list_view"
+        android:id="@+id/filterable_list_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/filterable_listview_height"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:fontFamily="sans-serif" />
+        android:fontFamily="sans-serif"
+        android:choiceMode="multipleChoice" />
 </LinearLayout>

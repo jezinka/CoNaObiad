@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
 
         final AlertDialog alertDialog = addDinnerDialogBuilder.create();
 
-        ListView mealListView = (ListView) addDinnerView.findViewById(R.id.filterable_meal_list_view);
+        ListView mealListView = (ListView) addDinnerView.findViewById(R.id.filterable_list_view);
         mealListView.setAdapter(mealAdapter);
         mealListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -321,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        EditText filterEditText = (EditText) addDinnerView.findViewById(R.id.meal_name_filter);
+        EditText filterEditText = (EditText) addDinnerView.findViewById(R.id.name_filter);
         filterEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
