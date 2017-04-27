@@ -51,7 +51,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
                         " where " + this.mealContract.getTableName() + "." + _ID + "=?;";
     }
 
-    public boolean insert(CoNaObiadDbHelper dbHelper, int mealId, int ingredientId) {
+    public boolean insert(CoNaObiadDbHelper dbHelper, int mealId, long ingredientId) {
         String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
@@ -83,5 +83,9 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
 
         db.close();
         return array_list;
+    }
+
+    public void deleteForMeal(CoNaObiadDbHelper helper, long mealId) {
+        helper.delete(this.getTableName(), mealId, "meal_id");
     }
 }

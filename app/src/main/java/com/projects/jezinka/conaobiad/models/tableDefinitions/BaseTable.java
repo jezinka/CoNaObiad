@@ -31,7 +31,7 @@ public abstract class BaseTable {
     }
 
     public void delete(Long id, CoNaObiadDbHelper helper) {
-        helper.delete(this.getTableName(), id);
+        helper.delete(this.getTableName(), id, "_ID");
     }
 
     abstract Object getFromCursor(Cursor res);

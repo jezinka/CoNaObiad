@@ -7,20 +7,29 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.projects.jezinka.conaobiad.R;
+import com.projects.jezinka.conaobiad.adapters.IngredientListAdapter;
 import com.projects.jezinka.conaobiad.adapters.MealListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.Meal;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MealListActivity extends AppCompatActivity {
 
@@ -33,12 +42,14 @@ public class MealListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_meal_list);
 
         final MealContract mealContract = new MealContract();
+        final MealIngredientContract mealIngredientContract = new MealIngredientContract();
         dbHelper = new CoNaObiadDbHelper(this);
 
         adapter = new MealListAdapter(this, android.R.layout.simple_list_item_multiple_choice, mealContract.getAllMealsArray(dbHelper));
 
         final ListView listView = (ListView) findViewById(R.id.meal_list_view);
         listView.setAdapter(adapter);
+        listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
 
         final FloatingActionButton deleteButton = (FloatingActionButton) findViewById(R.id.delete_meal_button);
 
@@ -55,10 +66,32 @@ public class MealListActivity extends AppCompatActivity {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Meal meal = adapter.getItem(position);
-                final AlertDialog.Builder builder = getAlertBuilder(view, mealContract, meal);
-                builder.show();
+            public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
+                final Meal meal = adapter.getItem(position);
+                AlertDialog.Builder childContextMenuBuilder = new AlertDialog.Builder(view.getContext());
+                childContextMenuBuilder.setItems(R.array.meal_actions, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                final AlertDialog.Builder builder = getAlertBuilder(view, mealContract, meal);
+                                builder.show();
+                                break;
+                            case 1:
+                                showIngredientPickerDialog(view, meal);
+                                break;
+                            case 2:
+                                List<String> result = mealIngredientContract.getIngredientsForMeal(meal, dbHelper);
+                                AlertDialog.Builder ingredientsBuilder = new AlertDialog.Builder(view.getContext());
+
+                                ingredientsBuilder.setTitle(R.string.ingredient_list)
+                                        .setItems(result.toArray(new String[result.size()]), null)
+                                        .show();
+                                break;
+
+                        }
+                    }
+                });
+                childContextMenuBuilder.show();
                 return true;
             }
         });
@@ -129,5 +162,59 @@ public class MealListActivity extends AppCompatActivity {
         });
 
         return builder;
+    }
+
+    private void showIngredientPickerDialog(View v, final Meal meal) {
+        View addIngredientView = getLayoutInflater().inflate(R.layout.filterable_list_view, new LinearLayout(v.getContext()), false);
+
+        final IngredientContract ingredientContract = new IngredientContract();
+        final MealIngredientContract mealIngredientContract = new MealIngredientContract();
+
+        final IngredientListAdapter ingredientListAdapter = new IngredientListAdapter(v.getContext(),
+                android.R.layout.simple_list_item_multiple_choice,
+                ingredientContract.getAllIngredientsArray(dbHelper));
+
+        final ListView listView = (ListView) addIngredientView.findViewById(R.id.filterable_list_view);
+        listView.setAdapter(ingredientListAdapter);
+
+        AlertDialog.Builder addIngredientBuilder = new AlertDialog.Builder(v.getContext());
+
+        addIngredientBuilder.setView(addIngredientView)
+                .setTitle(R.string.put_ingredient_name)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mealIngredientContract.deleteForMeal(dbHelper, meal.getId());
+                        SparseBooleanArray positions = listView.getCheckedItemPositions();
+                        for (int i = 0; i < listView.getCount(); i++) {
+                            if (positions.get(i)) {
+                                long ingredientId = ingredientListAdapter.getItemId(i);
+                                mealIngredientContract.insert(dbHelper, meal.getId(), ingredientId);
+                            }
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null);
+
+        AlertDialog alertDialog = addIngredientBuilder.create();
+
+
+        EditText filterEditText = (EditText) addIngredientView.findViewById(R.id.name_filter);
+        filterEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Filter filter = ingredientListAdapter.getFilter();
+                filter.filter(s);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        alertDialog.show();
     }
 }

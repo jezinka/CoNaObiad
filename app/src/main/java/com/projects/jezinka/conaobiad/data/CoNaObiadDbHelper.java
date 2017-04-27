@@ -57,9 +57,10 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    public void delete(String tableName, Long id) {
+    public void delete(String tableName, Long id, String identityColumn) {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] args = {Long.toString(id)};
-        db.delete(tableName, "_ID = ?", args);
+        String whereClause = identityColumn + " = ?";
+        db.delete(tableName, whereClause, args);
     }
 }
