@@ -10,4 +10,5 @@
     <dimen name="dinner_list_text_view_min_height">35dp</dimen>
     <dimen name="toolbar_elevation">4dp</dimen>
     <dimen name="expandable_list_divider_height">0.5dp</dimen>
+    <dimen name="list_item_height">30dp</dimen>
 </resources>
