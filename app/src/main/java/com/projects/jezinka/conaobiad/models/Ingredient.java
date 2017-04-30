@@ -4,6 +4,7 @@ package com.projects.jezinka.conaobiad.models;
 public class Ingredient {
     private int id;
     private String name;
+    private boolean checked;
 
     public Ingredient() {
         super();
@@ -12,6 +13,12 @@ public class Ingredient {
     public Ingredient(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Ingredient(int id, String name, boolean checked) {
+        this.id = id;
+        this.name = name;
+        this.setChecked(checked);
     }
 
     public int getId() {
@@ -28,5 +35,13 @@ public class Ingredient {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

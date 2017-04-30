@@ -23,8 +23,8 @@ import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.adapters.IngredientListAdapter;
 import com.projects.jezinka.conaobiad.adapters.MealListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
+import com.projects.jezinka.conaobiad.models.Ingredient;
 import com.projects.jezinka.conaobiad.models.Meal;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
 
@@ -167,15 +167,22 @@ public class MealListActivity extends AppCompatActivity {
     private void showIngredientPickerDialog(View v, final Meal meal) {
         View addIngredientView = getLayoutInflater().inflate(R.layout.filterable_list_view, new LinearLayout(v.getContext()), false);
 
-        final IngredientContract ingredientContract = new IngredientContract();
         final MealIngredientContract mealIngredientContract = new MealIngredientContract();
 
         final IngredientListAdapter ingredientListAdapter = new IngredientListAdapter(v.getContext(),
-                android.R.layout.simple_list_item_multiple_choice,
-                ingredientContract.getAllIngredientsArray(dbHelper));
+                R.layout.multicheck_list,
+                mealIngredientContract.getIngredientsWithMeal(meal, dbHelper));
 
         final ListView listView = (ListView) addIngredientView.findViewById(R.id.filterable_list_view);
         listView.setAdapter(ingredientListAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ingredientListAdapter.getItem(position).setChecked(!ingredientListAdapter.getItem(position).isChecked());
+                ingredientListAdapter.notifyDataSetChanged();
+            }
+        });
 
         AlertDialog.Builder addIngredientBuilder = new AlertDialog.Builder(v.getContext());
 
@@ -185,10 +192,10 @@ public class MealListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mealIngredientContract.deleteForMeal(dbHelper, meal.getId());
-                        SparseBooleanArray positions = listView.getCheckedItemPositions();
-                        for (int i = 0; i < listView.getCount(); i++) {
-                            if (positions.get(i)) {
-                                long ingredientId = ingredientListAdapter.getItemId(i);
+                        for (int i = 0; i < ingredientListAdapter.getCount(); i++) {
+                            Ingredient item = ingredientListAdapter.getItem(i);
+                            if (item.isChecked()) {
+                                long ingredientId = item.getId();
                                 mealIngredientContract.insert(dbHelper, meal.getId(), ingredientId);
                             }
                         }

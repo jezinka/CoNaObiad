@@ -7,10 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.models.Ingredient;
 
 import java.util.ArrayList;
@@ -52,9 +55,18 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> implements F
         return filteredData[position].getId();
     }
 
+    public boolean isAnyItemSelected() {
+        for (Ingredient ingredient : data) {
+            if (ingredient.isChecked()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @NonNull
     @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, View convertView, @NonNull final ViewGroup parent) {
         ViewHolder holder;
 
         if (convertView == null) {
@@ -62,18 +74,37 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> implements F
             convertView = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new ViewHolder();
-            holder.titleNameView = (TextView) convertView.findViewById(android.R.id.text1);
+            holder.titleNameView = (TextView) convertView.findViewById(R.id.text1);
+            holder.checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
         holder.titleNameView.setText(filteredData[position].getName());
+
+        if (holder.checkBox != null) {
+            holder.checkBox.setChecked(filteredData[position].isChecked());
+            holder.checkBox.setOnClickListener(getOnClickListener(position, (ListView) parent));
+            holder.titleNameView.setOnClickListener(getOnClickListener(position, (ListView) parent));
+        }
+
         return convertView;
+    }
+
+    @NonNull
+    private View.OnClickListener getOnClickListener(final int position, @NonNull final ListView parent) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parent.performItemClick(v, position, filteredData[position].getId());
+            }
+        };
     }
 
     private static class ViewHolder {
         TextView titleNameView;
+        CheckBox checkBox;
     }
 
     @NonNull

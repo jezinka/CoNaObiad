@@ -8,6 +8,7 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
+import com.projects.jezinka.conaobiad.models.Ingredient;
 import com.projects.jezinka.conaobiad.models.Meal;
 import com.projects.jezinka.conaobiad.models.MealIngredient;
 
@@ -23,6 +24,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
     private IngredientContract ingredientContract;
 
     private String SQL_GET_INGREDIENTS;
+    private String SQL_GET_INGREDIENTS_WITH_CHECKED;
 
     public MealIngredientContract() {
 
@@ -49,6 +51,18 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
                         " join " + this.ingredientContract.getTableName() +
                         " on " + this.ingredientContract.getTableName() + "." + _ID + "= " + this.getTableName() + "." + this.COLUMN_INGREDIENT_ID +
                         " where " + this.mealContract.getTableName() + "." + _ID + "=?;";
+
+        this.SQL_GET_INGREDIENTS_WITH_CHECKED =
+                "select ingredient._id, ingredient.name, " +
+                        "  CASE WHEN EXISTS( " +
+                        "             SELECT 1 from ingredient as ingredient2    " +
+                        "               join meal_ingredient as meal_ingredient2  on ingredient2._id= meal_ingredient2.ingredient_id     " +
+                        "               join meal as meal2 on meal2._id= meal_ingredient2.meal_id     " +
+                        "               where ingredient2._id = ingredient._id and meal2._id = ? " +
+                        "        ) THEN 1 " +
+                        "        ELSE 0  " +
+                        "    END as checked  " +
+                        "  from ingredient ";
     }
 
     public boolean insert(CoNaObiadDbHelper dbHelper, int mealId, long ingredientId) {
@@ -83,6 +97,27 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
 
         db.close();
         return array_list;
+    }
+
+    public Ingredient[] getIngredientsWithMeal(Meal meal, SQLiteOpenHelper helper) {
+        ArrayList<Ingredient> array_list = new ArrayList<>();
+
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor res = db.rawQuery(this.SQL_GET_INGREDIENTS_WITH_CHECKED, new String[]{Integer.toString(meal.getId())});
+
+        if (res != null && res.getCount() > 0) {
+            res.moveToFirst();
+
+            do {
+                int id = res.getInt(0);
+                String name = res.getString(1);
+                int checked = res.getInt(2);
+                array_list.add(new Ingredient(id, name, checked == 1));
+            } while (res.moveToNext());
+        }
+
+        db.close();
+        return array_list.toArray(new Ingredient[array_list.size()]);
     }
 
     public void deleteForMeal(CoNaObiadDbHelper helper, long mealId) {

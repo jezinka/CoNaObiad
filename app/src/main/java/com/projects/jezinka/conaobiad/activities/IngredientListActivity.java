@@ -34,7 +34,7 @@ public class IngredientListActivity extends AppCompatActivity {
         final IngredientContract ingredientContract = new IngredientContract();
         helper = new CoNaObiadDbHelper(this);
 
-        adapter = new IngredientListAdapter(this, android.R.layout.simple_list_item_multiple_choice, ingredientContract.getAllIngredientsArray(helper));
+        adapter = new IngredientListAdapter(this, R.layout.multicheck_list, ingredientContract.getAllIngredientsArray(helper));
 
         final ListView listView = (ListView) findViewById(R.id.ingredient_list_view);
         listView.setAdapter(adapter);
@@ -57,7 +57,9 @@ public class IngredientListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                deleteButton.setVisibility(listView.getCheckedItemCount() == 0 ? View.INVISIBLE : View.VISIBLE);
+                adapter.getItem(position).setChecked(!adapter.getItem(position).isChecked());
+                adapter.notifyDataSetChanged();
+                deleteButton.setVisibility(adapter.isAnyItemSelected() ? View.VISIBLE : View.INVISIBLE);
             }
         });
 
