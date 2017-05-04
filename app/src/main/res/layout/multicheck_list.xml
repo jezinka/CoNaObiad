@@ -18,5 +18,6 @@
         android:id="@+id/checkBox"
         app:layout_widthPercent="10%"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/text1" />
+        android:layout_toEndOf="@id/text1"
+        android:visibility="gone" />
 </android.support.percent.PercentRelativeLayout>

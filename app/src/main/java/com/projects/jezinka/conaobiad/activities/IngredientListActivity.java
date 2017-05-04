@@ -57,18 +57,24 @@ public class IngredientListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                adapter.getItem(position).setChecked(!adapter.getItem(position).isChecked());
-                adapter.notifyDataSetChanged();
-                deleteButton.setVisibility(adapter.isAnyItemSelected() ? View.VISIBLE : View.INVISIBLE);
+                int viewId = view.getId();
+                if (viewId == R.id.text1) {
+                    Ingredient ingredient = adapter.getItem(position);
+                    final AlertDialog.Builder builder = getAlertBuilder(view, ingredientContract, ingredient);
+                    builder.show();
+                } else if (viewId == R.id.checkBox) {
+                    adapter.getItem(position).setChecked(!adapter.getItem(position).isChecked());
+                    adapter.notifyDataSetChanged();
+                    deleteButton.setVisibility(adapter.isAnyItemSelected() ? View.VISIBLE : View.INVISIBLE);
+                }
             }
         });
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Ingredient ingredient = adapter.getItem(position);
-                final AlertDialog.Builder builder = getAlertBuilder(view, ingredientContract, ingredient);
-                builder.show();
+                adapter.showCheckboxes = !adapter.showCheckboxes;
+                adapter.notifyDataSetChanged();
                 return true;
             }
         });

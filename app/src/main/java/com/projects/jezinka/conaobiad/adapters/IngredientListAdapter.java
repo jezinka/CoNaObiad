@@ -26,6 +26,8 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> implements F
     private Context context;
     private int layoutResourceId;
 
+    public boolean showCheckboxes = false;
+
     public IngredientListAdapter(Context context, int layoutResourceId, Ingredient[] data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
@@ -84,11 +86,15 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> implements F
         holder.titleNameView.setText(filteredData[position].getName());
 
         if (holder.checkBox != null) {
-            holder.checkBox.setChecked(filteredData[position].isChecked());
-            holder.checkBox.setOnClickListener(getOnClickListener(position, (ListView) parent));
+            holder.checkBox.setVisibility(showCheckboxes ? View.VISIBLE : View.GONE);
+
+            if (showCheckboxes) {
+                holder.checkBox.setChecked(filteredData[position].isChecked());
+                holder.checkBox.setOnClickListener(getOnClickListener(position, (ListView) parent));
+            }
+
             holder.titleNameView.setOnClickListener(getOnClickListener(position, (ListView) parent));
         }
-
         return convertView;
     }
 
