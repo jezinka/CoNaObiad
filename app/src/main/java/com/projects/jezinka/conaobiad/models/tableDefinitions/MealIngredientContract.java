@@ -65,7 +65,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
                         "  from ingredient ";
     }
 
-    public boolean insert(CoNaObiadDbHelper dbHelper, int mealId, long ingredientId) {
+    public boolean insert(CoNaObiadDbHelper dbHelper, long mealId, long ingredientId) {
         String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
@@ -85,7 +85,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
         ArrayList<String> array_list = new ArrayList<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor res = db.rawQuery(this.SQL_GET_INGREDIENTS, new String[]{Integer.toString(meal.getId())});
+        Cursor res = db.rawQuery(this.SQL_GET_INGREDIENTS, new String[]{Long.toString(meal.getId())});
 
         if (res != null && res.getCount() > 0) {
             res.moveToFirst();
@@ -103,7 +103,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
         ArrayList<Ingredient> array_list = new ArrayList<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor res = db.rawQuery(this.SQL_GET_INGREDIENTS_WITH_CHECKED, new String[]{Integer.toString(meal.getId())});
+        Cursor res = db.rawQuery(this.SQL_GET_INGREDIENTS_WITH_CHECKED, new String[]{Long.toString(meal.getId())});
 
         if (res != null && res.getCount() > 0) {
             res.moveToFirst();

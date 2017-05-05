@@ -44,9 +44,9 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void update(String tableName, ContentValues contentValues, int id) {
+    public void update(String tableName, ContentValues contentValues, long id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String[] args = {Integer.toString(id)};
+        String[] args = {Long.toString(id)};
         db.update(tableName, contentValues, "_ID = ?", args);
         db.close();
     }

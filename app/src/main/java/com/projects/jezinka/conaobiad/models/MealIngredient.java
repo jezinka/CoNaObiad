@@ -1,27 +1,27 @@
 package com.projects.jezinka.conaobiad.models;
 
 public class MealIngredient {
-    private int mealId;
-    private int ingredientId;
+    private long mealId;
+    private long ingredientId;
 
     public MealIngredient(int mealId, int ingredientId) {
         this.mealId = mealId;
         this.ingredientId = ingredientId;
     }
 
-    public int getMealId() {
+    public long getMealId() {
         return mealId;
     }
 
-    public void setMealId(int mealId) {
+    public void setMealId(long mealId) {
         this.mealId = mealId;
     }
 
-    public int getIngredientId() {
+    public long getIngredientId() {
         return ingredientId;
     }
 
-    public void setIngredientId(int ingredientId) {
+    public void setIngredientId(long ingredientId) {
         this.ingredientId = ingredientId;
     }
 }

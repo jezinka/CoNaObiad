@@ -7,7 +7,7 @@ import java.util.Locale;
 
 public class Dinner {
 
-    private int id;
+    private long id;
     private Meal meal;
     private Date date;
 
@@ -21,11 +21,11 @@ public class Dinner {
         this.date = date;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

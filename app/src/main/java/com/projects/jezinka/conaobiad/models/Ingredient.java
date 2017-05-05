@@ -2,7 +2,7 @@ package com.projects.jezinka.conaobiad.models;
 
 
 public class Ingredient {
-    private int id;
+    private long id;
     private String name;
     private boolean checked;
 
@@ -10,22 +10,22 @@ public class Ingredient {
         super();
     }
 
-    public Ingredient(int id, String name) {
+    public Ingredient(long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Ingredient(int id, String name, boolean checked) {
+    public Ingredient(long id, String name, boolean checked) {
         this.id = id;
         this.name = name;
-        this.setChecked(checked);
+        this.checked = checked;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

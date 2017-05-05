@@ -3,31 +3,33 @@ package com.projects.jezinka.conaobiad.models;
 import java.util.List;
 
 public class Meal {
-    private int id;
+    private long id;
     private String name;
     List<Ingredient> ingredients;
+    private boolean checked;
 
     public Meal() {
         super();
     }
 
-    public Meal(int id, String name) {
+    public Meal(long id, String name) {
         this.id = id;
         this.name = name;
+        this.checked = false;
     }
 
-    public Meal(int id, String name, List<Ingredient> ingredients) {
+    public Meal(long id, String name, List<Ingredient> ingredients) {
         this.id = id;
         this.name = name;
         this.ingredients = ingredients;
     }
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -37,5 +39,13 @@ public class Meal {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }
