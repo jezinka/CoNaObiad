@@ -2,6 +2,7 @@ package com.projects.jezinka.conaobiad.activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -10,9 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.SparseBooleanArray;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Filter;
@@ -35,64 +34,49 @@ public class MealListActivity extends AppCompatActivity {
 
     MealListAdapter adapter;
     private CoNaObiadDbHelper dbHelper;
+    private MealContract mealContract;
+    private MealIngredientContract mealIngredientContract;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_list);
 
-        final MealContract mealContract = new MealContract();
-        final MealIngredientContract mealIngredientContract = new MealIngredientContract();
+        mealContract = new MealContract();
+        mealIngredientContract = new MealIngredientContract();
         dbHelper = new CoNaObiadDbHelper(this);
 
-        adapter = new MealListAdapter(this, android.R.layout.simple_list_item_multiple_choice, mealContract.getAllMealsArray(dbHelper));
+        adapter = new MealListAdapter(this, R.layout.multicheck_list, mealContract.getAllMealsArray(dbHelper));
 
         final ListView listView = (ListView) findViewById(R.id.meal_list_view);
         listView.setAdapter(adapter);
-        listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
 
         final FloatingActionButton deleteButton = (FloatingActionButton) findViewById(R.id.delete_meal_button);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (listView.getCheckedItemCount() == 0) {
-                    deleteButton.setVisibility(View.INVISIBLE);
-                } else {
-                    deleteButton.setVisibility(View.VISIBLE);
-                }
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                adapter.showCheckboxes = !adapter.showCheckboxes;
+                adapter.notifyDataSetChanged();
+                return true;
             }
         });
 
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, final View view, int position, long id) {
-                final Meal meal = adapter.getItem(position);
-                AlertDialog.Builder childContextMenuBuilder = new AlertDialog.Builder(view.getContext());
-                childContextMenuBuilder.setItems(R.array.meal_actions, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                final AlertDialog.Builder builder = getAlertBuilder(view, mealContract, meal);
-                                builder.show();
-                                break;
-                            case 1:
-                                showIngredientPickerDialog(view, meal);
-                                break;
-                            case 2:
-                                List<String> result = mealIngredientContract.getIngredientsForMeal(meal, dbHelper);
-                                AlertDialog.Builder ingredientsBuilder = new AlertDialog.Builder(view.getContext());
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 
-                                ingredientsBuilder.setTitle(R.string.ingredient_list)
-                                        .setItems(result.toArray(new String[result.size()]), null)
-                                        .show();
-                                break;
+                int viewId = view.getId();
 
-                        }
-                    }
-                });
-                childContextMenuBuilder.show();
-                return true;
+                switch (viewId) {
+                    case R.id.text1:
+                        AlertDialog.Builder childContextMenuBuilder = getBuilder(view, position);
+                        childContextMenuBuilder.show();
+                        break;
+                    case R.id.checkBox:
+                        deleteButton.setVisibility(listView.getCheckedItemCount() == 0 ? View.INVISIBLE : View.VISIBLE);
+                        break;
+                }
             }
         });
 
@@ -101,7 +85,7 @@ public class MealListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final AlertDialog.Builder builder = getAlertBuilder(v, mealContract, null);
+                final AlertDialog.Builder builder = getAlertBuilder(v, null);
                 builder.show();
             }
         });
@@ -109,14 +93,13 @@ public class MealListActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SparseBooleanArray positions = listView.getCheckedItemPositions();
-                ArrayList<Long> mealIds = new ArrayList<Long>();
-                for (int i = 0; i < listView.getCount(); i++) {
-                    if (positions.get(i)) {
-                        mealIds.add(adapter.getItemId(i));
+                List<Long> mealIds = new ArrayList<>();
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    Meal item = adapter.getItem(i);
+                    if (item.isChecked()) {
+                        mealIds.add(item.getId());
                     }
                 }
-                listView.clearChoices();
                 deleteButton.setVisibility(View.INVISIBLE);
                 mealContract.delete(mealIds.toArray(new Long[mealIds.size()]), dbHelper);
                 adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
@@ -131,7 +114,37 @@ public class MealListActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
-    private AlertDialog.Builder getAlertBuilder(View v, final MealContract mealContract, final Meal meal) {
+    @NonNull
+    private AlertDialog.Builder getBuilder(final View view, int position) {
+        final Meal meal = adapter.getItem(position);
+
+        AlertDialog.Builder childContextMenuBuilder = new AlertDialog.Builder(view.getContext());
+        childContextMenuBuilder.setItems(R.array.meal_actions, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        final AlertDialog.Builder builder = getAlertBuilder(view, meal);
+                        builder.show();
+                        break;
+                    case 1:
+                        showIngredientPickerDialog(view, meal);
+                        break;
+                    case 2:
+                        List<String> result = mealIngredientContract.getIngredientsForMeal(meal, dbHelper);
+                        AlertDialog.Builder ingredientsBuilder = new AlertDialog.Builder(view.getContext());
+
+                        ingredientsBuilder.setTitle(R.string.ingredient_list)
+                                .setItems(result.toArray(new String[result.size()]), null)
+                                .show();
+                        break;
+
+                }
+            }
+        });
+        return childContextMenuBuilder;
+    }
+
+    private AlertDialog.Builder getAlertBuilder(View v, final Meal meal) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
         builder.setTitle(R.string.put_meal_name);
 
@@ -167,11 +180,11 @@ public class MealListActivity extends AppCompatActivity {
     private void showIngredientPickerDialog(View v, final Meal meal) {
         View addIngredientView = getLayoutInflater().inflate(R.layout.filterable_list_view, new LinearLayout(v.getContext()), false);
 
-        final MealIngredientContract mealIngredientContract = new MealIngredientContract();
-
         final IngredientListAdapter ingredientListAdapter = new IngredientListAdapter(v.getContext(),
                 R.layout.multicheck_list,
                 mealIngredientContract.getIngredientsWithMeal(meal, dbHelper));
+
+        ingredientListAdapter.showCheckboxes = true;
 
         final ListView listView = (ListView) addIngredientView.findViewById(R.id.filterable_list_view);
         listView.setAdapter(ingredientListAdapter);

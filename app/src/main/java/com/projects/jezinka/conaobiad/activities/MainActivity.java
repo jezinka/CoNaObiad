@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showMealPickerDialog(View v, final TextView mealName, final TextView mealId) {
         View addDinnerView = getLayoutInflater().inflate(R.layout.filterable_list_view, new LinearLayout(v.getContext()), false);
-        final MealListAdapter mealAdapter = new MealListAdapter(v.getContext(), android.R.layout.simple_list_item_1, mealContract.getAllMealsArray(dbHelper));
+        final MealListAdapter mealAdapter = new MealListAdapter(v.getContext(), R.layout.single_select_list, mealContract.getAllMealsArray(dbHelper));
 
         final AlertDialog.Builder addDinnerDialogBuilder = new AlertDialog.Builder(v.getContext());
         addDinnerDialogBuilder.setView(addDinnerView);
