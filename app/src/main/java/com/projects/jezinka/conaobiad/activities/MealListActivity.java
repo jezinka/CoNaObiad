@@ -65,16 +65,14 @@ public class MealListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-
                 int viewId = view.getId();
-
                 switch (viewId) {
                     case R.id.text1:
                         AlertDialog.Builder childContextMenuBuilder = getBuilder(view, position);
                         childContextMenuBuilder.show();
                         break;
                     case R.id.checkBox:
-                        deleteButton.setVisibility(listView.getCheckedItemCount() == 0 ? View.INVISIBLE : View.VISIBLE);
+                        deleteButton.setVisibility(adapter.isAnyItemSelected() ? View.INVISIBLE : View.VISIBLE);
                         break;
                 }
             }
@@ -84,7 +82,6 @@ public class MealListActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 final AlertDialog.Builder builder = getAlertBuilder(v, null);
                 builder.show();
             }
