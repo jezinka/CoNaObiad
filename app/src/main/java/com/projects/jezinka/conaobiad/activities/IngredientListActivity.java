@@ -8,7 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -82,17 +81,18 @@ public class IngredientListActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SparseBooleanArray positions = listView.getCheckedItemPositions();
                 ArrayList<Long> ingredientIds = new ArrayList<Long>();
-                for (int i = 0; i < listView.getCount(); i++) {
-                    if (positions.get(i)) {
+
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    Ingredient item = adapter.getItem(i);
+                    if (item.isChecked()) {
                         ingredientIds.add(adapter.getItemId(i));
                     }
+
+                    deleteButton.setVisibility(View.INVISIBLE);
+                    ingredientContract.delete(ingredientIds.toArray(new Long[ingredientIds.size()]), helper);
+                    adapter.updateResults(ingredientContract.getAllIngredientsArray(helper));
                 }
-                listView.clearChoices();
-                deleteButton.setVisibility(View.INVISIBLE);
-                ingredientContract.delete(ingredientIds.toArray(new Long[ingredientIds.size()]), helper);
-                adapter.updateResults(ingredientContract.getAllIngredientsArray(helper));
             }
         });
 
