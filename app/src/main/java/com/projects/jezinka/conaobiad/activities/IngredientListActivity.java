@@ -3,11 +3,14 @@ package com.projects.jezinka.conaobiad.activities;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -25,20 +28,21 @@ public class IngredientListActivity extends AppCompatActivity {
 
     private CoNaObiadDbHelper helper;
     private IngredientListAdapter adapter;
+    private IngredientContract ingredientContract;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_list);
-        final IngredientContract ingredientContract = new IngredientContract();
-        helper = new CoNaObiadDbHelper(this);
 
+        ingredientContract = new IngredientContract();
+        helper = new CoNaObiadDbHelper(this);
         adapter = new IngredientListAdapter(this, R.layout.multicheck_list, ingredientContract.getAllIngredientsArray(helper));
 
         final ListView listView = (ListView) findViewById(R.id.ingredient_list_view);
         listView.setAdapter(adapter);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.ingredient_list_toolbar);
+        final Toolbar myToolbar = (Toolbar) findViewById(R.id.ingredient_list_toolbar);
         myToolbar.setTitle(R.string.ingredient_list);
         setSupportActionBar(myToolbar);
 
@@ -64,7 +68,6 @@ public class IngredientListActivity extends AppCompatActivity {
                 } else if (viewId == R.id.checkBox) {
                     adapter.getItem(position).setChecked(!adapter.getItem(position).isChecked());
                     adapter.notifyDataSetChanged();
-                    deleteButton.setVisibility(adapter.isAnyItemSelected() ? View.VISIBLE : View.INVISIBLE);
                 }
             }
         });
@@ -72,27 +75,16 @@ public class IngredientListActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                int colorId = adapter.showCheckboxes ? R.color.colorPrimary : android.R.color.darker_gray;
+                myToolbar.setBackgroundColor(ContextCompat.getColor(view.getContext(), colorId));
+
+                MenuItem deleteMenuButton = myToolbar.getMenu().findItem(R.id.delete_menu_button);
+                deleteMenuButton.setVisible(!deleteMenuButton.isVisible());
+
                 adapter.showCheckboxes = !adapter.showCheckboxes;
                 adapter.notifyDataSetChanged();
                 return true;
-            }
-        });
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<Long> ingredientIds = new ArrayList<Long>();
-
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    Ingredient item = adapter.getItem(i);
-                    if (item.isChecked()) {
-                        ingredientIds.add(adapter.getItemId(i));
-                    }
-
-                    deleteButton.setVisibility(View.INVISIBLE);
-                    ingredientContract.delete(ingredientIds.toArray(new Long[ingredientIds.size()]), helper);
-                    adapter.updateResults(ingredientContract.getAllIngredientsArray(helper));
-                }
             }
         });
 
@@ -131,5 +123,36 @@ public class IngredientListActivity extends AppCompatActivity {
         });
 
         return builder;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_with_delete_icon, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_menu_button:
+                ArrayList<Long> ingredientIds = new ArrayList<Long>();
+
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    Ingredient ingredient = adapter.getItem(i);
+                    if (ingredient.isChecked()) {
+                        ingredientIds.add(adapter.getItemId(i));
+                    }
+                }
+                item.setVisible(false);
+                ingredientContract.delete(ingredientIds.toArray(new Long[ingredientIds.size()]), helper);
+                adapter.updateResults(ingredientContract.getAllIngredientsArray(helper));
+
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }
