@@ -57,6 +57,15 @@ public class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
         return filteredData[position].getId();
     }
 
+    public boolean isAnyItemSelected() {
+        for (Meal meal : data) {
+            if (meal.isChecked()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
