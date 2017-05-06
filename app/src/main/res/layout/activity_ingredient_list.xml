@@ -11,7 +11,7 @@
 
     <include
         android:id="@+id/ingredient_list_toolbar"
-        layout="@layout/main_app_toolbar" />
+        layout="@layout/toolbar_main_app" />
 
     <include
         android:id="@+id/add_ingredient_button"

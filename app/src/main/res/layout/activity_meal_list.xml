@@ -10,7 +10,7 @@
     tools:context="com.projects.jezinka.conaobiad.activities.MealListActivity">
 
     <include
-        layout="@layout/main_app_toolbar"
+        layout="@layout/toolbar_main_app"
         android:id="@+id/meal_list_toolbar" />
 
     <include
