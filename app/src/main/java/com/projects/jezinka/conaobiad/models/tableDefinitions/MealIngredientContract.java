@@ -39,8 +39,8 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
                 "CREATE TABLE " + TABLE_NAME + " (" +
                 this.COLUMN_INGREDIENT_ID + " int, " +
                 this.COLUMN_MEAL_ID + " int, " +
-                " FOREIGN KEY(" + COLUMN_MEAL_ID + ") REFERENCES " + this.mealContract.getTableName() + "(" + _ID + ")," +
-                " FOREIGN KEY(" + COLUMN_INGREDIENT_ID + ") REFERENCES " + this.ingredientContract.getTableName() + "(" + _ID + ")" +
+                        " FOREIGN KEY(" + COLUMN_MEAL_ID + ") REFERENCES " + this.mealContract.getTableName() + "(" + _ID + ") ON DELETE CASCADE," +
+                        " FOREIGN KEY(" + COLUMN_INGREDIENT_ID + ") REFERENCES " + this.ingredientContract.getTableName() + "(" + _ID + ") ON DELETE CASCADE" +
                 ")";
 
         this.SQL_GET_INGREDIENTS =

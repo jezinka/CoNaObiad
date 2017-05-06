@@ -34,7 +34,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
                 _ID + " INTEGER PRIMARY KEY," +
                 COLUMN_MEAL_ID + " INT, " +
                 COLUMN_DATE + " INT," +
-                " FOREIGN KEY(" + COLUMN_MEAL_ID + ") REFERENCES " + this.mealContract.getTableName() + "(" + _ID + ")" +
+                " FOREIGN KEY(" + COLUMN_MEAL_ID + ") REFERENCES " + this.mealContract.getTableName() + "(" + _ID + ") ON DELETE CASCADE " +
                 ")";
 
         this.SQL_GET_RECORDS_BY_DATE = "select " + this.TABLE_NAME + "." + _ID + ", " +
