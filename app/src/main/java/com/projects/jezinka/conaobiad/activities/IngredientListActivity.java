@@ -1,5 +1,6 @@
 package com.projects.jezinka.conaobiad.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -29,6 +30,7 @@ public class IngredientListActivity extends AppCompatActivity {
     private CoNaObiadDbHelper helper;
     private IngredientListAdapter adapter;
     private IngredientContract ingredientContract;
+    private Toolbar myToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class IngredientListActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.ingredient_list_view);
         listView.setAdapter(adapter);
 
-        final Toolbar myToolbar = (Toolbar) findViewById(R.id.ingredient_list_toolbar);
+        myToolbar = (Toolbar) findViewById(R.id.ingredient_list_toolbar);
         myToolbar.setTitle(R.string.ingredient_list);
         setSupportActionBar(myToolbar);
 
@@ -66,8 +68,11 @@ public class IngredientListActivity extends AppCompatActivity {
                     final AlertDialog.Builder builder = getAlertBuilder(view, ingredientContract, ingredient);
                     builder.show();
                 } else if (viewId == R.id.checkBox) {
-                    adapter.getItem(position).setChecked(!adapter.getItem(position).isChecked());
-                    adapter.notifyDataSetChanged();
+                    Ingredient ingredient = adapter.getItem(position);
+                    if (ingredient != null) {
+                        ingredient.setChecked(!ingredient.isChecked());
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             }
         });
@@ -75,21 +80,24 @@ public class IngredientListActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                int colorId = adapter.showCheckboxes ? R.color.colorPrimary : android.R.color.darker_gray;
-                myToolbar.setBackgroundColor(ContextCompat.getColor(view.getContext(), colorId));
-
-                MenuItem deleteMenuButton = myToolbar.getMenu().findItem(R.id.delete_menu_button);
-                deleteMenuButton.setVisible(!deleteMenuButton.isVisible());
-
-                adapter.showCheckboxes = !adapter.showCheckboxes;
-                adapter.notifyDataSetChanged();
+                toggleCheckboxesAndToolbar(view.getContext());
                 return true;
             }
         });
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void toggleCheckboxesAndToolbar(Context context) {
+        int colorId = adapter.showCheckboxes ? R.color.colorPrimary : android.R.color.darker_gray;
+        myToolbar.setBackgroundColor(ContextCompat.getColor(context, colorId));
+
+        MenuItem deleteMenuButton = myToolbar.getMenu().findItem(R.id.delete_menu_button);
+        deleteMenuButton.setVisible(!deleteMenuButton.isVisible());
+
+        adapter.showCheckboxes = !adapter.showCheckboxes;
+        adapter.notifyDataSetChanged();
     }
 
     private AlertDialog.Builder getAlertBuilder(View v, final IngredientContract ingredientContract, final Ingredient ingredient) {
@@ -140,11 +148,11 @@ public class IngredientListActivity extends AppCompatActivity {
 
                 for (int i = 0; i < adapter.getCount(); i++) {
                     Ingredient ingredient = adapter.getItem(i);
-                    if (ingredient.isChecked()) {
-                        ingredientIds.add(adapter.getItemId(i));
+                    if (ingredient != null && ingredient.isChecked()) {
+                        ingredientIds.add(ingredient.getId());
                     }
                 }
-                item.setVisible(false);
+                toggleCheckboxesAndToolbar(this);
                 ingredientContract.delete(ingredientIds.toArray(new Long[ingredientIds.size()]), helper);
                 adapter.updateResults(ingredientContract.getAllIngredientsArray(helper));
 
