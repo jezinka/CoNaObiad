@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -36,6 +39,7 @@ public class MealListActivity extends AppCompatActivity {
     private CoNaObiadDbHelper dbHelper;
     private MealContract mealContract;
     private MealIngredientContract mealIngredientContract;
+    private Toolbar myToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +55,10 @@ public class MealListActivity extends AppCompatActivity {
         final ListView listView = (ListView) findViewById(R.id.meal_list_view);
         listView.setAdapter(adapter);
 
-        final FloatingActionButton deleteButton = (FloatingActionButton) findViewById(R.id.delete_meal_button);
-
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                adapter.showCheckboxes = !adapter.showCheckboxes;
-                adapter.notifyDataSetChanged();
+                toggleCheckboxesAndToolbar();
                 return true;
             }
         });
@@ -66,13 +67,18 @@ public class MealListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
                 int viewId = view.getId();
+                Meal meal = adapter.getItem(position);
+
                 switch (viewId) {
                     case R.id.text1:
-                        AlertDialog.Builder childContextMenuBuilder = getBuilder(view, position);
+                        AlertDialog.Builder childContextMenuBuilder = getBuilder(view, meal);
                         childContextMenuBuilder.show();
                         break;
                     case R.id.checkBox:
-                        deleteButton.setVisibility(adapter.isAnyItemSelected() ? View.INVISIBLE : View.VISIBLE);
+                        if (meal != null) {
+                            meal.setChecked(!meal.isChecked());
+                            adapter.notifyDataSetChanged();
+                        }
                         break;
                 }
             }
@@ -87,23 +93,7 @@ public class MealListActivity extends AppCompatActivity {
             }
         });
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<Long> mealIds = new ArrayList<>();
-                for (int i = 0; i < adapter.getCount(); i++) {
-                    Meal item = adapter.getItem(i);
-                    if (item.isChecked()) {
-                        mealIds.add(item.getId());
-                    }
-                }
-                deleteButton.setVisibility(View.INVISIBLE);
-                mealContract.delete(mealIds.toArray(new Long[mealIds.size()]), dbHelper);
-                adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
-            }
-        });
-
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.meal_list_toolbar);
+        myToolbar = (Toolbar) findViewById(R.id.meal_list_toolbar);
         myToolbar.setTitle(R.string.meal_list);
         setSupportActionBar(myToolbar);
 
@@ -112,8 +102,7 @@ public class MealListActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private AlertDialog.Builder getBuilder(final View view, int position) {
-        final Meal meal = adapter.getItem(position);
+    private AlertDialog.Builder getBuilder(final View view, final Meal meal) {
 
         AlertDialog.Builder childContextMenuBuilder = new AlertDialog.Builder(view.getContext());
         childContextMenuBuilder.setItems(R.array.meal_actions, new DialogInterface.OnClickListener() {
@@ -233,5 +222,44 @@ public class MealListActivity extends AppCompatActivity {
             }
         });
         alertDialog.show();
+    }
+
+    private void toggleCheckboxesAndToolbar() {
+        int colorId = adapter.showCheckboxes ? R.color.colorPrimary : android.R.color.darker_gray;
+        myToolbar.setBackgroundColor(ContextCompat.getColor(this, colorId));
+
+        MenuItem deleteMenuButton = myToolbar.getMenu().findItem(R.id.delete_menu_button);
+        deleteMenuButton.setVisible(!deleteMenuButton.isVisible());
+
+        adapter.showCheckboxes = !adapter.showCheckboxes;
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_with_delete_icon, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_menu_button:
+                List<Long> mealIds = new ArrayList<>();
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    Meal meal = adapter.getItem(i);
+                    if (meal != null && meal.isChecked()) {
+                        mealIds.add(meal.getId());
+                    }
+                }
+                toggleCheckboxesAndToolbar();
+                mealContract.delete(mealIds.toArray(new Long[mealIds.size()]), dbHelper);
+                adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

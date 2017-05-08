@@ -17,10 +17,6 @@
         layout="@layout/button_floating_add"
         android:id="@+id/add_meal_button" />
 
-    <include
-        layout="@layout/button_floating_delete"
-        android:id="@+id/delete_meal_button" />
-
     <ListView
         android:id="@+id/meal_list_view"
         android:layout_width="match_parent"
