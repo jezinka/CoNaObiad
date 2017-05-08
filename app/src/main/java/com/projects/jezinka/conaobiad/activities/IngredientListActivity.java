@@ -1,6 +1,5 @@
 package com.projects.jezinka.conaobiad.activities;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -57,8 +56,6 @@ public class IngredientListActivity extends AppCompatActivity {
             }
         });
 
-        final FloatingActionButton deleteButton = (FloatingActionButton) findViewById(R.id.delete_ingredient_button);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -80,7 +77,7 @@ public class IngredientListActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                toggleCheckboxesAndToolbar(view.getContext());
+                toggleCheckboxesAndToolbar();
                 return true;
             }
         });
@@ -89,9 +86,9 @@ public class IngredientListActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void toggleCheckboxesAndToolbar(Context context) {
+    private void toggleCheckboxesAndToolbar() {
         int colorId = adapter.showCheckboxes ? R.color.colorPrimary : android.R.color.darker_gray;
-        myToolbar.setBackgroundColor(ContextCompat.getColor(context, colorId));
+        myToolbar.setBackgroundColor(ContextCompat.getColor(this, colorId));
 
         MenuItem deleteMenuButton = myToolbar.getMenu().findItem(R.id.delete_menu_button);
         deleteMenuButton.setVisible(!deleteMenuButton.isVisible());
@@ -139,7 +136,6 @@ public class IngredientListActivity extends AppCompatActivity {
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -152,7 +148,7 @@ public class IngredientListActivity extends AppCompatActivity {
                         ingredientIds.add(ingredient.getId());
                     }
                 }
-                toggleCheckboxesAndToolbar(this);
+                toggleCheckboxesAndToolbar();
                 ingredientContract.delete(ingredientIds.toArray(new Long[ingredientIds.size()]), helper);
                 adapter.updateResults(ingredientContract.getAllIngredientsArray(helper));
 
