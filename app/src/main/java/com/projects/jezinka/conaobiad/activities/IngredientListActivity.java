@@ -60,12 +60,12 @@ public class IngredientListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int viewId = view.getId();
+                Ingredient ingredient = adapter.getItem(position);
+
                 if (viewId == R.id.text1) {
-                    Ingredient ingredient = adapter.getItem(position);
                     final AlertDialog.Builder builder = getAlertBuilder(view, ingredientContract, ingredient);
                     builder.show();
                 } else if (viewId == R.id.checkBox) {
-                    Ingredient ingredient = adapter.getItem(position);
                     if (ingredient != null) {
                         ingredient.setChecked(!ingredient.isChecked());
                         adapter.notifyDataSetChanged();
