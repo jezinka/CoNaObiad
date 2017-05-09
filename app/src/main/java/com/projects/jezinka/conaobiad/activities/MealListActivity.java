@@ -1,6 +1,8 @@
 package com.projects.jezinka.conaobiad.activities;
 
 import android.content.DialogInterface;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -14,12 +16,14 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.adapters.IngredientListAdapter;
@@ -27,6 +31,7 @@ import com.projects.jezinka.conaobiad.adapters.MealListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.Ingredient;
 import com.projects.jezinka.conaobiad.models.Meal;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
 
@@ -35,10 +40,13 @@ import java.util.List;
 
 public class MealListActivity extends AppCompatActivity {
 
-    MealListAdapter adapter;
+    private static final int DRAWABLE_RIGHT = 2;
+
+    private MealListAdapter adapter;
     private CoNaObiadDbHelper dbHelper;
     private MealContract mealContract;
     private MealIngredientContract mealIngredientContract;
+    private IngredientContract ingredientContract;
     private Toolbar myToolbar;
 
     @Override
@@ -48,6 +56,8 @@ public class MealListActivity extends AppCompatActivity {
 
         mealContract = new MealContract();
         mealIngredientContract = new MealIngredientContract();
+        ingredientContract = new IngredientContract();
+
         dbHelper = new CoNaObiadDbHelper(this);
 
         adapter = new MealListAdapter(this, R.layout.multicheck_list, mealContract.getAllMealsArray(dbHelper));
@@ -178,8 +188,11 @@ public class MealListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ingredientListAdapter.getItem(position).setChecked(!ingredientListAdapter.getItem(position).isChecked());
-                ingredientListAdapter.notifyDataSetChanged();
+                Ingredient ingredient = ingredientListAdapter.getItem(position);
+                if (ingredient != null) {
+                    ingredient.setChecked(!ingredient.isChecked());
+                    ingredientListAdapter.notifyDataSetChanged();
+                }
             }
         });
 
@@ -193,7 +206,7 @@ public class MealListActivity extends AppCompatActivity {
                         mealIngredientContract.deleteForMeal(dbHelper, meal.getId());
                         for (int i = 0; i < ingredientListAdapter.getCount(); i++) {
                             Ingredient item = ingredientListAdapter.getItem(i);
-                            if (item.isChecked()) {
+                            if (item != null && item.isChecked()) {
                                 long ingredientId = item.getId();
                                 mealIngredientContract.insert(dbHelper, meal.getId(), ingredientId);
                             }
@@ -205,12 +218,18 @@ public class MealListActivity extends AppCompatActivity {
         AlertDialog alertDialog = addIngredientBuilder.create();
 
 
-        EditText filterEditText = (EditText) addIngredientView.findViewById(R.id.name_filter);
+        final EditText filterEditText = (EditText) addIngredientView.findViewById(R.id.name_filter);
         filterEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Filter filter = ingredientListAdapter.getFilter();
-                filter.filter(s);
+                filter.filter(s, new Filter.FilterListener() {
+                    @Override
+                    public void onFilterComplete(int count) {
+                        int icon = count == 0 ? 0 : android.R.drawable.ic_menu_add;
+                        filterEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, icon, 0);
+                    }
+                });
             }
 
             @Override
@@ -221,6 +240,32 @@ public class MealListActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+
+        filterEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Drawable drawable = filterEditText.getCompoundDrawables()[DRAWABLE_RIGHT];
+                    if (drawable != null) {
+                        Rect bounds = drawable.getBounds();
+                        if (event.getRawX() >= (filterEditText.getRight() - bounds.width())) {
+                            String text = filterEditText.getText().toString().trim();
+                            if (text.length() != 0) {
+                                long ingredientId = ingredientContract.insert(dbHelper, text);
+                                mealIngredientContract.insert(dbHelper, meal.getId(), ingredientId);
+                                ingredientListAdapter.updateResults(mealIngredientContract.getIngredientsWithMeal(meal, dbHelper));
+                                filterEditText.setText("");
+                                Toast.makeText(v.getContext(), R.string.ingredient_added_message, Toast.LENGTH_SHORT).show();
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+        });
+
         alertDialog.show();
     }
 

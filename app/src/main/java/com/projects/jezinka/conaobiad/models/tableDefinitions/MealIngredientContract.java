@@ -50,7 +50,8 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
                         " on " + this.mealContract.getTableName() + "." + _ID + "= " + this.getTableName() + "." + this.COLUMN_MEAL_ID +
                         " join " + this.ingredientContract.getTableName() +
                         " on " + this.ingredientContract.getTableName() + "." + _ID + "= " + this.getTableName() + "." + this.COLUMN_INGREDIENT_ID +
-                        " where " + this.mealContract.getTableName() + "." + _ID + "=?;";
+                        " where " + this.mealContract.getTableName() + "." + _ID + "=? " +
+                        " order by 1 COLLATE NOCASE";
 
         this.SQL_GET_INGREDIENTS_WITH_CHECKED =
                 "select ingredient._id, ingredient.name, " +
@@ -62,7 +63,8 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
                         "        ) THEN 1 " +
                         "        ELSE 0  " +
                         "    END as checked  " +
-                        "  from ingredient ";
+                        "  from ingredient " +
+                        " order by checked desc, ingredient.name COLLATE NOCASE";
     }
 
     public boolean insert(CoNaObiadDbHelper dbHelper, long mealId, long ingredientId) {

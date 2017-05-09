@@ -38,10 +38,11 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insert(String tableName, ContentValues contentValues) {
+    public long insert(String tableName, ContentValues contentValues) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.insert(tableName, null, contentValues);
+        long id = db.insert(tableName, null, contentValues);
         db.close();
+        return id;
     }
 
     public void update(String tableName, ContentValues contentValues, long id) {

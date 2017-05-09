@@ -29,14 +29,13 @@ public class IngredientContract extends BaseTable implements BaseColumns {
                 " order by " + this.COLUMN_NAME + " COLLATE NOCASE";
     }
 
-    public boolean insert(CoNaObiadDbHelper dbHelper, String name) {
+    public long insert(CoNaObiadDbHelper dbHelper, String name) {
         String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
-        dbHelper.insert(tableName, contentValues);
-        return true;
+        return dbHelper.insert(tableName, contentValues);
     }
 
     public boolean update(CoNaObiadDbHelper dbHelper, String name, Ingredient ingredient) {
