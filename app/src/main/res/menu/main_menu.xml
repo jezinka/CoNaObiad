@@ -5,9 +5,9 @@
     <!-- Settings, should always be in the overflow -->
     <item
         android:id="@+id/shopping_list_item"
+        android:icon="@drawable/checklist_icon"
         android:title="@string/shopping_list"
-        app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_menu_agenda" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/meal_list_item"
