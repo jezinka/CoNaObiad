@@ -31,14 +31,18 @@ import com.projects.jezinka.conaobiad.adapters.DinnerExpandableListAdapter;
 import com.projects.jezinka.conaobiad.adapters.MealListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.Dinner;
+import com.projects.jezinka.conaobiad.models.Meal;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -196,6 +200,10 @@ public class MainActivity extends AppCompatActivity {
                 showInfoDialog();
                 return true;
 
+            case R.id.shopping_list_item:
+                showShoppingListDialog();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -220,7 +228,26 @@ public class MainActivity extends AppCompatActivity {
         } else {
             return Html.fromHtml(html);
         }
+    }
 
+    private void showShoppingListDialog() {
+
+        MealIngredientContract mealIngredientContract = new MealIngredientContract();
+
+        Dinner[] dinners = dinnerContract.getDinners(dbHelper);
+        List<Meal> meals = new ArrayList<>();
+
+        for (Dinner dinner : dinners) {
+            Meal meal = dinner.getMeal();
+            meals.add(meal);
+        }
+
+        AlertDialog d = new AlertDialog.Builder(this)
+                .setTitle(R.string.shopping_list)
+                .setPositiveButton(android.R.string.ok, null)
+                .setMessage(mealIngredientContract.getShoppingList(meals, dbHelper))
+                .create();
+        d.show();
     }
 
     private AlertDialog.Builder addNewDinnerBuilder(View v) {
