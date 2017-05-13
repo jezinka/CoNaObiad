@@ -11,27 +11,20 @@ import java.util.ArrayList;
 
 public abstract class BaseTable {
 
-    String TABLE_NAME;
-    String SQL_CREATE_ENTRIES;
-
-    String getTableName() {
-        return this.TABLE_NAME;
-    }
+    public static String tableName;
 
     public String getDropTableQuery() {
-        return "DROP TABLE IF EXISTS " + this.TABLE_NAME;
+        return "DROP TABLE IF EXISTS " + tableName;
     }
 
-    public String getCreateEntriesQuery() {
-        return this.SQL_CREATE_ENTRIES;
-    }
+    public abstract String getCreateEntriesQuery();
 
     public void delete(Long[] ids, CoNaObiadDbHelper helper) {
-        helper.delete(this.getTableName(), ids);
+        helper.delete(tableName, ids);
     }
 
     public void delete(Long id, CoNaObiadDbHelper helper) {
-        helper.delete(this.getTableName(), id, "_ID");
+        helper.delete(tableName, id, "_ID");
     }
 
     abstract Object getFromCursor(Cursor res);

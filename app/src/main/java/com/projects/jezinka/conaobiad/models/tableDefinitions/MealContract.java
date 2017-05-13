@@ -16,24 +16,17 @@ import static android.database.DatabaseUtils.queryNumEntries;
 
 public class MealContract extends BaseTable implements BaseColumns {
 
-    String COLUMN_NAME;
-    private String SQL_GET_ALL_RECORD;
+    public static String tableName = "meal";
+    public static String columnName = "name";
 
-    public MealContract() {
-        this.TABLE_NAME = "meal";
-        this.COLUMN_NAME = "name";
-
-        this.SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " (" +
-                _ID + " INTEGER PRIMARY KEY," +
-                COLUMN_NAME + " TEXT)";
-
-        this.SQL_GET_ALL_RECORD = "select " + _ID + ", " + this.COLUMN_NAME +
-                " from " + this.TABLE_NAME +
-                " order by " + this.COLUMN_NAME + " COLLATE NOCASE";
+    @NonNull
+    private String getAllRecordsQuery() {
+        return "select " + _ID + ", " + columnName +
+                " from " + tableName +
+                " order by " + columnName + " COLLATE NOCASE";
     }
 
     public boolean insert(CoNaObiadDbHelper helper, String name) {
-        String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
@@ -43,7 +36,6 @@ public class MealContract extends BaseTable implements BaseColumns {
     }
 
     public boolean update(CoNaObiadDbHelper helper, String name, Meal meal) {
-        String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
@@ -53,12 +45,19 @@ public class MealContract extends BaseTable implements BaseColumns {
     }
 
     public ArrayList<Meal> getAllMeals(SQLiteOpenHelper helper) {
-        return getArrayList(helper, null, this.SQL_GET_ALL_RECORD);
+        return getArrayList(helper, null, getAllRecordsQuery());
+    }
+
+    @Override
+    public String getCreateEntriesQuery() {
+        return "CREATE TABLE " + tableName + " (" +
+                _ID + " INTEGER PRIMARY KEY," +
+                columnName + " TEXT)";
     }
 
     @NonNull
     Meal getFromCursor(Cursor res) {
-        String name = res.getString(res.getColumnIndex(this.COLUMN_NAME));
+        String name = res.getString(res.getColumnIndex(columnName));
         int id = res.getInt(res.getColumnIndex(_ID));
         return new Meal(id, name);
     }
@@ -70,6 +69,6 @@ public class MealContract extends BaseTable implements BaseColumns {
 
     public boolean isAnyMealSaved(SQLiteOpenHelper helper) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        return queryNumEntries(db, this.getTableName()) > 0;
+        return queryNumEntries(db, tableName) > 0;
     }
 }

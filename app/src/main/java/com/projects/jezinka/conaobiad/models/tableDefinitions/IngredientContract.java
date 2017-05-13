@@ -13,24 +13,17 @@ import java.util.ArrayList;
 
 public class IngredientContract extends BaseTable implements BaseColumns {
 
-    String COLUMN_NAME;
-    private String SQL_GET_ALL_RECORD;
+    public static String tableName = "ingredient";
+    public static String columnName = "name";
 
-    public IngredientContract() {
-        this.TABLE_NAME = "ingredient";
-        this.COLUMN_NAME = "name";
-
-        this.SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " (" +
-                _ID + " INTEGER PRIMARY KEY," +
-                COLUMN_NAME + " TEXT)";
-
-        this.SQL_GET_ALL_RECORD = "select " + _ID + ", " + this.COLUMN_NAME +
-                " from " + this.TABLE_NAME +
-                " order by " + this.COLUMN_NAME + " COLLATE NOCASE";
+    @NonNull
+    private String getAllRecordQuery() {
+        return "select " + _ID + ", " + columnName +
+                " from " + tableName +
+                " order by " + columnName + " COLLATE NOCASE";
     }
 
     public long insert(CoNaObiadDbHelper dbHelper, String name) {
-        String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
@@ -39,7 +32,6 @@ public class IngredientContract extends BaseTable implements BaseColumns {
     }
 
     public boolean update(CoNaObiadDbHelper dbHelper, String name, Ingredient ingredient) {
-        String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
@@ -50,12 +42,19 @@ public class IngredientContract extends BaseTable implements BaseColumns {
 
     @NonNull
     private ArrayList<Ingredient> getAllIngredients(SQLiteOpenHelper helper) {
-        return getArrayList(helper, null, this.SQL_GET_ALL_RECORD);
+        return getArrayList(helper, null, getAllRecordQuery());
+    }
+
+    @Override
+    public String getCreateEntriesQuery() {
+        return "CREATE TABLE " + tableName + " (" +
+                _ID + " INTEGER PRIMARY KEY," +
+                columnName + " TEXT)";
     }
 
     @NonNull
     Ingredient getFromCursor(Cursor res) {
-        String name = res.getString(res.getColumnIndex(this.COLUMN_NAME));
+        String name = res.getString(res.getColumnIndex(columnName));
         int id = res.getInt(res.getColumnIndex(_ID));
         return new Ingredient(id, name);
     }

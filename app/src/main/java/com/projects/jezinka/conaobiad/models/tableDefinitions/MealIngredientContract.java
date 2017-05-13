@@ -18,29 +18,10 @@ import java.util.List;
 
 public class MealIngredientContract extends BaseTable implements BaseColumns {
 
-    String COLUMN_MEAL_ID;
-    String COLUMN_INGREDIENT_ID;
+    public static String tableName = "meal_ingredient";
 
-    private MealContract mealContract;
-    private IngredientContract ingredientContract;
-
-    public MealIngredientContract() {
-
-        this.TABLE_NAME = "meal_ingredient";
-        this.COLUMN_INGREDIENT_ID = "ingredient_id";
-        this.COLUMN_MEAL_ID = "meal_id";
-
-        this.mealContract = new MealContract();
-        this.ingredientContract = new IngredientContract();
-
-        this.SQL_CREATE_ENTRIES =
-                "CREATE TABLE " + TABLE_NAME + " (" +
-                this.COLUMN_INGREDIENT_ID + " int, " +
-                this.COLUMN_MEAL_ID + " int, " +
-                        " FOREIGN KEY(" + COLUMN_MEAL_ID + ") REFERENCES " + this.mealContract.getTableName() + "(" + _ID + ") ON DELETE CASCADE," +
-                        " FOREIGN KEY(" + COLUMN_INGREDIENT_ID + ") REFERENCES " + this.ingredientContract.getTableName() + "(" + _ID + ") ON DELETE CASCADE" +
-                ")";
-    }
+    public static String columnMealId = "meal_id";
+    public static String columnIngredientId = "ingredient_id";
 
     @NonNull
     private String getIngredientsWithChecked() {
@@ -64,20 +45,17 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
 
     @NonNull
     private String getIngredientsQuery() {
-        IngredientContract ingredientContract = this.ingredientContract;
-        MealContract mealContract = this.mealContract;
 
-        return "select " + ingredientContract.getTableName() + "." + ingredientContract.COLUMN_NAME +
-                " from " + this.getTableName() +
-                " join " + mealContract.getTableName() +
-                " on " + mealContract.getTableName() + "." + _ID + "= " + this.getTableName() + "." + this.COLUMN_MEAL_ID +
-                " join " + ingredientContract.getTableName() +
-                " on " + ingredientContract.getTableName() + "." + _ID + "= " + this.getTableName() + "." + this.COLUMN_INGREDIENT_ID +
-                " where " + mealContract.getTableName() + "." + _ID + "=? ";
+        return "select " + IngredientContract.tableName + "." + IngredientContract.columnName +
+                " from " + tableName +
+                " join " + MealContract.tableName +
+                " on " + MealContract.tableName + "." + _ID + "= " + tableName + "." + columnMealId +
+                " join " + IngredientContract.tableName +
+                " on " + IngredientContract.tableName + "." + _ID + "= " + tableName + "." + columnIngredientId +
+                " where " + MealContract.tableName + "." + _ID + "=? ";
     }
 
     public boolean insert(CoNaObiadDbHelper dbHelper, long mealId, long ingredientId) {
-        String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("meal_id", mealId);
@@ -85,6 +63,16 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
 
         dbHelper.insert(tableName, contentValues);
         return true;
+    }
+
+    @Override
+    public String getCreateEntriesQuery() {
+        return "CREATE TABLE " + tableName + " (" +
+                columnIngredientId + " int, " +
+                columnMealId + " int, " +
+                " FOREIGN KEY(" + columnMealId + ") REFERENCES " + MealContract.tableName + "(" + _ID + ") ON DELETE CASCADE," +
+                " FOREIGN KEY(" + columnIngredientId + ") REFERENCES " + IngredientContract.tableName + "(" + _ID + ") ON DELETE CASCADE" +
+                ")";
     }
 
     @NonNull
@@ -132,7 +120,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
     }
 
     public void deleteForMeal(CoNaObiadDbHelper helper, long mealId) {
-        helper.delete(this.getTableName(), mealId, "meal_id");
+        helper.delete(tableName, mealId, "meal_id");
     }
 
     public String getShoppingList(List<Meal> meals, SQLiteOpenHelper helper) {

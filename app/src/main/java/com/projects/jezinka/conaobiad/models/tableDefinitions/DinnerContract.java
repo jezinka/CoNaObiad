@@ -16,40 +16,12 @@ import java.util.Date;
 
 public class DinnerContract extends BaseTable implements BaseColumns {
 
-    private String COLUMN_DATE;
-    private String COLUMN_MEAL_ID;
+    public static String tableName = "dinner";
 
-    private MealContract mealContract;
-
-    private String SQL_GET_RECORDS_BY_DATE;
-
-    public DinnerContract() {
-        this.TABLE_NAME = "dinner";
-        this.COLUMN_MEAL_ID = "meal_id";
-        this.COLUMN_DATE = "date";
-
-        this.mealContract = new MealContract();
-
-        this.SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " (" +
-                _ID + " INTEGER PRIMARY KEY," +
-                COLUMN_MEAL_ID + " INT, " +
-                COLUMN_DATE + " INT," +
-                " FOREIGN KEY(" + COLUMN_MEAL_ID + ") REFERENCES " + this.mealContract.getTableName() + "(" + _ID + ") ON DELETE CASCADE " +
-                ")";
-
-        this.SQL_GET_RECORDS_BY_DATE = "select " + this.TABLE_NAME + "." + _ID + ", " +
-                this.COLUMN_MEAL_ID + ", " +
-                this.COLUMN_DATE + ", " +
-                this.mealContract.COLUMN_NAME +
-                " from " + this.TABLE_NAME +
-                " join " + this.mealContract.getTableName() +
-                " on " + this.TABLE_NAME + "." + this.COLUMN_MEAL_ID + "= " + this.mealContract.getTableName() + "." + _ID +
-                " where " + this.COLUMN_DATE + " between ? and ?" +
-                " order by " + this.COLUMN_DATE;
-    }
+    public static String columnDate = "date";
+    public static String columnMealId = "meal_id";
 
     public boolean insert(CoNaObiadDbHelper helper, int mealID, Date date) {
-        String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("meal_id", mealID);
@@ -60,7 +32,6 @@ public class DinnerContract extends BaseTable implements BaseColumns {
     }
 
     public boolean update(CoNaObiadDbHelper helper, Dinner dinner, Date date) {
-        String tableName = this.getTableName();
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("date", date.getTime());
@@ -75,15 +46,25 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         long weekStartDate = TimeUtils.getWeekStartDate(date).getTime();
         String[] sqlArgs = {String.valueOf(weekStartDate), String.valueOf(weekStartDate + TimeUtils.getTimeDeltaMilliseconds())};
 
-        return getArrayList(helper, sqlArgs, this.getRecordsByDateSql());
+        return getArrayList(helper, sqlArgs, getRecordsByDateSql());
+    }
+
+    @Override
+    public String getCreateEntriesQuery() {
+        return "CREATE TABLE " + tableName + " (" +
+                _ID + " INTEGER PRIMARY KEY," +
+                columnMealId + " INT, " +
+                columnDate + " INT," +
+                " FOREIGN KEY(" + columnMealId + ") REFERENCES " + MealContract.tableName + "(" + _ID + ") ON DELETE CASCADE " +
+                ")";
     }
 
     @NonNull
     Dinner getFromCursor(Cursor res) {
         int id = res.getInt(res.getColumnIndex(_ID));
-        int mealId = res.getInt(res.getColumnIndex(this.COLUMN_MEAL_ID));
-        String mealName = res.getString(res.getColumnIndex(this.mealContract.COLUMN_NAME));
-        Date dinnerDate = new Date(res.getLong(res.getColumnIndex(this.COLUMN_DATE)));
+        int mealId = res.getInt(res.getColumnIndex(columnMealId));
+        String mealName = res.getString(res.getColumnIndex(MealContract.columnName));
+        Date dinnerDate = new Date(res.getLong(res.getColumnIndex(columnDate)));
         Meal meal = new Meal(mealId, mealName);
         return new Dinner(id, meal, dinnerDate);
     }
@@ -99,6 +80,14 @@ public class DinnerContract extends BaseTable implements BaseColumns {
     }
 
     public String getRecordsByDateSql() {
-        return SQL_GET_RECORDS_BY_DATE;
+        return "select " + tableName + "." + _ID + ", " +
+                columnMealId + ", " +
+                columnDate + ", " +
+                MealContract.columnName +
+                " from " + tableName +
+                " join " + MealContract.tableName +
+                " on " + tableName + "." + columnMealId + "= " + MealContract.tableName + "." + _ID +
+                " where " + columnDate + " between ? and ?" +
+                " order by " + columnDate;
     }
 }
