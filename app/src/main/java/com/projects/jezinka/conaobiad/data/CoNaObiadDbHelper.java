@@ -8,13 +8,14 @@ import android.provider.BaseColumns;
 import android.text.TextUtils;
 
 import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientCategoryContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
 
 public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     private static final String DATABASE_NAME = "CoNaObiad.db";
 
     public CoNaObiadDbHelper(Context context) {
@@ -27,14 +28,16 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
         db.execSQL(DinnerContract.getCreateEntriesQuery());
         db.execSQL(IngredientContract.getCreateEntriesQuery());
         db.execSQL(MealIngredientContract.getCreateEntriesQuery());
+        db.execSQL(IngredientCategoryContract.getCreateEntriesQuery());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(MealContract.getDropTableQuery());
-        db.execSQL(DinnerContract.getDropTableQuery());
-        db.execSQL(IngredientContract.getDropTableQuery());
-        db.execSQL(MealIngredientContract.getDropTableQuery());
+        dropTable(MealContract.tableName, db);
+        dropTable(DinnerContract.tableName, db);
+        dropTable(IngredientContract.tableName, db);
+        dropTable(MealIngredientContract.tableName, db);
+        dropTable(IngredientCategoryContract.tableName, db);
         onCreate(db);
     }
 
@@ -63,5 +66,9 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
         String[] args = {Long.toString(id)};
         String whereClause = identityColumn + " = ?";
         db.delete(tableName, whereClause, args);
+    }
+
+    private void dropTable(String tableName, SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS " + tableName);
     }
 }

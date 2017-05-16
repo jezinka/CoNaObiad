@@ -18,8 +18,17 @@ public class DinnerContract extends BaseTable implements BaseColumns {
 
     public static String tableName = "dinner";
 
-    public static String columnDate = "date";
-    public static String columnMealId = "meal_id";
+    private static String columnDate = "date";
+    private static String columnMealId = "meal_id";
+
+    public static String getCreateEntriesQuery() {
+        return "CREATE TABLE " + tableName + " (" +
+                _ID + " INTEGER PRIMARY KEY," +
+                columnMealId + " INT, " +
+                columnDate + " INT," +
+                " FOREIGN KEY(" + columnMealId + ") REFERENCES " + MealContract.tableName + "(" + _ID + ") ON DELETE CASCADE " +
+                ")";
+    }
 
     public boolean insert(CoNaObiadDbHelper helper, long mealID, Date date) {
 
@@ -47,15 +56,6 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         String[] sqlArgs = {String.valueOf(weekStartDate), String.valueOf(weekStartDate + TimeUtils.getTimeDeltaMilliseconds())};
 
         return getArrayList(helper, sqlArgs, getRecordsByDateSql());
-    }
-
-    public static String getCreateEntriesQuery() {
-        return "CREATE TABLE " + tableName + " (" +
-                _ID + " INTEGER PRIMARY KEY," +
-                columnMealId + " INT, " +
-                columnDate + " INT," +
-                " FOREIGN KEY(" + columnMealId + ") REFERENCES " + MealContract.tableName + "(" + _ID + ") ON DELETE CASCADE " +
-                ")";
     }
 
     @NonNull
@@ -88,10 +88,6 @@ public class DinnerContract extends BaseTable implements BaseColumns {
                 " on " + tableName + "." + columnMealId + "= " + MealContract.tableName + "." + _ID +
                 " where " + columnDate + " between ? and ?" +
                 " order by " + columnDate;
-    }
-
-    public static String getDropTableQuery() {
-        return "DROP TABLE IF EXISTS " + tableName;
     }
 
     public void delete(Long[] ids, CoNaObiadDbHelper helper) {

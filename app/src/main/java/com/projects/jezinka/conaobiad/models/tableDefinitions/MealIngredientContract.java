@@ -18,10 +18,21 @@ import java.util.List;
 
 public class MealIngredientContract extends BaseTable implements BaseColumns {
 
+    private static final String CHECKED_COLUMN_NAME = "checked";
+
     public static String tableName = "meal_ingredient";
 
-    public static String columnMealId = "meal_id";
-    public static String columnIngredientId = "ingredient_id";
+    private static String columnIngredientId = "ingredient_id";
+    private static String columnMealId = "meal_id";
+
+    public static String getCreateEntriesQuery() {
+        return "CREATE TABLE " + tableName + " (" +
+                columnIngredientId + " int, " +
+                columnMealId + " int, " +
+                " FOREIGN KEY(" + columnMealId + ") REFERENCES " + MealContract.tableName + "(" + _ID + ") ON DELETE CASCADE," +
+                " FOREIGN KEY(" + columnIngredientId + ") REFERENCES " + IngredientContract.tableName + "(" + _ID + ") ON DELETE CASCADE" +
+                ")";
+    }
 
     @NonNull
     private String getIngredientsWithChecked() {
@@ -65,14 +76,6 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
         return true;
     }
 
-    public static String getCreateEntriesQuery() {
-        return "CREATE TABLE " + tableName + " (" +
-                columnIngredientId + " int, " +
-                columnMealId + " int, " +
-                " FOREIGN KEY(" + columnMealId + ") REFERENCES " + MealContract.tableName + "(" + _ID + ") ON DELETE CASCADE," +
-                " FOREIGN KEY(" + columnIngredientId + ") REFERENCES " + IngredientContract.tableName + "(" + _ID + ") ON DELETE CASCADE" +
-                ")";
-    }
 
     @NonNull
     MealIngredient getFromCursor(Cursor res) {
@@ -107,9 +110,9 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
             res.moveToFirst();
 
             do {
-                Long id = res.getLong(0);
-                String name = res.getString(1);
-                int checked = res.getInt(2);
+                Long id = res.getLong(res.getColumnIndex(_ID));
+                String name = res.getString(res.getColumnIndex(IngredientContract.columnName));
+                int checked = res.getInt(res.getColumnIndex(CHECKED_COLUMN_NAME));
                 array_list.add(new Ingredient(id, name, checked == 1));
             } while (res.moveToNext());
         }
@@ -172,10 +175,6 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
 
         sb.append(") group by name order by name collate nocase;");
         return sb.toString();
-    }
-
-    public static String getDropTableQuery() {
-        return "DROP TABLE IF EXISTS " + tableName;
     }
 
     public void delete(Long[] ids, CoNaObiadDbHelper helper) {

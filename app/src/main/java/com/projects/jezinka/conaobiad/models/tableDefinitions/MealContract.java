@@ -17,7 +17,13 @@ import static android.database.DatabaseUtils.queryNumEntries;
 public class MealContract extends BaseTable implements BaseColumns {
 
     public static String tableName = "meal";
-    public static String columnName = "name";
+    static String columnName = "name";
+
+    public static String getCreateEntriesQuery() {
+        return "CREATE TABLE " + tableName + " (" +
+                _ID + " INTEGER PRIMARY KEY," +
+                columnName + " TEXT)";
+    }
 
     @NonNull
     private String getAllRecordsQuery() {
@@ -48,12 +54,6 @@ public class MealContract extends BaseTable implements BaseColumns {
         return getArrayList(helper, null, getAllRecordsQuery());
     }
 
-    public static String getCreateEntriesQuery() {
-        return "CREATE TABLE " + tableName + " (" +
-                _ID + " INTEGER PRIMARY KEY," +
-                columnName + " TEXT)";
-    }
-
     @NonNull
     Meal getFromCursor(Cursor res) {
         String name = res.getString(res.getColumnIndex(columnName));
@@ -69,10 +69,6 @@ public class MealContract extends BaseTable implements BaseColumns {
     public boolean isAnyMealSaved(SQLiteOpenHelper helper) {
         SQLiteDatabase db = helper.getReadableDatabase();
         return queryNumEntries(db, tableName) > 0;
-    }
-
-    public static String getDropTableQuery() {
-        return "DROP TABLE IF EXISTS " + tableName;
     }
 
     public void delete(Long[] ids, CoNaObiadDbHelper helper) {
