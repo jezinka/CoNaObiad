@@ -6,7 +6,9 @@
     <string name="no">Nie</string>
     <string name="cancel">Anuluj</string>
     <string name="delete">Usuń</string>
+    <string name="delete_all">Usuń wszystko</string>
     <string name="edit">Zmień</string>
+    <string name="edit_date">Zmień datę</string>
 
     <string name="settings">Ustawienia</string>
 
@@ -19,6 +21,8 @@
     <string name="put_ingredient_name">Wpisz nazwę składnika</string>
     <string name="meal_list">Posiłki</string>
     <string name="ingredient_list">Składniki</string>
+    <string name="add_ingredients">Dodaj składniki</string>
+    <string name="show_ingredients">Wyświetl składniki</string>
     <string name="first_day">Pierwszy dzień</string>
     <string name="first_day_summ">Wybierz początek tygodnia</string>
     <string name="days_no">Liczba dni</string>

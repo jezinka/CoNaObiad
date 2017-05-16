@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="dinner_child_actions">
-        <item>Dodaj</item>
-        <item>Usuń</item>
-        <item>Zmień datę</item>
+        <item>@string/add</item>
+        <item>@string/delete</item>
+        <item>@string/edit_date</item>
     </string-array>
+
+    <string-array name="dinner_group_actions">
+        <item>@string/add</item>
+        <item>@string/delete_all</item>
+    </string-array>
+
     <string-array name="meal_actions">
-        <item>Edytuj</item>
-        <item>Dodaj składniki</item>
-        <item>Wyświetl składniki</item>
+        <item>@string/edit</item>
+        <item>@string/add_ingredients</item>
+        <item>@string/add_ingredients</item>
     </string-array>
+
     <string-array name="week_days_list_preference">
         <item>@string/monday</item>
         <item>@string/tuesday</item>
