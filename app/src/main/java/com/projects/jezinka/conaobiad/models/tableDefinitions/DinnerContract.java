@@ -49,8 +49,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         return getArrayList(helper, sqlArgs, getRecordsByDateSql());
     }
 
-    @Override
-    public String getCreateEntriesQuery() {
+    public static String getCreateEntriesQuery() {
         return "CREATE TABLE " + tableName + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
                 columnMealId + " INT, " +
@@ -89,5 +88,17 @@ public class DinnerContract extends BaseTable implements BaseColumns {
                 " on " + tableName + "." + columnMealId + "= " + MealContract.tableName + "." + _ID +
                 " where " + columnDate + " between ? and ?" +
                 " order by " + columnDate;
+    }
+
+    public static String getDropTableQuery() {
+        return "DROP TABLE IF EXISTS " + tableName;
+    }
+
+    public void delete(Long[] ids, CoNaObiadDbHelper helper) {
+        helper.delete(tableName, ids);
+    }
+
+    public void delete(Long id, CoNaObiadDbHelper helper) {
+        helper.delete(tableName, id, "_ID");
     }
 }

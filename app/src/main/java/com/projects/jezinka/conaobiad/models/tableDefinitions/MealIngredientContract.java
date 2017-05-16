@@ -65,8 +65,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
         return true;
     }
 
-    @Override
-    public String getCreateEntriesQuery() {
+    public static String getCreateEntriesQuery() {
         return "CREATE TABLE " + tableName + " (" +
                 columnIngredientId + " int, " +
                 columnMealId + " int, " +
@@ -173,5 +172,17 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
 
         sb.append(") group by name order by name collate nocase;");
         return sb.toString();
+    }
+
+    public static String getDropTableQuery() {
+        return "DROP TABLE IF EXISTS " + tableName;
+    }
+
+    public void delete(Long[] ids, CoNaObiadDbHelper helper) {
+        helper.delete(tableName, ids);
+    }
+
+    public void delete(Long id, CoNaObiadDbHelper helper) {
+        helper.delete(tableName, id, "_ID");
     }
 }

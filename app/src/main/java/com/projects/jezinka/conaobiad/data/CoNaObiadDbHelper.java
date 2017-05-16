@@ -14,7 +14,7 @@ import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientCont
 
 public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     private static final String DATABASE_NAME = "CoNaObiad.db";
 
     public CoNaObiadDbHelper(Context context) {
@@ -23,18 +23,18 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(new MealContract().getCreateEntriesQuery());
-        db.execSQL(new DinnerContract().getCreateEntriesQuery());
-        db.execSQL(new IngredientContract().getCreateEntriesQuery());
-        db.execSQL(new MealIngredientContract().getCreateEntriesQuery());
+        db.execSQL(MealContract.getCreateEntriesQuery());
+        db.execSQL(DinnerContract.getCreateEntriesQuery());
+        db.execSQL(IngredientContract.getCreateEntriesQuery());
+        db.execSQL(MealIngredientContract.getCreateEntriesQuery());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(new MealContract().getDropTableQuery());
-        db.execSQL(new DinnerContract().getDropTableQuery());
-        db.execSQL(new IngredientContract().getDropTableQuery());
-        db.execSQL(new MealIngredientContract().getDropTableQuery());
+        db.execSQL(MealContract.getDropTableQuery());
+        db.execSQL(DinnerContract.getDropTableQuery());
+        db.execSQL(IngredientContract.getDropTableQuery());
+        db.execSQL(MealIngredientContract.getDropTableQuery());
         onCreate(db);
     }
 
