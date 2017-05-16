@@ -25,6 +25,7 @@
     <string name="info_message">Aplikacja została stworzona na potrzeby konkursu Daj Się Poznać 2017</string>
     <string name="ingredient_added_message">Składnik został dodany</string>
     <string name="shopping_list">Lista zakupów</string>
+    <string name="fill_list">Wypełnij losowo</string>
 
     <string name="monday">Poniedziałek</string>
     <string name="tuesday">Wtorek</string>

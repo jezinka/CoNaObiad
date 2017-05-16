@@ -4,6 +4,12 @@
 
     <!-- Settings, should always be in the overflow -->
     <item
+        android:id="@+id/fill_list_item"
+        android:icon="@drawable/fantasy"
+        android:title="@string/shopping_list"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/shopping_list_item"
         android:icon="@drawable/checklist_icon"
         android:title="@string/shopping_list"
