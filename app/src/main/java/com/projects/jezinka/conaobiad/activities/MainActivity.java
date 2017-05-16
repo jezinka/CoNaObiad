@@ -25,6 +25,7 @@ import android.widget.Filter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.adapters.DinnerExpandableListAdapter;
@@ -235,6 +236,12 @@ public class MainActivity extends AppCompatActivity {
         MealIngredientContract mealIngredientContract = new MealIngredientContract();
 
         Dinner[] dinners = dinnerContract.getDinners(dbHelper);
+
+        if (dinners.length == 0) {
+            Toast.makeText(this, R.string.empty_dinner_list_message, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         List<Meal> meals = new ArrayList<>();
 
         for (Dinner dinner : dinners) {
