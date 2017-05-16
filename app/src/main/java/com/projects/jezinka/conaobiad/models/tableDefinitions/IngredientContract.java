@@ -54,7 +54,7 @@ public class IngredientContract extends BaseTable implements BaseColumns {
     @NonNull
     Ingredient getFromCursor(Cursor res) {
         String name = res.getString(res.getColumnIndex(columnName));
-        int id = res.getInt(res.getColumnIndex(_ID));
+        long id = res.getLong(res.getColumnIndex(_ID));
         return new Ingredient(id, name);
     }
 

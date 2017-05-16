@@ -107,7 +107,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
             res.moveToFirst();
 
             do {
-                int id = res.getInt(0);
+                Long id = res.getLong(0);
                 String name = res.getString(1);
                 int checked = res.getInt(2);
                 array_list.add(new Ingredient(id, name, checked == 1));
