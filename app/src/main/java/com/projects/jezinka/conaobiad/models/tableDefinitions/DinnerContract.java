@@ -21,7 +21,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
     public static String columnDate = "date";
     public static String columnMealId = "meal_id";
 
-    public boolean insert(CoNaObiadDbHelper helper, int mealID, Date date) {
+    public boolean insert(CoNaObiadDbHelper helper, long mealID, Date date) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("meal_id", mealID);
@@ -60,8 +60,8 @@ public class DinnerContract extends BaseTable implements BaseColumns {
 
     @NonNull
     Dinner getFromCursor(Cursor res) {
-        int id = res.getInt(res.getColumnIndex(_ID));
-        int mealId = res.getInt(res.getColumnIndex(columnMealId));
+        long id = res.getLong(res.getColumnIndex(_ID));
+        long mealId = res.getLong(res.getColumnIndex(columnMealId));
         String mealName = res.getString(res.getColumnIndex(MealContract.columnName));
         Date dinnerDate = new Date(res.getLong(res.getColumnIndex(columnDate)));
         Meal meal = new Meal(mealId, mealName);
@@ -100,5 +100,9 @@ public class DinnerContract extends BaseTable implements BaseColumns {
 
     public void delete(Long id, CoNaObiadDbHelper helper) {
         helper.delete(tableName, id, "_ID");
+    }
+
+    public void delete(long date, CoNaObiadDbHelper helper) {
+        helper.delete(tableName, date, columnDate);
     }
 }

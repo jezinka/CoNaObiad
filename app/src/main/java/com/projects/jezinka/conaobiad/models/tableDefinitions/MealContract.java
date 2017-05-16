@@ -57,7 +57,7 @@ public class MealContract extends BaseTable implements BaseColumns {
     @NonNull
     Meal getFromCursor(Cursor res) {
         String name = res.getString(res.getColumnIndex(columnName));
-        int id = res.getInt(res.getColumnIndex(_ID));
+        long id = res.getLong(res.getColumnIndex(_ID));
         return new Meal(id, name);
     }
 
@@ -81,5 +81,14 @@ public class MealContract extends BaseTable implements BaseColumns {
 
     public void delete(Long id, CoNaObiadDbHelper helper) {
         helper.delete(tableName, id, "_ID");
+    }
+
+    public ArrayList<Meal> getRandomMeals(SQLiteOpenHelper helper, int size) {
+        return getArrayList(helper, null, getRandomMealsQuery(size));
+    }
+
+    private static String getRandomMealsQuery(int size) {
+        return "SELECT  " + _ID + ", " + columnName + " FROM " + tableName +
+                " ORDER BY RANDOM() LIMIT " + size;
     }
 }

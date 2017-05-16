@@ -36,6 +36,7 @@ import com.projects.jezinka.conaobiad.models.Meal;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
+import com.projects.jezinka.conaobiad.utils.TimeUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -110,14 +111,30 @@ public class MainActivity extends AppCompatActivity {
 
         expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(final AdapterView<?> parent, final View view, final int position, long id) {
                 int itemType = ExpandableListView.getPackedPositionType(id);
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    long packedPos = ((ExpandableListView) parent).getExpandableListPosition(position);
-                    int groupPosition = ExpandableListView.getPackedPositionGroup(packedPos);
-                    Date date = dinnerAdapter.getGroup(groupPosition);
-                    final AlertDialog.Builder builder = addNewDinnerBuilder(view, date);
-                    builder.show();
+                    AlertDialog.Builder childContextMenuBuilder = new AlertDialog.Builder(view.getContext());
+                    childContextMenuBuilder.setItems(R.array.dinner_group_actions, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            long packedPos = ((ExpandableListView) parent).getExpandableListPosition(position);
+                            int groupPosition = ExpandableListView.getPackedPositionGroup(packedPos);
+                            Date date = dinnerAdapter.getGroup(groupPosition);
+
+                            switch (which) {
+                                case 0:
+                                    final AlertDialog.Builder builder = addNewDinnerBuilder(view, date);
+                                    builder.show();
+                                    break;
+                                case 1:
+                                    dinnerContract.delete(date.getTime(), dbHelper);
+                                    dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
+                                    break;
+                            }
+                        }
+                    });
+                    childContextMenuBuilder.show();
                     return true;
                 }
                 return false;
@@ -205,6 +222,10 @@ public class MainActivity extends AppCompatActivity {
                 showShoppingListDialog();
                 return true;
 
+            case R.id.fill_list_item:
+                fillList();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -255,6 +276,23 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage(mealIngredientContract.getShoppingList(meals, dbHelper))
                 .create();
         d.show();
+    }
+
+    private void fillList() {
+
+        Calendar calendarInstance = Calendar.getInstance();
+        calendarInstance.setTime(TimeUtils.getWeekStartDate(new Date()));
+
+        //TODO: wstaw w puste
+
+        List<Meal> meals = mealContract.getRandomMeals(dbHelper, planLength);
+
+        for (Meal meal : meals) {
+            dinnerContract.insert(dbHelper, meal.getId(), calendarInstance.getTime());
+            calendarInstance.add(Calendar.DATE, 1);
+        }
+
+        dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
     }
 
     private AlertDialog.Builder addNewDinnerBuilder(View v) {
@@ -319,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
                     dinnerContract.update(dbHelper, dinner, date);
                 } else {
 
-                    dinnerContract.insert(dbHelper, Integer.parseInt(mealIdText), date);
+                    dinnerContract.insert(dbHelper, Long.parseLong(mealIdText), date);
                 }
                 dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
             }

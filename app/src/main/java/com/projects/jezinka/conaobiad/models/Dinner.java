@@ -15,7 +15,7 @@ public class Dinner {
         super();
     }
 
-    public Dinner(int id, Meal meal, Date date) {
+    public Dinner(long id, Meal meal, Date date) {
         this.id = id;
         this.meal = meal;
         this.date = date;
