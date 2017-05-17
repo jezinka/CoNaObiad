@@ -1,14 +1,11 @@
 package com.projects.jezinka.conaobiad.activities;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,17 +16,18 @@ import android.widget.ListView;
 import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.adapters.IngredientListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
+import com.projects.jezinka.conaobiad.dialogs.IngredientDialogFragment;
 import com.projects.jezinka.conaobiad.models.Ingredient;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
 
 import java.util.ArrayList;
 
-public class IngredientListActivity extends AppCompatActivity {
+public class IngredientListActivity extends AppCompatActivity implements IngredientDialogFragment.IngredientDialogListener {
 
     private CoNaObiadDbHelper helper;
     private IngredientListAdapter adapter;
     private IngredientContract ingredientContract;
-    private Toolbar myToolbar;
+    public Toolbar myToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +45,6 @@ public class IngredientListActivity extends AppCompatActivity {
         myToolbar.setTitle(R.string.ingredient_list);
         setSupportActionBar(myToolbar);
 
-        FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.add_ingredient_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder builder = getAlertBuilder(v, ingredientContract, null);
-                builder.show();
-            }
-        });
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -63,8 +52,7 @@ public class IngredientListActivity extends AppCompatActivity {
                 Ingredient ingredient = adapter.getItem(position);
 
                 if (viewId == R.id.text1) {
-                    final AlertDialog.Builder builder = getAlertBuilder(view, ingredientContract, ingredient);
-                    builder.show();
+                    showIngredientDialog(ingredient);
                 } else if (viewId == R.id.checkBox) {
                     if (ingredient != null) {
                         ingredient.setChecked(!ingredient.isChecked());
@@ -97,39 +85,6 @@ public class IngredientListActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    private AlertDialog.Builder getAlertBuilder(View v, final IngredientContract ingredientContract, final Ingredient ingredient) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-        builder.setTitle(R.string.put_ingredient_name);
-
-        final EditText input = new EditText(v.getContext());
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        if (ingredient != null) {
-            input.setText(ingredient.getName());
-        }
-        builder.setView(input);
-
-        builder.setPositiveButton(ingredient == null ? R.string.add : R.string.edit, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String ingredientName = input.getText().toString().trim();
-                if (ingredient != null) {
-                    ingredientContract.update(helper, ingredientName, ingredient);
-                } else {
-                    ingredientContract.insert(helper, ingredientName);
-                }
-                adapter.updateResults(ingredientContract.getAllIngredientsArray(helper));
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        return builder;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_with_delete_icon, menu);
@@ -156,7 +111,36 @@ public class IngredientListActivity extends AppCompatActivity {
 
             default:
                 return super.onOptionsItemSelected(item);
-
         }
+    }
+
+    public void showIngredientDialog(Ingredient ingredient) {
+        DialogFragment newFragment;
+
+        long ingredientId = ingredient != null ? ingredient.getId() : -1;
+        String ingredientName = ingredient != null ? ingredient.getName() : "";
+
+        newFragment = IngredientDialogFragment.newInstance(ingredientId, ingredientName);
+        newFragment.show(getSupportFragmentManager(), "IngredientDialogFragment");
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialogFragment) {
+
+        EditText input = (EditText) dialogFragment.getDialog().findViewById(R.id.ingredient_name);
+        String ingredientName = input.getText().toString().trim();
+
+        long ingredientId = dialogFragment.getArguments().getLong("ingredientId", -1);
+
+        if (ingredientId != -1) {
+            ingredientContract.update(helper, ingredientName, ingredientId);
+        } else {
+            ingredientContract.insert(helper, ingredientName);
+        }
+        adapter.updateResults(ingredientContract.getAllIngredientsArray(helper));
+    }
+
+    public void addIngredientButtonClick(View view) {
+        showIngredientDialog(null);
     }
 }
