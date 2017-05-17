@@ -11,9 +11,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.projects.jezinka.conaobiad.activities.MainActivity">
 
-    <include
+    <android.support.v7.widget.Toolbar
+        style="@style/toolbar"
         android:id="@+id/main_activity_toolbar"
-        layout="@layout/toolbar_main_app" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <ExpandableListView
         android:id="@+id/expandable_dinner_list_view"

@@ -10,9 +10,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.projects.jezinka.conaobiad.activities.MealListActivity">
 
-    <include
-        layout="@layout/toolbar_main_app"
-        android:id="@+id/meal_list_toolbar" />
+    <android.support.v7.widget.Toolbar
+        style="@style/toolbar"
+        android:id="@+id/meal_list_toolbar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="@string/meal_list" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_meal_button"

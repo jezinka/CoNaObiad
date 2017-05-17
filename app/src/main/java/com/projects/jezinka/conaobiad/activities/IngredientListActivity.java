@@ -42,7 +42,6 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
         listView.setAdapter(adapter);
 
         myToolbar = (Toolbar) findViewById(R.id.ingredient_list_toolbar);
-        myToolbar.setTitle(R.string.ingredient_list);
         setSupportActionBar(myToolbar);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -104,7 +104,6 @@ public class MealListActivity extends AppCompatActivity {
         });
 
         myToolbar = (Toolbar) findViewById(R.id.meal_list_toolbar);
-        myToolbar.setTitle(R.string.meal_list);
         setSupportActionBar(myToolbar);
 
         ActionBar ab = getSupportActionBar();

@@ -10,9 +10,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.projects.jezinka.conaobiad.activities.IngredientListActivity">
 
-    <include
+    <android.support.v7.widget.Toolbar
+        style="@style/toolbar"
         android:id="@+id/ingredient_list_toolbar"
-        layout="@layout/toolbar_main_app" />
+        app:title="@string/ingredient_list"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <android.support.design.widget.FloatingActionButton
         style="@style/floatingActionButtonAdd"
