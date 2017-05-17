@@ -30,12 +30,12 @@ public class IngredientContract extends BaseTable implements BaseColumns {
         return dbHelper.insert(tableName, contentValues);
     }
 
-    public boolean update(CoNaObiadDbHelper dbHelper, String name, Ingredient ingredient) {
+    public boolean update(CoNaObiadDbHelper dbHelper, String name, long ingredientId) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
-        dbHelper.update(tableName, contentValues, ingredient.getId());
+        dbHelper.update(tableName, contentValues, ingredientId);
         return true;
     }
 
