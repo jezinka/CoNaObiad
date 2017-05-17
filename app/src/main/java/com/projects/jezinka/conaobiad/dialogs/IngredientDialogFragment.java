@@ -22,7 +22,7 @@ public class IngredientDialogFragment extends DialogFragment {
 
         Bundle args = new Bundle();
         args.putLong("ingredientId", ingredientId);
-        args.putString("ingredientId", ingredientName);
+        args.putString("ingredientName", ingredientName);
         f.setArguments(args);
 
         return f;
