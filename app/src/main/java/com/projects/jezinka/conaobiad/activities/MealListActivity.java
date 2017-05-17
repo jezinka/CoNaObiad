@@ -226,7 +226,7 @@ public class MealListActivity extends AppCompatActivity {
                 filter.filter(s, new Filter.FilterListener() {
                     @Override
                     public void onFilterComplete(int count) {
-                        int icon = count == 0 ? 0 : android.R.drawable.ic_menu_add;
+                        int icon = count == 0 ? android.R.drawable.ic_menu_add : 0;
                         filterEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, icon, 0);
                     }
                 });
