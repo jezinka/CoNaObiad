@@ -22,11 +22,7 @@
 
     <ListView
         android:id="@+id/ingredient_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/ingredient_list_toolbar"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin" />
+        style="@style/list"
+        android:layout_below="@+id/ingredient_list_toolbar" />
 
 </RelativeLayout>
