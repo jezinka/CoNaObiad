@@ -35,8 +35,18 @@ public class IngredientDialogFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(inflater.inflate(R.layout.custom_dialog_add_ingredient, null));
-        builder.setTitle(R.string.put_ingredient_name);
+        builder.setView(inflater.inflate(R.layout.custom_dialog_add_ingredient, null))
+                .setTitle(R.string.put_ingredient_name)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mListener.onDialogPositiveClick(IngredientDialogFragment.this);
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
 
         String ingredientName = getArguments().getString("ingredientName", "");
 
@@ -44,21 +54,6 @@ public class IngredientDialogFragment extends DialogFragment {
             EditText input = (EditText) getActivity().findViewById(R.id.ingredient_name);
             input.setText(ingredientName);
         }
-
-        builder.setPositiveButton(R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        mListener.onDialogPositiveClick(IngredientDialogFragment.this);
-                    }
-                }
-        );
-        builder.setNegativeButton(R.string.cancel,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                }
-        );
 
         return builder.create();
     }
