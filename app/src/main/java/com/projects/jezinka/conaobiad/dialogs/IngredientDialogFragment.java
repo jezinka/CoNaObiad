@@ -36,9 +36,8 @@ public class IngredientDialogFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.custom_dialog_add_ingredient, null);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        builder.setView(view)
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setView(view)
                 .setTitle(R.string.put_ingredient_name)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
