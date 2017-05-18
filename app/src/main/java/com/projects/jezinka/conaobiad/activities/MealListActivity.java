@@ -6,13 +6,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +29,7 @@ import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.adapters.IngredientListAdapter;
 import com.projects.jezinka.conaobiad.adapters.MealListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
+import com.projects.jezinka.conaobiad.dialogs.MealDialogFragment;
 import com.projects.jezinka.conaobiad.models.Ingredient;
 import com.projects.jezinka.conaobiad.models.Meal;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
@@ -38,7 +39,7 @@ import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientCont
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealListActivity extends AppCompatActivity {
+public class MealListActivity extends AppCompatActivity implements MealDialogFragment.MealDialogListener {
 
     private static final int DRAWABLE_RIGHT = 2;
 
@@ -46,7 +47,6 @@ public class MealListActivity extends AppCompatActivity {
     private CoNaObiadDbHelper dbHelper;
     private MealContract mealContract;
     private MealIngredientContract mealIngredientContract;
-    private IngredientContract ingredientContract;
     private Toolbar myToolbar;
 
     @Override
@@ -56,7 +56,6 @@ public class MealListActivity extends AppCompatActivity {
 
         mealContract = new MealContract();
         mealIngredientContract = new MealIngredientContract();
-        ingredientContract = new IngredientContract();
 
         dbHelper = new CoNaObiadDbHelper(this);
 
@@ -98,8 +97,7 @@ public class MealListActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder builder = getAlertBuilder(v, null);
-                builder.show();
+                showMealDialog(null);
             }
         });
 
@@ -113,13 +111,12 @@ public class MealListActivity extends AppCompatActivity {
     @NonNull
     private AlertDialog.Builder getBuilder(final View view, final Meal meal) {
 
-        AlertDialog.Builder childContextMenuBuilder = new AlertDialog.Builder(view.getContext());
+        AlertDialog.Builder childContextMenuBuilder = new AlertDialog.Builder(this);
         childContextMenuBuilder.setItems(R.array.meal_actions, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        final AlertDialog.Builder builder = getAlertBuilder(view, meal);
-                        builder.show();
+                        showMealDialog(meal);
                         break;
                     case 1:
                         showIngredientPickerDialog(view, meal);
@@ -137,39 +134,6 @@ public class MealListActivity extends AppCompatActivity {
             }
         });
         return childContextMenuBuilder;
-    }
-
-    private AlertDialog.Builder getAlertBuilder(View v, final Meal meal) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-        builder.setTitle(R.string.put_meal_name);
-
-        final EditText input = new EditText(v.getContext());
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        if (meal != null) {
-            input.setText(meal.getName());
-        }
-        builder.setView(input);
-
-        builder.setPositiveButton(meal == null ? R.string.add : R.string.edit, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String mealName = input.getText().toString().trim();
-                if (meal != null) {
-                    mealContract.update(dbHelper, mealName, meal);
-                } else {
-                    mealContract.insert(dbHelper, mealName);
-                }
-                adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        return builder;
     }
 
     private void showIngredientPickerDialog(View v, final Meal meal) {
@@ -251,6 +215,7 @@ public class MealListActivity extends AppCompatActivity {
                         if (event.getRawX() >= (filterEditText.getRight() - bounds.width())) {
                             String text = filterEditText.getText().toString().trim();
                             if (text.length() != 0) {
+                                IngredientContract ingredientContract = new IngredientContract();
                                 long ingredientId = ingredientContract.insert(dbHelper, text);
                                 mealIngredientContract.insert(dbHelper, meal.getId(), ingredientId);
                                 ingredientListAdapter.updateResults(mealIngredientContract.getIngredientsWithMeal(meal, dbHelper));
@@ -305,5 +270,30 @@ public class MealListActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    public void showMealDialog(Meal meal) {
+        DialogFragment newFragment;
+
+        long mealId = meal != null ? meal.getId() : -1;
+        String mealName = meal != null ? meal.getName() : "";
+
+        newFragment = MealDialogFragment.newInstance(mealId, mealName);
+        newFragment.show(getSupportFragmentManager(), "MealDialogFragment");
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialogFragment) {
+
+        EditText input = (EditText) dialogFragment.getDialog().findViewById(R.id.meal_name);
+        String mealName = input.getText().toString().trim();
+        long mealId = dialogFragment.getArguments().getLong("mealId", -1);
+
+        if (mealId != -1) {
+            mealContract.update(dbHelper, mealName, mealId);
+        } else {
+            mealContract.insert(dbHelper, mealName);
+        }
+        adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
     }
 }

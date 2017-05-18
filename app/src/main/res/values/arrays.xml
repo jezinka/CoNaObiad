@@ -14,7 +14,7 @@
     <string-array name="meal_actions">
         <item>@string/edit</item>
         <item>@string/add_ingredients</item>
-        <item>@string/add_ingredients</item>
+        <item>@string/show_ingredients</item>
     </string-array>
 
     <string-array name="week_days_list_preference">

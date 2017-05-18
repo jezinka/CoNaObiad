@@ -41,12 +41,12 @@ public class MealContract extends BaseTable implements BaseColumns {
         return true;
     }
 
-    public boolean update(CoNaObiadDbHelper helper, String name, Meal meal) {
+    public boolean update(CoNaObiadDbHelper helper, String name, long mealId) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
-        helper.update(tableName, contentValues, meal.getId());
+        helper.update(tableName, contentValues, mealId);
         return true;
     }
 
