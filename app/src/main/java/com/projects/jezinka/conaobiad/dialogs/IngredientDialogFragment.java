@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 
 import com.projects.jezinka.conaobiad.R;
@@ -33,9 +34,11 @@ public class IngredientDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_dialog_add_ingredient, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(inflater.inflate(R.layout.custom_dialog_add_ingredient, null))
+
+        builder.setView(view)
                 .setTitle(R.string.put_ingredient_name)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -51,7 +54,7 @@ public class IngredientDialogFragment extends DialogFragment {
         String ingredientName = getArguments().getString("ingredientName", "");
 
         if (!ingredientName.equals("")) {
-            EditText input = (EditText) getActivity().findViewById(R.id.ingredient_name);
+            EditText input = (EditText) view.findViewById(R.id.ingredient_name);
             input.setText(ingredientName);
         }
 
