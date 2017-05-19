@@ -23,7 +23,7 @@ public class TimeUtils {
 
         int dayOfWeek = calendarInstance.get(Calendar.DAY_OF_WEEK);
 
-        if (dayOfWeek == MainActivity.firstDayOfWeek) {
+        if (dayOfWeek == MainActivity.getFirstDayOfWeek()) {
             return calendarInstance.getTime();
         }
 
@@ -39,6 +39,6 @@ public class TimeUtils {
     }
 
     public static int getTimeDeltaMilliseconds() {
-        return 1000 * 60 * 60 * 24 * MainActivity.planLength;
+        return 1000 * 60 * 60 * 24 * MainActivity.getPlanLength();
     }
 }

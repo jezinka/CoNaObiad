@@ -53,11 +53,20 @@ public class MainActivity extends AppCompatActivity {
     private MealContract mealContract;
     private DinnerContract dinnerContract;
     private DinnerExpandableListAdapter dinnerAdapter;
-    static boolean preferenceChanged = false;
-    public static int firstDayOfWeek;
-    public static int planLength;
+
+    private static int firstDayOfWeek;
+    private static int planLength;
 
     private final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
+    static boolean preferenceChanged = false;
+
+    public static int getFirstDayOfWeek() {
+        return firstDayOfWeek;
+    }
+
+    public static int getPlanLength() {
+        return planLength;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -285,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO: wstaw w puste
 
-        List<Meal> meals = mealContract.getRandomMeals(dbHelper, planLength);
+        List<Meal> meals = mealContract.getRandomMeals(dbHelper, getPlanLength());
 
         for (Meal meal : meals) {
             dinnerContract.insert(dbHelper, meal.getId(), calendarInstance.getTime());
