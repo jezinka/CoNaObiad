@@ -126,7 +126,7 @@ public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
         Calendar calendarInstance = Calendar.getInstance();
         calendarInstance.setTime(TimeUtils.getWeekStartDate(new Date()));
 
-        for (int i = 0; i < MainActivity.planLength; i++) {
+        for (int i = 0; i < MainActivity.getPlanLength(); i++) {
             Date date = calendarInstance.getTime();
 
             List<Dinner> dinnersList = new ArrayList<>();
