@@ -19,7 +19,8 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_meal_button"
         style="@style/floatingActionButtonAdd"
-        app:backgroundTint="@android:color/white" />
+        app:backgroundTint="@android:color/white"
+        android:onClick="addMealButtonClick" />
 
     <ListView
         android:id="@+id/meal_list_view"

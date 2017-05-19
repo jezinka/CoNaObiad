@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -29,8 +30,16 @@ public class MealDialogFragment extends DialogFragment {
         return f;
     }
 
+    public static MealDialogFragment newInstance() {
+        MealDialogFragment f = new MealDialogFragment();
 
-    @Override
+        Bundle args = new Bundle();
+        f.setArguments(args);
+
+        return f;
+    }
+
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -63,20 +72,18 @@ public class MealDialogFragment extends DialogFragment {
     }
 
     public interface MealDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
+        void onDialogPositiveClick(DialogFragment dialog);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        Activity activity;
-
-        if (context instanceof Activity) {
-            activity = (Activity) context;
-        } else {
+        if (!(context instanceof Activity)) {
             return;
         }
+
+        Activity activity = (Activity) context;
 
         try {
             mListener = (MealDialogListener) activity;

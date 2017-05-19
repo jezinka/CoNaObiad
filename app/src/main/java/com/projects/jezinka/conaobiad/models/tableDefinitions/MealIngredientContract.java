@@ -82,11 +82,11 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
         return new MealIngredient(0, 0);
     }
 
-    public List<String> getIngredientsForMeal(Meal meal, SQLiteOpenHelper helper) {
+    public List<String> getIngredientsForMeal(long mealId, SQLiteOpenHelper helper) {
         ArrayList<String> array_list = new ArrayList<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor res = db.rawQuery(getIngredientsSortedQuery(), new String[]{Long.toString(meal.getId())});
+        Cursor res = db.rawQuery(getIngredientsSortedQuery(), new String[]{Long.toString(mealId)});
 
         if (res != null && res.getCount() > 0) {
             res.moveToFirst();
@@ -100,11 +100,11 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
         return array_list;
     }
 
-    public Ingredient[] getIngredientsWithMeal(Meal meal, SQLiteOpenHelper helper) {
+    public Ingredient[] getIngredientsWithMeal(long mealId, SQLiteOpenHelper helper) {
         ArrayList<Ingredient> array_list = new ArrayList<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor res = db.rawQuery(getIngredientsWithChecked(), new String[]{Long.toString(meal.getId())});
+        Cursor res = db.rawQuery(getIngredientsWithChecked(), new String[]{Long.toString(mealId)});
 
         if (res != null && res.getCount() > 0) {
             res.moveToFirst();
