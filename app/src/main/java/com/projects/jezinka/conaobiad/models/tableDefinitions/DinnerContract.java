@@ -18,7 +18,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
 
     public static String tableName = "dinner";
 
-    private static String columnDate = "date";
+    public static String columnDate = "date";
     private static String columnMealId = "meal_id";
 
     public static String getCreateEntriesQuery() {
@@ -40,12 +40,12 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         return true;
     }
 
-    public boolean update(CoNaObiadDbHelper helper, Dinner dinner, Date date) {
+    public boolean update(CoNaObiadDbHelper helper, long dinnerId, Date date) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("date", date.getTime());
 
-        helper.update(tableName, contentValues, dinner.getId());
+        helper.update(tableName, contentValues, dinnerId);
         return true;
     }
 
@@ -94,11 +94,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         helper.delete(tableName, ids);
     }
 
-    public void delete(Long id, CoNaObiadDbHelper helper) {
-        helper.delete(tableName, id, "_ID");
-    }
-
-    public void delete(long date, CoNaObiadDbHelper helper) {
-        helper.delete(tableName, date, columnDate);
+    public void delete(Long id, String columnName, CoNaObiadDbHelper helper) {
+        helper.delete(tableName, id, columnName);
     }
 }

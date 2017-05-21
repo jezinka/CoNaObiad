@@ -77,6 +77,7 @@ public class IngredientPickerDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setView(view)
                 .setTitle(R.string.put_ingredient_name)
+                .setNegativeButton(R.string.cancel, null)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -89,11 +90,9 @@ public class IngredientPickerDialogFragment extends DialogFragment {
                             }
                         }
                     }
-                })
-                .setNegativeButton(R.string.cancel, null);
+                });
 
         AlertDialog alertDialog = builder.create();
-
 
         final EditText filterEditText = (EditText) view.findViewById(R.id.name_filter);
         filterEditText.addTextChangedListener(getWatcher(filterEditText));

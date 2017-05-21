@@ -1,36 +1,28 @@
 package com.projects.jezinka.conaobiad.activities;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.Filter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.adapters.DinnerExpandableListAdapter;
-import com.projects.jezinka.conaobiad.adapters.MealListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
+import com.projects.jezinka.conaobiad.dialogs.DinnerDialogFragment;
 import com.projects.jezinka.conaobiad.models.Dinner;
 import com.projects.jezinka.conaobiad.models.Meal;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
@@ -38,14 +30,10 @@ import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
 import com.projects.jezinka.conaobiad.utils.TimeUtils;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private static int firstDayOfWeek;
     private static int planLength;
 
-    private final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
     static boolean preferenceChanged = false;
 
     public static int getFirstDayOfWeek() {
@@ -98,17 +85,15 @@ public class MainActivity extends AppCompatActivity {
                         Date date = dinnerAdapter.getGroup(groupPosition);
                         switch (which) {
                             case 0:
-                                AlertDialog.Builder addBuilder = addNewDinnerBuilder(v, date);
-                                addBuilder.show();
+                                showNewDinnerDialog(date);
                                 break;
                             case 1:
-                                dinnerContract.delete(id, dbHelper);
+                                dinnerContract.delete(id, dinnerContract._ID, dbHelper);
                                 dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
                                 break;
                             case 2:
                                 Dinner dinner = dinnerAdapter.getChild(groupPosition, childPosition);
-                                AlertDialog.Builder editBuilder = addNewDinnerBuilder(v, date, dinner);
-                                editBuilder.show();
+                                showNewDinnerDialog(date, dinner);
                                 break;
                         }
                     }
@@ -123,9 +108,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(final AdapterView<?> parent, final View view, final int position, long id) {
                 int itemType = ExpandableListView.getPackedPositionType(id);
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    AlertDialog.Builder childContextMenuBuilder = new AlertDialog.Builder(view.getContext());
-                    childContextMenuBuilder.setItems(R.array.dinner_group_actions, new DialogInterface.OnClickListener() {
-
+                    AlertDialog.Builder contextMenu = new AlertDialog.Builder(view.getContext());
+                    contextMenu.setItems(R.array.dinner_group_actions, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             long packedPos = ((ExpandableListView) parent).getExpandableListPosition(position);
                             int groupPosition = ExpandableListView.getPackedPositionGroup(packedPos);
@@ -133,29 +117,19 @@ public class MainActivity extends AppCompatActivity {
 
                             switch (which) {
                                 case 0:
-                                    final AlertDialog.Builder builder = addNewDinnerBuilder(view, date);
-                                    builder.show();
+                                    showNewDinnerDialog(date);
                                     break;
                                 case 1:
-                                    dinnerContract.delete(date.getTime(), dbHelper);
+                                    dinnerContract.delete(date.getTime(), DinnerContract.columnDate, dbHelper);
                                     dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
                                     break;
                             }
                         }
                     });
-                    childContextMenuBuilder.show();
+                    contextMenu.show();
                     return true;
                 }
                 return false;
-            }
-        });
-
-        FloatingActionButton addDinnerButton = (FloatingActionButton) findViewById(R.id.new_dinner_button);
-        addDinnerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder builder = addNewDinnerBuilder(v);
-                builder.show();
             }
         });
 
@@ -172,31 +146,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showEmptyMealListMessage(Context context) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        builder.setMessage(R.string.empty_meal_list_message);
-        builder.setCancelable(true);
-
-        builder.setPositiveButton(
-                R.string.yes,
-                new DialogInterface.OnClickListener() {
+    private void showEmptyMealListMessage(final Context context) {
+        new AlertDialog.Builder(context)
+                .setMessage(R.string.empty_meal_list_message)
+                .setCancelable(true)
+                .setNegativeButton(R.string.no, null)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(builder.getContext(), MealListActivity.class);
+                        Intent intent = new Intent(context, MealListActivity.class);
                         startActivity(intent);
                     }
-                });
-
-        builder.setNegativeButton(
-                R.string.no,
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+                })
+                .show();
     }
 
     @Override
@@ -263,8 +224,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void showShoppingListDialog() {
 
-        MealIngredientContract mealIngredientContract = new MealIngredientContract();
-
         Dinner[] dinners = dinnerContract.getDinners(dbHelper);
 
         if (dinners.length == 0) {
@@ -279,12 +238,12 @@ public class MainActivity extends AppCompatActivity {
             meals.add(meal);
         }
 
-        AlertDialog d = new AlertDialog.Builder(this)
+        MealIngredientContract mealIngredientContract = new MealIngredientContract();
+        new AlertDialog.Builder(this)
                 .setTitle(R.string.shopping_list)
                 .setPositiveButton(android.R.string.ok, null)
                 .setMessage(mealIngredientContract.getShoppingList(meals, dbHelper))
-                .create();
-        d.show();
+                .show();
     }
 
     private void fillList() {
@@ -304,139 +263,24 @@ public class MainActivity extends AppCompatActivity {
         dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
     }
 
-    private AlertDialog.Builder addNewDinnerBuilder(View v) {
-        return addNewDinnerBuilder(v, null, null);
+    public void showNewDinnerDialog(View view) {
+        showNewDinnerDialog(new Date(), null);
     }
 
-    private AlertDialog.Builder addNewDinnerBuilder(View v, Date date) {
-        return addNewDinnerBuilder(v, date, null);
+    private void showNewDinnerDialog(Date date) {
+        showNewDinnerDialog(date, null);
     }
 
-    private AlertDialog.Builder addNewDinnerBuilder(final View v, final Date date, final Dinner dinner) {
-        final View view = getLayoutInflater().inflate(R.layout.custom_dialog_add_dinner, new LinearLayout(v.getContext()), false);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-        builder.setTitle(R.string.add_dinner);
-        builder.setView(view);
-
-        final TextView dateView = (TextView) view.findViewById(R.id.date_view);
-        final TextView mealName = (TextView) view.findViewById(R.id.meal_name_text);
-        final TextView mealId = (TextView) view.findViewById(R.id.meal_name_id);
-
-        if (date != null) {
-            dateView.setText(df.format(date));
-        } else {
-            dateView.setText(df.format(new Date()));
-        }
-
-        if (dinner != null) {
-            mealName.setText(dinner.getMeal().getName());
-            mealId.setText(String.valueOf(dinner.getMeal().getId()));
-        }
-
-        dateView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog(v, dateView, date);
-            }
-        });
-
-        if (dinner == null) {
-            mealName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showMealPickerDialog(v, mealName, mealId);
-                }
-            });
-        }
-
-        builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Date date;
-                String mealIdText = mealId.getText().toString();
-
-                try {
-                    String stringDate = dateView.getText().toString();
-                    date = new SimpleDateFormat("dd.MM.yyyy").parse(stringDate);
-                } catch (ParseException ex) {
-                    date = new Date();
-                }
-
-                if (dinner != null) {
-                    dinnerContract.update(dbHelper, dinner, date);
-                } else {
-
-                    dinnerContract.insert(dbHelper, Long.parseLong(mealIdText), date);
-                }
-                dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        return builder;
+    private void showNewDinnerDialog(Date date, Dinner dinner) {
+        DialogFragment newFragment = DinnerDialogFragment.newInstance(date.getTime(), dinner);
+        newFragment.show(getSupportFragmentManager(), "DinnerDialogFragment");
     }
 
-    private void showMealPickerDialog(View v, final TextView mealName, final TextView mealId) {
-        View addDinnerView = getLayoutInflater().inflate(R.layout.filterable_list_view, new LinearLayout(v.getContext()), false);
-        final MealListAdapter mealAdapter = new MealListAdapter(v.getContext(), R.layout.single_select_list, mealContract.getAllMealsArray(dbHelper));
-
-        final AlertDialog.Builder addDinnerDialogBuilder = new AlertDialog.Builder(v.getContext());
-        addDinnerDialogBuilder.setView(addDinnerView);
-        addDinnerDialogBuilder.setTitle(R.string.pick_meal);
-
-        final AlertDialog alertDialog = addDinnerDialogBuilder.create();
-
-        ListView mealListView = (ListView) addDinnerView.findViewById(R.id.filterable_list_view);
-        mealListView.setAdapter(mealAdapter);
-        mealListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View dialogView, int position, long id) {
-                mealName.setText(mealAdapter.getItem(position).getName());
-                mealId.setText(String.valueOf(mealAdapter.getItem(position).getId()));
-                alertDialog.dismiss();
-            }
-        });
-
-        EditText filterEditText = (EditText) addDinnerView.findViewById(R.id.name_filter);
-        filterEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Filter filter = mealAdapter.getFilter();
-                filter.filter(s);
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        alertDialog.show();
+    public CoNaObiadDbHelper getDbHelper() {
+        return this.dbHelper;
     }
 
-    private void showDatePickerDialog(View v, final TextView dateView, Date date) {
-        Calendar todayCalendarInstance = Calendar.getInstance();
-
-        if (date != null) {
-            todayCalendarInstance.setTime(date);
-        }
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar calendarInstance = Calendar.getInstance();
-                calendarInstance.set(year, monthOfYear, dayOfMonth);
-                dateView.setText(df.format(calendarInstance.getTime()));
-            }
-        }, todayCalendarInstance.get(Calendar.YEAR), todayCalendarInstance.get(Calendar.MONTH), todayCalendarInstance.get(Calendar.DATE));
-        datePickerDialog.show();
+    public DinnerExpandableListAdapter getAdapter() {
+        return this.dinnerAdapter;
     }
 }

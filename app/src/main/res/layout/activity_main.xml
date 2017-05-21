@@ -28,6 +28,7 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/new_dinner_button"
         app:backgroundTint="@android:color/white"
-        style="@style/floatingActionButtonAdd" />
+        style="@style/floatingActionButtonAdd"
+        android:onClick="showNewDinnerDialog" />
 
 </RelativeLayout>
