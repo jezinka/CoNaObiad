@@ -108,29 +108,33 @@ public class MealListActivity extends AppCompatActivity implements MealDialogFra
                                 .show();
                         break;
                     case 3:
-                        final EditText recipeText = new EditText(contextMenu.getContext());
-                        recipeText.setText(meal.getRecipe());
-                        recipeText.setLines(8);
-                        recipeText.setMinLines(6);
-                        recipeText.setMaxLines(10);
-
-                        new AlertDialog.Builder(contextMenu.getContext())
-                                .setTitle(R.string.recipe)
-                                .setView(recipeText)
-                                .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        mealContract.addRecipe(dbHelper, recipeText.getText().toString(), meal.getId());
-                                        adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
-                                    }
-                                })
-                                .setNegativeButton(R.string.cancel, null)
-                                .show();
+                        showAddRecipeDialog(meal);
                         break;
                 }
             }
         });
         contextMenu.show();
+    }
+
+    private void showAddRecipeDialog(final Meal meal) {
+        final EditText recipeText = new EditText(this);
+        recipeText.setText(meal.getRecipe());
+        recipeText.setLines(8);
+        recipeText.setMinLines(6);
+        recipeText.setMaxLines(10);
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.recipe)
+                .setView(recipeText)
+                .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mealContract.addRecipe(dbHelper, recipeText.getText().toString(), meal.getId());
+                        adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
     private void toggleCheckboxesAndToolbar() {
