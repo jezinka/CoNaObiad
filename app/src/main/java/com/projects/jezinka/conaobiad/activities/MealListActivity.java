@@ -117,15 +117,14 @@ public class MealListActivity extends AppCompatActivity implements MealDialogFra
     }
 
     private void showAddRecipeDialog(final Meal meal) {
-        final EditText recipeText = new EditText(this);
+        View view = getLayoutInflater().inflate(R.layout.multiline_dialog, null);
+
+        final EditText recipeText = (EditText) view.findViewById(R.id.multiline_edit_text);
         recipeText.setText(meal.getRecipe());
-        recipeText.setLines(8);
-        recipeText.setMinLines(6);
-        recipeText.setMaxLines(10);
 
         new AlertDialog.Builder(this)
                 .setTitle(R.string.recipe)
-                .setView(recipeText)
+                .setView(view)
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
