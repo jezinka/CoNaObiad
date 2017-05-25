@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                                 showNewDinnerDialog(date);
                                 break;
                             case 1:
-                                showRecipe(dinner);
+                                showRecipeDialog(dinner);
                                 break;
                             case 2:
                                 dinnerContract.delete(id, dinnerContract._ID, dbHelper);
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
     }
 
-    private void showRecipe(Dinner dinner) {
+    private void showRecipeDialog(Dinner dinner) {
         TextView recipeText = new TextView(this);
         recipeText.setText(dinner.getMeal().getRecipe());
 
