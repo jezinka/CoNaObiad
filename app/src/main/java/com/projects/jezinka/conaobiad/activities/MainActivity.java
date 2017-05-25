@@ -89,15 +89,7 @@ public class MainActivity extends AppCompatActivity {
                                 showNewDinnerDialog(date);
                                 break;
                             case 1:
-                                TextView recipeText = new TextView(v.getContext());
-                                recipeText.setText(dinner.getMeal().getRecipe());
-
-                                new AlertDialog.Builder(v.getContext())
-                                        .setTitle(R.string.recipe)
-                                        .setView(recipeText)
-                                        .setPositiveButton(R.string.ok, null)
-                                        .setNegativeButton(R.string.cancel, null)
-                                        .show();
+                                showRecipe(dinner);
                                 break;
                             case 2:
                                 dinnerContract.delete(id, dinnerContract._ID, dbHelper);
@@ -146,6 +138,17 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         setSupportActionBar(myToolbar);
+    }
+
+    private void showRecipe(Dinner dinner) {
+        TextView recipeText = new TextView(this);
+        recipeText.setText(dinner.getMeal().getRecipe());
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.recipe)
+                .setView(recipeText)
+                .setPositiveButton(R.string.ok, null)
+                .show();
     }
 
     @Override
