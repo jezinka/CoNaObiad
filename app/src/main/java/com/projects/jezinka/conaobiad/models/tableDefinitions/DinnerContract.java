@@ -63,8 +63,9 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         long id = res.getLong(res.getColumnIndex(_ID));
         long mealId = res.getLong(res.getColumnIndex(columnMealId));
         String mealName = res.getString(res.getColumnIndex(MealContract.columnName));
+        String recipe = res.getString(res.getColumnIndex(MealContract.columnRecipe));
         Date dinnerDate = new Date(res.getLong(res.getColumnIndex(columnDate)));
-        Meal meal = new Meal(mealId, mealName);
+        Meal meal = new Meal(mealId, mealName, recipe);
         return new Dinner(id, meal, dinnerDate);
     }
 
@@ -82,7 +83,8 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         return "select " + tableName + "." + _ID + ", " +
                 columnMealId + ", " +
                 columnDate + ", " +
-                MealContract.columnName +
+                MealContract.columnName + ", " +
+                MealContract.columnRecipe +
                 " from " + tableName +
                 " join " + MealContract.tableName +
                 " on " + tableName + "." + columnMealId + "= " + MealContract.tableName + "." + _ID +

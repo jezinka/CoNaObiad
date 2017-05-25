@@ -7,23 +7,18 @@ public class Meal {
     private String name;
     List<Ingredient> ingredients;
     private boolean checked;
+    private String recipe;
 
     public Meal() {
         super();
     }
 
-    public Meal(long id, String name) {
+    public Meal(long id, String name, String recipe) {
         this.id = id;
         this.name = name;
+        this.recipe = recipe;
         this.checked = false;
     }
-
-    public Meal(long id, String name, List<Ingredient> ingredients) {
-        this.id = id;
-        this.name = name;
-        this.ingredients = ingredients;
-    }
-
 
     public long getId() {
         return id;
@@ -47,5 +42,13 @@ public class Meal {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public String getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(String recipe) {
+        this.recipe = recipe;
     }
 }

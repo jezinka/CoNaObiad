@@ -18,16 +18,19 @@ public class MealContract extends BaseTable implements BaseColumns {
 
     public static String tableName = "meal";
     static String columnName = "name";
+    static String columnRecipe = "recipe";
 
     public static String getCreateEntriesQuery() {
         return "CREATE TABLE " + tableName + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
-                columnName + " TEXT)";
+                columnName + " TEXT," +
+                columnRecipe + " TEXT" +
+                ")";
     }
 
     @NonNull
     private String getAllRecordsQuery() {
-        return "select " + _ID + ", " + columnName +
+        return "select " + _ID + ", " + columnName + ", " + columnRecipe +
                 " from " + tableName +
                 " order by " + columnName + " COLLATE NOCASE";
     }
@@ -58,7 +61,8 @@ public class MealContract extends BaseTable implements BaseColumns {
     Meal getFromCursor(Cursor res) {
         String name = res.getString(res.getColumnIndex(columnName));
         long id = res.getLong(res.getColumnIndex(_ID));
-        return new Meal(id, name);
+        String recipe = res.getString(res.getColumnIndex(columnRecipe));
+        return new Meal(id, name, recipe);
     }
 
     public Meal[] getAllMealsArray(SQLiteOpenHelper helper) {
@@ -86,5 +90,14 @@ public class MealContract extends BaseTable implements BaseColumns {
     private static String getRandomMealsQuery(int size) {
         return "SELECT  " + _ID + ", " + columnName + " FROM " + tableName +
                 " ORDER BY RANDOM() LIMIT " + size;
+    }
+
+    public boolean addRecipe(CoNaObiadDbHelper helper, String recipe, long mealId) {
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("recipe", recipe);
+
+        helper.update(tableName, contentValues, mealId);
+        return true;
     }
 }

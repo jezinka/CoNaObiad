@@ -2,6 +2,7 @@
 <resources>
     <string-array name="dinner_child_actions">
         <item>@string/add</item>
+        <item>@string/show_recipe</item>
         <item>@string/delete</item>
         <item>@string/edit_date</item>
     </string-array>
@@ -15,6 +16,7 @@
         <item>@string/edit</item>
         <item>@string/add_ingredients</item>
         <item>@string/show_ingredients</item>
+        <item>@string/add_recipe</item>
     </string-array>
 
     <string-array name="week_days_list_preference">

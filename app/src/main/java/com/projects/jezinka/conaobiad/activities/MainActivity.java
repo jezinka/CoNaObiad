@@ -83,16 +83,27 @@ public class MainActivity extends AppCompatActivity {
                 childContextMenuBuilder.setItems(R.array.dinner_child_actions, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Date date = dinnerAdapter.getGroup(groupPosition);
+                        Dinner dinner = dinnerAdapter.getChild(groupPosition, childPosition);
                         switch (which) {
                             case 0:
                                 showNewDinnerDialog(date);
                                 break;
                             case 1:
+                                TextView recipeText = new TextView(v.getContext());
+                                recipeText.setText(dinner.getMeal().getRecipe());
+
+                                new AlertDialog.Builder(v.getContext())
+                                        .setTitle(R.string.recipe)
+                                        .setView(recipeText)
+                                        .setPositiveButton(R.string.ok, null)
+                                        .setNegativeButton(R.string.cancel, null)
+                                        .show();
+                                break;
+                            case 2:
                                 dinnerContract.delete(id, dinnerContract._ID, dbHelper);
                                 dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
                                 break;
-                            case 2:
-                                Dinner dinner = dinnerAdapter.getChild(groupPosition, childPosition);
+                            case 3:
                                 showNewDinnerDialog(date, dinner);
                                 break;
                         }
