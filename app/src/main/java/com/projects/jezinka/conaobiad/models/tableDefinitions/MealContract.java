@@ -88,7 +88,7 @@ public class MealContract extends BaseTable implements BaseColumns {
     }
 
     private static String getRandomMealsQuery(int size) {
-        return "SELECT  " + _ID + ", " + columnName + " FROM " + tableName +
+        return "SELECT  " + _ID + ", " + columnName + ", " + columnRecipe + " FROM " + tableName +
                 " ORDER BY RANDOM() LIMIT " + size;
     }
 
