@@ -6,11 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.activities.MainActivity;
+import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.Dinner;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
 import com.projects.jezinka.conaobiad.utils.TimeUtils;
 
 import java.text.DateFormat;
@@ -26,15 +29,18 @@ public class DinnerAdapter extends BaseAdapter {
     private Context mContext;
     private List<Date> dates;
     private TreeMap<Date, List<Dinner>> dinners;
+    private CoNaObiadDbHelper dbHelper;
 
-    public DinnerAdapter(Context c, Dinner[] dinners) {
-        mContext = c;
-        this.dinners = getPreparedHashMap(dinners);
+    public DinnerAdapter(Context c) {
+        this.mContext = c;
+        this.dbHelper = ((MainActivity) c).getDbHelper();
+
+        this.dinners = getDinners();
         this.dates = new ArrayList<>(this.dinners.keySet());
     }
 
-    public void updateResults(Dinner[] dinners) {
-        this.dinners = getPreparedHashMap(dinners);
+    public void updateResults() {
+        this.dinners = this.getDinners();
         this.dates = new ArrayList<>(this.dinners.keySet());
         this.notifyDataSetChanged();
     }
@@ -63,7 +69,10 @@ public class DinnerAdapter extends BaseAdapter {
         return 0;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
+        final Date date = getItem(position);
+        final Dinner dinner = getDinner(date);
 
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -72,6 +81,38 @@ public class DinnerAdapter extends BaseAdapter {
 
         TextView textView = (TextView) convertView.findViewById(R.id.text_view);
         textView.setText(getTextForTile(position));
+
+        ImageButton button = (ImageButton) convertView.findViewById(R.id.trash_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DinnerContract dinnerContract = new DinnerContract();
+                dinnerContract.delete(date.getTime(), DinnerContract.columnDate, dbHelper);
+                updateResults();
+            }
+        });
+
+        ImageButton add_button = (ImageButton) convertView.findViewById(R.id.add_dinner_button);
+        add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) mContext).showNewDinnerDialog(date);
+            }
+        });
+        ImageButton recipe_button = (ImageButton) convertView.findViewById(R.id.show_recipe_button);
+        recipe_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) mContext).showRecipeDialog(dinner);
+            }
+        });
+        ImageButton ingredients_button = (ImageButton) convertView.findViewById(R.id.show_ingredients_button);
+        ingredients_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) mContext).showIngredients(dinner);
+            }
+        });
 
         return convertView;
     }
@@ -91,7 +132,9 @@ public class DinnerAdapter extends BaseAdapter {
         return text.toString();
     }
 
-    private TreeMap<Date, List<Dinner>> getPreparedHashMap(Dinner[] dinners) {
+    private TreeMap<Date, List<Dinner>> getDinners() {
+        DinnerContract dinnerContract = new DinnerContract();
+        Dinner[] dinners = dinnerContract.getDinners(dbHelper);
         TreeMap<Date, List<Dinner>> preparedRows = new TreeMap<>();
 
         Calendar calendarInstance = Calendar.getInstance();

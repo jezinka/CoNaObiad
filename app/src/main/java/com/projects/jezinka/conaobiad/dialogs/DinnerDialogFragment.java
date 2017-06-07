@@ -95,7 +95,7 @@ public class DinnerDialogFragment extends DialogFragment {
                                 } else {
                                     dinnerContract.insert(dbHelper, getArguments().getLong("mealId"), date);
                                 }
-                                dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
+                                dinnerAdapter.updateResults();
                             }
                         });
 

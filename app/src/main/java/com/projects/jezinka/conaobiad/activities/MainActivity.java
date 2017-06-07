@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         planLength = SettingsActivity.getPlanLength(this);
         firstDayOfWeek = SettingsActivity.getFirstDay(this);
 
-        dinnerAdapter = new DinnerAdapter(this, dinnerContract.getDinners(dbHelper));
+        dinnerAdapter = new DinnerAdapter(this);
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(dinnerAdapter);
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 dinnerContract.delete(date.getTime(), DinnerContract.columnDate, dbHelper);
-                                dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
+                                dinnerAdapter.updateResults();
                                 break;
                             case 3:
                                 showNewDinnerDialog(date, dinner);
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
     }
 
-    private void showRecipeDialog(Dinner dinner) {
+    public void showRecipeDialog(Dinner dinner) {
         TextView recipeText = new TextView(this);
         if (dinner != null) {
             recipeText.setText(dinner.getRecipe());
@@ -232,6 +232,19 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+    public void showIngredients(final Dinner dinner) {
+        MealIngredientContract mealIngredientContract = new MealIngredientContract();
+
+        List<Meal> meals = new ArrayList<>();
+        meals.add(dinner.getMeal());
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.shopping_list)
+                .setPositiveButton(android.R.string.ok, null)
+                .setMessage(mealIngredientContract.getShoppingList(meals, dbHelper))
+                .show();
+    }
+
     private void fillList() {
 
         Calendar calendarInstance = Calendar.getInstance();
@@ -246,14 +259,14 @@ public class MainActivity extends AppCompatActivity {
             calendarInstance.add(Calendar.DATE, 1);
         }
 
-        dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
+        dinnerAdapter.updateResults();
     }
 
     public void showNewDinnerDialog(View view) {
         showNewDinnerDialog(new Date(), null);
     }
 
-    private void showNewDinnerDialog(Date date) {
+    public void showNewDinnerDialog(Date date) {
         showNewDinnerDialog(date, null);
     }
 
