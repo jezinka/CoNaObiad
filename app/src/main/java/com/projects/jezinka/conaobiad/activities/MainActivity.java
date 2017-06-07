@@ -14,7 +14,6 @@ import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,36 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(dinnerAdapter);
-
-        gridview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                AlertDialog.Builder childContextMenuBuilder = new AlertDialog.Builder(view.getContext());
-                childContextMenuBuilder.setItems(R.array.dinner_child_actions, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Date date = dinnerAdapter.getItem(position);
-                        Dinner dinner = dinnerAdapter.getDinner(date);
-                        switch (which) {
-                            case 0:
-                                showNewDinnerDialog(date);
-                                break;
-                            case 1:
-                                showRecipeDialog(dinner);
-                                break;
-                            case 2:
-                                dinnerContract.delete(date.getTime(), DinnerContract.columnDate, dbHelper);
-                                dinnerAdapter.updateResults();
-                                break;
-                            case 3:
-                                showNewDinnerDialog(date, dinner);
-                                break;
-                        }
-                    }
-                });
-                childContextMenuBuilder.show();
-                return true;
-            }
-        });
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         setSupportActionBar(myToolbar);
