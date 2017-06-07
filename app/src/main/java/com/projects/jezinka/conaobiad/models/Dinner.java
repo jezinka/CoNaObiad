@@ -1,9 +1,6 @@
 package com.projects.jezinka.conaobiad.models;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 public class Dinner {
 
@@ -33,25 +30,19 @@ public class Dinner {
         return meal;
     }
 
-    public void setMeal(Meal meal) {
-        this.meal = meal;
-    }
-
     public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public String getMealName() {
+        return this.meal.getName();
     }
 
-    public String getDateString() {
-        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
-        StringBuffer row = new StringBuffer();
+    public long getMealId() {
+        return this.meal.getId();
+    }
 
-        row.append(new SimpleDateFormat("EEEE").format(date));
-        row.append(" - ");
-        row.append(df.format(date));
-        return row.toString();
+    public String getRecipe() {
+        return this.meal.getRecipe();
     }
 }

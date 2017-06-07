@@ -15,12 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ExpandableListView;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.projects.jezinka.conaobiad.R;
-import com.projects.jezinka.conaobiad.adapters.DinnerExpandableListAdapter;
+import com.projects.jezinka.conaobiad.adapters.DinnerAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.dialogs.DinnerDialogFragment;
 import com.projects.jezinka.conaobiad.models.Dinner;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private CoNaObiadDbHelper dbHelper;
     private MealContract mealContract;
     private DinnerContract dinnerContract;
-    private DinnerExpandableListAdapter dinnerAdapter;
+    private DinnerAdapter dinnerAdapter;
 
     private static int firstDayOfWeek;
     private static int planLength;
@@ -71,19 +71,19 @@ public class MainActivity extends AppCompatActivity {
         planLength = SettingsActivity.getPlanLength(this);
         firstDayOfWeek = SettingsActivity.getFirstDay(this);
 
-        dinnerAdapter = new DinnerExpandableListAdapter(this, dinnerContract.getDinners(dbHelper));
+        dinnerAdapter = new DinnerAdapter(this, dinnerContract.getDinners(dbHelper));
 
-        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandable_dinner_list_view);
-        expandableListView.setAdapter(dinnerAdapter);
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        gridview.setAdapter(dinnerAdapter);
 
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        gridview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, final View v, final int groupPosition, final int childPosition, final long id) {
-                AlertDialog.Builder childContextMenuBuilder = new AlertDialog.Builder(v.getContext());
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder childContextMenuBuilder = new AlertDialog.Builder(view.getContext());
                 childContextMenuBuilder.setItems(R.array.dinner_child_actions, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Date date = dinnerAdapter.getGroup(groupPosition);
-                        Dinner dinner = dinnerAdapter.getChild(groupPosition, childPosition);
+                        Date date = dinnerAdapter.getItem(position);
+                        Dinner dinner = dinnerAdapter.getDinner(date);
                         switch (which) {
                             case 0:
                                 showNewDinnerDialog(date);
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                                 showRecipeDialog(dinner);
                                 break;
                             case 2:
-                                dinnerContract.delete(id, dinnerContract._ID, dbHelper);
+                                dinnerContract.delete(date.getTime(), DinnerContract.columnDate, dbHelper);
                                 dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
                                 break;
                             case 3:
@@ -106,43 +106,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        expandableListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(final AdapterView<?> parent, final View view, final int position, long id) {
-                int itemType = ExpandableListView.getPackedPositionType(id);
-                if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    AlertDialog.Builder contextMenu = new AlertDialog.Builder(view.getContext());
-                    contextMenu.setItems(R.array.dinner_group_actions, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            long packedPos = ((ExpandableListView) parent).getExpandableListPosition(position);
-                            int groupPosition = ExpandableListView.getPackedPositionGroup(packedPos);
-                            Date date = dinnerAdapter.getGroup(groupPosition);
-
-                            switch (which) {
-                                case 0:
-                                    showNewDinnerDialog(date);
-                                    break;
-                                case 1:
-                                    dinnerContract.delete(date.getTime(), DinnerContract.columnDate, dbHelper);
-                                    dinnerAdapter.updateResults(dinnerContract.getDinners(dbHelper));
-                                    break;
-                            }
-                        }
-                    });
-                    contextMenu.show();
-                    return true;
-                }
-                return false;
-            }
-        });
-
         Toolbar myToolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         setSupportActionBar(myToolbar);
     }
 
     private void showRecipeDialog(Dinner dinner) {
         TextView recipeText = new TextView(this);
-        recipeText.setText(dinner.getMeal().getRecipe());
+        if (dinner != null) {
+            recipeText.setText(dinner.getRecipe());
+        }
 
         new AlertDialog.Builder(this)
                 .setTitle(R.string.recipe)
@@ -294,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
         return this.dbHelper;
     }
 
-    public DinnerExpandableListAdapter getAdapter() {
+    public DinnerAdapter getAdapter() {
         return this.dinnerAdapter;
     }
 }

@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.activities.MainActivity;
-import com.projects.jezinka.conaobiad.adapters.DinnerExpandableListAdapter;
+import com.projects.jezinka.conaobiad.adapters.DinnerAdapter;
 import com.projects.jezinka.conaobiad.adapters.MealListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.Dinner;
@@ -41,7 +41,7 @@ public class DinnerDialogFragment extends DialogFragment {
     private TextView mealNameTextView;
 
     private CoNaObiadDbHelper dbHelper;
-    private DinnerExpandableListAdapter dinnerAdapter;
+    private DinnerAdapter dinnerAdapter;
     private DinnerContract dinnerContract;
 
     private final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
