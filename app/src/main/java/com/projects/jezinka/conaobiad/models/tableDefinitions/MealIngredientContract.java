@@ -139,9 +139,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
             res.moveToFirst();
 
             do {
-                String name = res.getString(0);
-                int count = res.getInt(1);
-                array_list.add(count + " x " + name + "\n");
+                array_list.add(res.getString(0));
             } while (res.moveToNext());
         }
 
@@ -162,7 +160,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
     @NonNull
     private String getShoppingListQuery(List<Meal> meals) {
         StringBuffer sb = new StringBuffer();
-        sb.append("select name, count(name) from (");
+        sb.append("select no || ' x ' || name from ( select name, count(name) as no from (");
 
         for (int i = 0; i < meals.size(); i++) {
 
@@ -173,7 +171,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
             }
         }
 
-        sb.append(") group by name order by name collate nocase;");
+        sb.append(") group by name order by name collate nocase);");
         return sb.toString();
     }
 
