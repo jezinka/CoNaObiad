@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -79,15 +80,19 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
     }
 
-    public void showRecipeDialog(Dinner dinner) {
-        TextView recipeText = new TextView(this);
-        if (dinner != null) {
-            recipeText.setText(dinner.getRecipe());
+    public void showRecipeDialog(Dinner[] dinners) {
+
+        StringBuffer sb = new StringBuffer();
+
+        for (Dinner dinner : dinners) {
+            sb.append("**" + dinner.getMealName() + "**\n\n");
+            sb.append(dinner.getRecipe());
+            sb.append("\n\n");
         }
 
         new AlertDialog.Builder(this)
                 .setTitle(R.string.recipe)
-                .setView(recipeText)
+                .setMessage(sb.toString())
                 .setPositiveButton(R.string.ok, null)
                 .show();
     }
@@ -179,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showShoppingListDialog() {
 
-        Dinner[] dinners = dinnerContract.getDinners(dbHelper);
+        Dinner[] dinners = dinnerContract.getDinnersForActualWeek(dbHelper);
 
         if (dinners.length == 0) {
             Toast.makeText(this, R.string.empty_dinner_list_message, Toast.LENGTH_LONG).show();
@@ -201,16 +206,21 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void showIngredients(final Dinner dinner) {
-        MealIngredientContract mealIngredientContract = new MealIngredientContract();
+    public void showIngredients(Dinner[] dinners) {
 
-        List<Meal> meals = new ArrayList<>();
-        meals.add(dinner.getMeal());
+        MealIngredientContract mealIngredientContract = new MealIngredientContract();
+        StringBuffer sb = new StringBuffer();
+
+        for (Dinner dinner : dinners) {
+            sb.append("**" + dinner.getMealName() + "**\n\n");
+            sb.append(TextUtils.join("\n", mealIngredientContract.getIngredientsForMeal(dinner.getMealId(), dbHelper)));
+            sb.append("\n\n");
+        }
 
         new AlertDialog.Builder(this)
-                .setTitle(R.string.shopping_list)
+                .setTitle(R.string.ingredient_list)
                 .setPositiveButton(android.R.string.ok, null)
-                .setMessage(mealIngredientContract.getShoppingList(meals, dbHelper))
+                .setMessage(sb.toString())
                 .show();
     }
 

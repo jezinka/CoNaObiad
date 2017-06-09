@@ -50,12 +50,21 @@ public class DinnerContract extends BaseTable implements BaseColumns {
     }
 
     @NonNull
-    private ArrayList<Dinner> getDinnersByDate(SQLiteOpenHelper helper, Date date) {
+    private ArrayList<Dinner> getDinnersForActualWeek(SQLiteOpenHelper helper, Date date) {
 
         long weekStartDate = TimeUtils.getWeekStartDate(date).getTime();
         String[] sqlArgs = {String.valueOf(weekStartDate), String.valueOf(weekStartDate + TimeUtils.getTimeDeltaMilliseconds())};
 
-        return getArrayList(helper, sqlArgs, getRecordsByDateSql());
+        return getArrayList(helper, sqlArgs, getRecordsByDateSql(" where " + columnDate + " between ? and ?"));
+    }
+
+    @NonNull
+    private ArrayList<Dinner> getDinnersForDay(SQLiteOpenHelper helper, Date date) {
+
+        long weekStartDate = date.getTime();
+        String[] sqlArgs = {String.valueOf(weekStartDate)};
+
+        return getArrayList(helper, sqlArgs, getRecordsByDateSql(" where " + columnDate + " = ? "));
     }
 
     @NonNull
@@ -69,17 +78,17 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         return new Dinner(id, meal, dinnerDate);
     }
 
-    public Dinner[] getDinners(SQLiteOpenHelper helper) {
-        return getDinnersByDateArray(helper, new Date());
-    }
-
-    @NonNull
-    private Dinner[] getDinnersByDateArray(SQLiteOpenHelper helper, Date date) {
-        ArrayList<Dinner> result = getDinnersByDate(helper, date);
+    public Dinner[] getDinnersForActualWeek(SQLiteOpenHelper helper) {
+        ArrayList<Dinner> result = getDinnersForActualWeek(helper, new Date());
         return result.toArray(new Dinner[result.size()]);
     }
 
-    public String getRecordsByDateSql() {
+    public Dinner[] getDinners(SQLiteOpenHelper helper, Date date) {
+        ArrayList<Dinner> result = getDinnersForDay(helper, date);
+        return result.toArray(new Dinner[result.size()]);
+    }
+
+    private String getRecordsByDateSql(String whereClause) {
         return "select " + tableName + "." + _ID + ", " +
                 columnMealId + ", " +
                 columnDate + ", " +
@@ -88,7 +97,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
                 " from " + tableName +
                 " join " + MealContract.tableName +
                 " on " + tableName + "." + columnMealId + "= " + MealContract.tableName + "." + _ID +
-                " where " + columnDate + " between ? and ?" +
+                whereClause +
                 " order by " + columnDate;
     }
 

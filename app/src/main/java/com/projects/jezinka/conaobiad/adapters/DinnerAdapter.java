@@ -53,14 +53,6 @@ public class DinnerAdapter extends BaseAdapter {
         return this.dates.get(position);
     }
 
-    public Dinner getDinner(Date date) {
-        List<Dinner> dinners = this.dinners.get(date);
-        if (dinners.size() > 0) {
-            return dinners.get(0);
-        }
-        return null;
-    }
-
     public List<Dinner> getDinners(Date date) {
         return this.dinners.get(date);
     }
@@ -71,8 +63,7 @@ public class DinnerAdapter extends BaseAdapter {
 
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-        final Date date = getItem(position);
-        final Dinner dinner = getDinner(date);
+        final DinnerContract dinnerContract = new DinnerContract();
 
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -86,7 +77,7 @@ public class DinnerAdapter extends BaseAdapter {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DinnerContract dinnerContract = new DinnerContract();
+                Date date = getItem(position);
                 dinnerContract.delete(date.getTime(), DinnerContract.columnDate, dbHelper);
                 updateResults();
             }
@@ -96,6 +87,7 @@ public class DinnerAdapter extends BaseAdapter {
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date date = getItem(position);
                 ((MainActivity) mContext).showNewDinnerDialog(date);
             }
         });
@@ -103,14 +95,16 @@ public class DinnerAdapter extends BaseAdapter {
         recipe_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) mContext).showRecipeDialog(dinner);
+                Date date = getItem(position);
+                ((MainActivity) mContext).showRecipeDialog(dinnerContract.getDinners(dbHelper, date));
             }
         });
         ImageButton ingredients_button = (ImageButton) convertView.findViewById(R.id.show_ingredients_button);
         ingredients_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) mContext).showIngredients(dinner);
+                Date date = getItem(position);
+                ((MainActivity) mContext).showIngredients(dinnerContract.getDinners(dbHelper, date));
             }
         });
 
@@ -134,7 +128,7 @@ public class DinnerAdapter extends BaseAdapter {
 
     private TreeMap<Date, List<Dinner>> getDinners() {
         DinnerContract dinnerContract = new DinnerContract();
-        Dinner[] dinners = dinnerContract.getDinners(dbHelper);
+        Dinner[] dinners = dinnerContract.getDinnersForActualWeek(dbHelper);
         TreeMap<Date, List<Dinner>> preparedRows = new TreeMap<>();
 
         Calendar calendarInstance = Calendar.getInstance();
