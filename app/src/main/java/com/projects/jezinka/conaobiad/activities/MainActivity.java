@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         StringBuffer sb = new StringBuffer();
 
         for (Dinner dinner : dinners) {
-            sb.append("**" + dinner.getMealName() + "**\n\n");
+            sb.append(getFormattedTitle(dinner));
             sb.append(dinner.getRecipe());
             sb.append("\n\n");
         }
@@ -96,6 +97,11 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage(sb.toString())
                 .setPositiveButton(R.string.ok, null)
                 .show();
+    }
+
+    @NonNull
+    private String getFormattedTitle(Dinner dinner) {
+        return "**" + dinner.getMealName() + "**\n\n";
     }
 
     @Override
@@ -214,8 +220,9 @@ public class MainActivity extends AppCompatActivity {
         StringBuffer sb = new StringBuffer();
 
         for (Dinner dinner : dinners) {
-            sb.append("**" + dinner.getMealName() + "**\n\n");
-            sb.append(TextUtils.join("\n", mealIngredientContract.getIngredientsForMeal(dinner.getMealId(), dbHelper)));
+            sb.append(getFormattedTitle(dinner));
+            List<String> ingredientsForMeal = mealIngredientContract.getIngredientsForMeal(dinner.getMealId(), dbHelper);
+            sb.append(TextUtils.join("\n", ingredientsForMeal));
             sb.append("\n\n");
         }
 
