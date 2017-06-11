@@ -62,22 +62,31 @@ public class DinnerAdapter extends BaseAdapter {
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
 
         final DinnerContract dinnerContract = new DinnerContract();
 
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.dinner_textview, null);
+
+            holder = new ViewHolder();
+
+            holder.dateTextView = (TextView) convertView.findViewById(R.id.dinner_date);
+            holder.dinnersTextView = (TextView) convertView.findViewById(R.id.text_view);
+            holder.trashButton = (ImageButton) convertView.findViewById(R.id.trash_button);
+            holder.addButton = (ImageButton) convertView.findViewById(R.id.add_dinner_button);
+            holder.recipeButton = (ImageButton) convertView.findViewById(R.id.show_recipe_button);
+            holder.ingredientsButton = (ImageButton) convertView.findViewById(R.id.show_ingredients_button);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        TextView dateTextView = (TextView) convertView.findViewById(R.id.dinner_date);
-        dateTextView.setText(getTextForDate(position));
+        holder.dateTextView.setText(getTextForDate(position));
+        holder.dinnersTextView.setText(getTextForTile(position));
 
-        TextView textView = (TextView) convertView.findViewById(R.id.text_view);
-        textView.setText(getTextForTile(position));
-
-        ImageButton button = (ImageButton) convertView.findViewById(R.id.trash_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        holder.trashButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Date date = getItem(position);
@@ -86,24 +95,22 @@ public class DinnerAdapter extends BaseAdapter {
             }
         });
 
-        ImageButton add_button = (ImageButton) convertView.findViewById(R.id.add_dinner_button);
-        add_button.setOnClickListener(new View.OnClickListener() {
+        holder.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Date date = getItem(position);
                 ((MainActivity) mContext).showNewDinnerDialog(date);
             }
         });
-        ImageButton recipe_button = (ImageButton) convertView.findViewById(R.id.show_recipe_button);
-        recipe_button.setOnClickListener(new View.OnClickListener() {
+
+        holder.recipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Date date = getItem(position);
                 ((MainActivity) mContext).showRecipeDialog(dinnerContract.getDinners(dbHelper, date));
             }
         });
-        ImageButton ingredients_button = (ImageButton) convertView.findViewById(R.id.show_ingredients_button);
-        ingredients_button.setOnClickListener(new View.OnClickListener() {
+        holder.ingredientsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Date date = getItem(position);
@@ -112,6 +119,15 @@ public class DinnerAdapter extends BaseAdapter {
         });
 
         return convertView;
+    }
+
+    private static class ViewHolder {
+        TextView dateTextView;
+        TextView dinnersTextView;
+        ImageButton trashButton;
+        ImageButton addButton;
+        ImageButton recipeButton;
+        ImageButton ingredientsButton;
     }
 
     private String getTextForDate(int position) {
