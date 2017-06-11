@@ -5,15 +5,16 @@
     <!-- Settings, should always be in the overflow -->
     <item
         android:id="@+id/fill_list_item"
-        android:icon="@drawable/fantasy"
+        android:icon="@drawable/ic_light_bulb"
         android:title="@string/fill_list"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/shopping_list_item"
-        android:icon="@drawable/checklist_icon"
+        android:icon="@drawable/ic_list_verification"
+
         android:title="@string/shopping_list"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/meal_list_item"

@@ -71,6 +71,7 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeAsUpIndicator(R.drawable.ic_back_arrow_sketch);
     }
 
     private void toggleCheckboxesAndToolbar() {

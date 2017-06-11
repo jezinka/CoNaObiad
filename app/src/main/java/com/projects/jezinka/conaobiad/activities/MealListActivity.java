@@ -83,6 +83,7 @@ public class MealListActivity extends AppCompatActivity implements MealDialogFra
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeAsUpIndicator(R.drawable.ic_back_arrow_sketch);
     }
 
     private void showContextMenu(final Meal meal) {

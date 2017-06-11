@@ -70,6 +70,9 @@ public class DinnerAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.dinner_textview, null);
         }
 
+        TextView dateTextView = (TextView) convertView.findViewById(R.id.dinner_date);
+        dateTextView.setText(getTextForDate(position));
+
         TextView textView = (TextView) convertView.findViewById(R.id.text_view);
         textView.setText(getTextForTile(position));
 
@@ -111,14 +114,17 @@ public class DinnerAdapter extends BaseAdapter {
         return convertView;
     }
 
+    private String getTextForDate(int position) {
+        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
+        return df.format(getItem(position));
+    }
+
     @NonNull
     private String getTextForTile(int position) {
         StringBuffer text = new StringBuffer();
-        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
+
         Date date = getItem(position);
-        text.append(df.format(date));
-        text.append("\n");
-        text.append("\n");
+
         for (Dinner dinner : getDinners(date)) {
             text.append(dinner.getMealName());
             text.append("\n");
