@@ -59,7 +59,7 @@ public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = layoutInflater.inflate(R.layout.list_item, null);
         }
         TextView expandedListTextView = (TextView) convertView.findViewById(R.id.expandedListItem);
-        expandedListTextView.setText(expandedListText.getMeal().getName());
+        expandedListTextView.setText(expandedListText.getMealName());
         return convertView;
     }
 
@@ -87,7 +87,7 @@ public class DinnerExpandableListAdapter extends BaseExpandableListAdapter {
         List<Dinner> dinners = this.listDetail.get(key);
         List<String> dinnersNames = new ArrayList<>();
         for (Dinner dinner : dinners) {
-            dinnersNames.add(dinner.getMeal().getName());
+            dinnersNames.add(dinner.getMealName());
         }
         return TextUtils.join(",", dinnersNames);
     }

@@ -54,8 +54,8 @@ public class DinnerDialogFragment extends DialogFragment {
 
         if (dinner != null) {
             args.putLong("dinnerId", dinner.getId());
-            args.putLong("mealId", dinner.getMeal().getId());
-            args.putString("mealName", dinner.getMeal().getName());
+            args.putLong("mealId", dinner.getMealId());
+            args.putString("mealName", dinner.getMealName());
         }
 
         f.setArguments(args);

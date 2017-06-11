@@ -1,11 +1,8 @@
 package com.projects.jezinka.conaobiad.models;
 
-import java.util.List;
-
 public class Meal {
     private long id;
     private String name;
-    List<Ingredient> ingredients;
     private boolean checked;
     private String recipe;
 
@@ -48,7 +45,4 @@ public class Meal {
         return recipe;
     }
 
-    public void setRecipe(String recipe) {
-        this.recipe = recipe;
-    }
 }
