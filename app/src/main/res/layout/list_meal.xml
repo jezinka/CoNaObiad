@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        style="@style/dinner_buttons"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="180dp"
+        android:layout_height="@dimen/list_item_height"
+        android:gravity="center_vertical"
+        android:longClickable="true"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+    <ImageButton
+        android:id="@+id/edit_dinner_button"
+        style="@style/dinner_buttons"
+        android:contentDescription="@string/edit"
+        android:src="@drawable/ic_pencil_button_sketch" />
+
+    <ImageButton
+        android:id="@+id/recipe_button"
+        style="@style/dinner_buttons"
+        android:contentDescription="@string/recipe"
+        android:src="@drawable/ic_text_book" />
+
+    <ImageButton
+        android:id="@+id/ingredient_button"
+        style="@style/dinner_buttons"
+        android:contentDescription="@string/ingredient_list"
+        android:src="@drawable/ic_list_verification" />
+
+</LinearLayout>
