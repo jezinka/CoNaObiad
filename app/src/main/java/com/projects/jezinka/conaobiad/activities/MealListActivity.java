@@ -22,7 +22,6 @@ import com.projects.jezinka.conaobiad.dialogs.IngredientPickerDialogFragment;
 import com.projects.jezinka.conaobiad.dialogs.MealDialogFragment;
 import com.projects.jezinka.conaobiad.models.Meal;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,6 @@ public class MealListActivity extends AppCompatActivity implements MealDialogFra
     private MealListAdapter adapter;
     private CoNaObiadDbHelper dbHelper;
     private MealContract mealContract;
-    private MealIngredientContract mealIngredientContract;
     private Toolbar myToolbar;
 
     @Override
@@ -41,11 +39,10 @@ public class MealListActivity extends AppCompatActivity implements MealDialogFra
         setContentView(R.layout.activity_meal_list);
 
         mealContract = new MealContract();
-        mealIngredientContract = new MealIngredientContract();
 
         dbHelper = new CoNaObiadDbHelper(this);
 
-        adapter = new MealListAdapter(this, R.layout.multicheck_list, mealContract.getAllMealsArray(dbHelper));
+        adapter = new MealListAdapter(this, R.layout.list_meal, mealContract.getAllMealsArray(dbHelper));
 
         final ListView listView = (ListView) findViewById(R.id.meal_list_view);
         listView.setAdapter(adapter);
@@ -58,26 +55,6 @@ public class MealListActivity extends AppCompatActivity implements MealDialogFra
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                int viewId = view.getId();
-                Meal meal = adapter.getItem(position);
-
-                switch (viewId) {
-                    case R.id.text1:
-                        showContextMenu(meal);
-                        break;
-                    case R.id.checkBox:
-                        if (meal != null) {
-                            meal.setChecked(!meal.isChecked());
-                            adapter.notifyDataSetChanged();
-                        }
-                        break;
-                }
-            }
-        });
-
         myToolbar = (Toolbar) findViewById(R.id.meal_list_toolbar);
         setSupportActionBar(myToolbar);
 
@@ -86,38 +63,7 @@ public class MealListActivity extends AppCompatActivity implements MealDialogFra
         ab.setHomeAsUpIndicator(R.drawable.ic_back_arrow_sketch);
     }
 
-    private void showContextMenu(final Meal meal) {
-
-        final AlertDialog.Builder contextMenu = new AlertDialog.Builder(this);
-        contextMenu.setItems(R.array.meal_actions, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                long mealId = meal != null ? meal.getId() : -1;
-                String mealName = meal != null ? meal.getName() : "";
-
-                switch (which) {
-                    case 0:
-                        showMealDialog(mealId, mealName);
-                        break;
-                    case 1:
-                        showIngredientPickerDialog(mealId);
-                        break;
-                    case 2:
-                        List<String> result = mealIngredientContract.getIngredientsForMeal(mealId, dbHelper);
-                        new AlertDialog.Builder(contextMenu.getContext())
-                                .setTitle(R.string.ingredient_list)
-                                .setItems(result.toArray(new String[result.size()]), null)
-                                .show();
-                        break;
-                    case 3:
-                        showAddRecipeDialog(meal);
-                        break;
-                }
-            }
-        });
-        contextMenu.show();
-    }
-
-    private void showAddRecipeDialog(final Meal meal) {
+    public void showAddRecipeDialog(final Meal meal) {
         View view = getLayoutInflater().inflate(R.layout.multiline_dialog, null);
 
         final EditText recipeText = (EditText) view.findViewById(R.id.multiline_edit_text);
@@ -172,7 +118,6 @@ public class MealListActivity extends AppCompatActivity implements MealDialogFra
 
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 

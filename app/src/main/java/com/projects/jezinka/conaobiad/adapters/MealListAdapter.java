@@ -10,10 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.projects.jezinka.conaobiad.R;
+import com.projects.jezinka.conaobiad.activities.MealListActivity;
 import com.projects.jezinka.conaobiad.models.Meal;
 
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ public class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ViewHolder holder;
+        final Meal meal = filteredData[position];
 
         if (convertView == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -78,39 +80,67 @@ public class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
             holder = new ViewHolder();
             holder.titleNameView = (TextView) convertView.findViewById(R.id.text1);
             holder.checkBox = (CheckBox) convertView.findViewById(R.id.checkBox);
+            holder.editButton = (ImageButton) convertView.findViewById(R.id.edit_dinner_button);
+            holder.recipeButton = (ImageButton) convertView.findViewById(R.id.recipe_button);
+            holder.ingredientButton = (ImageButton) convertView.findViewById(R.id.ingredient_button);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.titleNameView.setText(filteredData[position].getName());
+        holder.titleNameView.setText(meal.getName());
 
         if (holder.checkBox != null) {
-            holder.checkBox.setVisibility(showCheckboxes ? View.VISIBLE : View.GONE);
+            holder.checkBox.setVisibility(showCheckboxes ? View.VISIBLE : View.INVISIBLE);
 
             if (showCheckboxes) {
-                holder.checkBox.setChecked(filteredData[position].isChecked());
-                holder.checkBox.setOnClickListener(getOnClickListener(position, (ListView) parent));
+                holder.checkBox.setChecked(meal.isChecked());
+                holder.checkBox.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        meal.setChecked(!meal.isChecked());
+                        notifyDataSetChanged();
+                    }
+                });
             }
-
-            holder.titleNameView.setOnClickListener(getOnClickListener(position, (ListView) parent));
         }
+
+        if (holder.editButton != null) {
+            holder.editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MealListActivity) context).showMealDialog(meal.getId(), meal.getName());
+                }
+            });
+        }
+
+        if (holder.recipeButton != null) {
+            holder.recipeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MealListActivity) context).showAddRecipeDialog(meal);
+                }
+            });
+        }
+
+        if (holder.ingredientButton != null) {
+            holder.ingredientButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MealListActivity) context).showIngredientPickerDialog(meal.getId());
+                }
+            });
+        }
+
         return convertView;
     }
 
     private static class ViewHolder {
         TextView titleNameView;
         CheckBox checkBox;
-    }
-
-    @NonNull
-    private View.OnClickListener getOnClickListener(final int position, @NonNull final ListView parent) {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                parent.performItemClick(v, position, filteredData[position].getId());
-            }
-        };
+        ImageButton editButton;
+        ImageButton recipeButton;
+        ImageButton ingredientButton;
     }
 
     @NonNull
