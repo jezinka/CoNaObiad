@@ -13,13 +13,19 @@ import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 9;
+    Context context;
+    private static final int DATABASE_VERSION = 11;
     private static final String DATABASE_NAME = "CoNaObiad.db";
 
     public CoNaObiadDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -70,5 +76,30 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
     private void dropTable(String tableName, SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS " + tableName);
+    }
+
+    public void initializeIngredients() {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(context.getAssets().open("ingredients.txt"), "UTF-8"));
+
+            String mLine;
+            while ((mLine = reader.readLine()) != null) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(IngredientContract.columnName, mLine);
+
+                this.insert(IngredientContract.tableName, contentValues);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

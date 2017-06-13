@@ -27,6 +27,7 @@ import com.projects.jezinka.conaobiad.dialogs.DinnerDialogFragment;
 import com.projects.jezinka.conaobiad.models.Dinner;
 import com.projects.jezinka.conaobiad.models.Meal;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
 import com.projects.jezinka.conaobiad.utils.TimeUtils;
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         mealContract = new MealContract();
         dinnerContract = new DinnerContract();
 
+        initializeIngredientsTable();
+
         if (!mealContract.isAnyMealSaved(dbHelper)) {
             showEmptyMealListMessage(this);
         }
@@ -80,6 +83,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         setSupportActionBar(myToolbar);
         myToolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_overflow_sketch, null));
+    }
+
+    private void initializeIngredientsTable() {
+        IngredientContract ingredientContract = new IngredientContract();
+        if (!ingredientContract.isAnyIngredientSaved(dbHelper)) {
+            dbHelper.initializeIngredients();
+        }
     }
 
     public void showRecipeDialog(Dinner[] dinners) {

@@ -1,0 +1,401 @@
+abachini
+agnolotti
+agrest
+ananas
+anelli
+antrykot
+arbuz
+aronia
+awokado
+bakłażan
+banan
+baranina
+barbine
+batat
+bataty
+bavette
+bavettine
+bazylia
+bejcowanie
+biała
+bigoli
+biltong
+boczek
+boczek z żeberkami
+boczniak ostrygowaty
+borowik szlachetny
+borówka amerykańska
+borówka bagienna
+borówka brusznica
+borówka czarna
+botwina
+boćwina
+brie
+brokuł
+brukiew
+brukselka
+bryndza
+brzoskwinia
+bucatini
+burak
+burak liściowy
+burak ćwikłowy
+buraki
+bushmeat
+bób
+camembert
+campanelle
+canalini
+cannelloni
+capelli d'angelo
+capellini
+cappelletti
+casarecce
+casoncelli
+castellane
+cataneselle
+cavalline
+cavatappi
+cavatelli
+cebula
+cebula perłowa
+cebula siedmiolatka
+celentani
+chifferi
+chili
+chiocciole
+chitarrine
+chrzan
+ciecierzyca
+cielęcina
+cocci di sicilia
+comber
+conchiglie
+conchiglioni
+corallini
+cotelli
+cottage cheese
+creste di gallo
+cukier
+cukinia
+cykoria endywia
+cykoria sałatowa
+cytryna
+czereśnie
+czerwona
+czosnek
+czosnek askaloński
+czosnek rokambuł
+czubajka kania
+cząber ogrodowy
+daikon
+daktyle
+ditali
+ditalini
+ditaloni
+durian
+dynia olbrzymia
+dziczyzna
+eliche
+ementaler
+fagottini
+farfalle
+farfalline
+farfalloni
+fasola wielokwiatowa
+fasola zwykła
+fettuccine
+figa
+filet
+filini
+fisarmoniche
+flaszowiec
+fregnacce
+fricelli
+fusilli
+garganelli
+gemelli
+girandole
+gnocchetti
+gnocchi
+gnosetti
+gobbetti
+golonka
+gomółka
+gorgonzola
+gouda
+gramigna
+granat
+grattini
+grattoni
+grejpfrut
+groch
+gruszka
+grzyby mun
+gwajawa
+gąska zielonka
+głowizna
+główka sałaty
+hurma
+imbir
+jabłko
+jagnięcina
+jagoda kamczacka
+jajka
+jarmuż
+jerky
+jeżyna
+jogurt
+kalafior
+kalarepa
+kapary
+kapary cierniste
+kapusta
+kapusta brukselska
+kapusta chińska
+kapusta głowiasta biała
+kapusta głowiasta czerwona
+kapusta kiszona
+kapusta pekińska
+kapusta włoska
+karambola
+karczoch
+karczoch hiszpański
+kard
+karpiel
+kasza gryczana
+kasza jaglana
+kasztan jadalny
+kawon brukiew
+kefir
+kiwi
+kminek
+kolczak obłączasty
+konina
+koper ogrodowy
+kozibród porolistny
+koźlarz babka
+koźlarz czerwony
+koźlarz grabowy
+kukurydza cukrowa
+kumkwat
+kwasowe
+lancette
+lasagne
+lasagnette
+lejkowiec dęty
+lejkówka wonna
+ligawa
+limoncini
+linguine
+liście szpinaku
+maccheroncini
+maccheroni
+mafaldine
+majeranek ogrodowy
+makaron
+malina
+malinojeżyna
+maltagliati
+mandarynka
+mango
+mangostan właściwy
+maniche
+maniok jadalny
+maranta trzcinowa
+marchew
+maślak
+maślak pstry
+maślak sitarz
+maślak ziarnisty
+maślak żółty
+maślanka
+melon
+mezze maniche
+mezzelune
+midolline
+miechunka peruwiańska
+miechunka pomidorowa dynia
+migdały
+mięso drobiowe
+mięso mielone
+mięta
+mleczaj rydz
+mleczaj smaczny
+mleko
+mniszek lekarski
+morela
+morwa biała
+morwa czarna
+mozzarella żółta
+musztarda
+nanercz zachodni
+natka pietruszki
+nektarynka
+noga wieprzowa
+ogórek
+ogórki
+ogórki kiszone
+oliwa
+oliwka
+oliwka europejska
+oliwki
+opieńki
+orecchiette
+orzech kokosowy
+orzech laskowy
+orzech włoski
+oskomian
+paccheri
+pappardelle
+papryka
+papryka roczna
+parmezan
+pasternak
+penne
+piaskowiec kasztanowaty
+piaskowiec modrzak
+pici
+pieczarka dwuzarodnikowa
+pieczarka lśniąca
+pieczarka ogrodowa
+pieczarka polna
+pieczarka szlachetna
+pieczarka zaroślowa
+pieczarki
+pieprz
+pieprznik jadalny
+pieprzyca siewna
+pietruszka
+pietruszka korzeniowa
+pietruszka naciowa
+pigwa
+pipette rigate
+pireneri
+pizzoccheri
+pochrzyn chiński
+pochwiak pochwiasty
+podgardle
+podgrzybek brunatny
+podgrzybek zajączek
+podgrzybek złotawy
+podroby
+polędwica
+polędwica wołowa
+polędwiczka
+pomarańcza
+pomidor
+por
+portulaka warzywna
+porzeczka czarna
+poziomka
+puntine
+płachetka kołpakowata
+quadretti
+rabarbar ogrodowy
+radamer
+rambutan
+ravioli
+reginette
+riccioli
+ricciutelle
+ricotta
+rigatoni
+risi
+risoni
+rodzynek brazylijski
+rokietta siewna
+roquefort
+roszponka warzywna
+rotelle
+rozmaryn
+rukiew wodna
+rukola
+ruote
+ryż
+rzepa
+rzeżucha ogrodowa
+rzodkiew
+rzodkiew japońska
+rzodkiewka
+salep
+salsefia
+sałata siewna
+schab
+sedani
+sedanini
+seler
+seler korzeniowy
+seler naciowy
+ser
+ser limburski
+ser tylżycki
+serek homogenizowany
+skorzonera oberżyna
+soczewica jadalna
+soja warzywna
+sorprese
+sospetti
+spaccatelle
+spaghetti
+spaghettini
+spaghettoni
+spighe
+stelle
+stelline
+strangozzi
+stringoli
+strozzapreti
+szalotka
+szczaw
+szczypiorek
+szparag lekarski
+szpinak
+szpinak nowozelandzki
+sól
+słonecznik bulwiasty
+tagliatelle
+taglierini
+tagliolini
+tempestine
+topinambur
+torchietti
+tortellini
+tortelloni
+tortiglioni
+trenette
+tripolini
+trufla czarnozarodnikowa
+trufla letnia
+trufla zimowa
+truskawka
+trzęsak morszczynowaty
+trętwian czterorożny
+twardziak
+twardzioszek przydrożny
+twaróg
+tymianek
+ucho bzowe
+uszak gęstowłosy
+vermicelli
+vermicellini
+wagyū
+wieprzowina
+wilec ziemniaczany
+winogrona
+wiśnia
+wołowina
+wężymord czarny korzeń
+włoszczyzna
+ziemniak
+ziemniaki
+ziti
+zitoni
+łata
+łopatka wieprzowa
+łuskwiak nameko
+łuszczak zmienny
+śliwka
+śmietana
+żeberka
+żurawina
