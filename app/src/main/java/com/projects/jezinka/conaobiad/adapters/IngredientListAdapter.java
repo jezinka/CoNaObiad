@@ -17,6 +17,8 @@ import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.models.Ingredient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class IngredientListAdapter extends ArrayAdapter<Ingredient> implements Filterable {
 
@@ -41,6 +43,24 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> implements F
         this.filteredData = results;
         notifyDataSetChanged();
     }
+
+    @Override
+    public void notifyDataSetChanged() {
+        setNotifyOnChange(false);
+        Arrays.sort(this.data, new IngredientComparator());
+        super.notifyDataSetChanged();
+    }
+
+    class IngredientComparator implements Comparator<Ingredient> {
+        @Override
+        public int compare(Ingredient a, Ingredient b) {
+            if (a.isChecked() == b.isChecked()) {
+                return a.getName().toLowerCase().compareTo(b.getName().toLowerCase());
+            }
+            return a.isChecked() ? -1 : 1;
+        }
+    }
+
 
     @Override
     public int getCount() {
@@ -69,15 +89,6 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> implements F
     @Override
     public long getItemId(int position) {
         return filteredData[position].getId();
-    }
-
-    public boolean isAnyItemSelected() {
-        for (Ingredient ingredient : data) {
-            if (ingredient.isChecked()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @NonNull

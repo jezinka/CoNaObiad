@@ -65,11 +65,13 @@ public class IngredientPickerDialogFragment extends DialogFragment {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Ingredient ingredient = adapter.getItem(position);
                 if (ingredient != null) {
                     ingredient.setChecked(!ingredient.isChecked());
                     adapter.notifyDataSetChanged();
+                    EditText editText = (EditText) view.findViewById(R.id.name_filter);
+                    editText.setText("");
                 }
             }
         });
