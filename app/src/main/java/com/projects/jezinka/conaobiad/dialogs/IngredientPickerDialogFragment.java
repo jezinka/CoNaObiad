@@ -82,8 +82,8 @@ public class IngredientPickerDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mealIngredientContract.deleteForMeal(dbHelper, mealId);
-                        for (int i = 0; i < adapter.getCount(); i++) {
-                            Ingredient item = adapter.getItem(i);
+                        for (int i = 0; i < adapter.getCount(true); i++) {
+                            Ingredient item = adapter.getItem(i, true);
                             if (item != null && item.isChecked()) {
                                 long ingredientId = item.getId();
                                 mealIngredientContract.insert(dbHelper, mealId, ingredientId);

@@ -47,8 +47,22 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> implements F
         return filteredData.length;
     }
 
+    public int getCount(boolean unfilter) {
+        if (unfilter) {
+            return data.length;
+        }
+        return filteredData.length;
+    }
+
     @Override
     public Ingredient getItem(int position) {
+        return filteredData[position];
+    }
+
+    public Ingredient getItem(int position, boolean unfilter) {
+        if (unfilter) {
+            return data[position];
+        }
         return filteredData[position];
     }
 
