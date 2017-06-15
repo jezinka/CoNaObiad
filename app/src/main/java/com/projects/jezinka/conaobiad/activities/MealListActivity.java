@@ -20,10 +20,13 @@ import com.projects.jezinka.conaobiad.adapters.MealListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.dialogs.IngredientPickerDialogFragment;
 import com.projects.jezinka.conaobiad.dialogs.MealDialogFragment;
+import com.projects.jezinka.conaobiad.models.Ingredient;
 import com.projects.jezinka.conaobiad.models.Meal;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class MealListActivity extends AppCompatActivity implements MealDialogFragment.MealDialogListener {
@@ -75,8 +78,11 @@ public class MealListActivity extends AppCompatActivity implements MealDialogFra
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mealContract.addRecipe(dbHelper, recipeText.getText().toString(), meal.getId());
+                        String recipe = recipeText.getText().toString();
+                        long id = meal.getId();
+                        mealContract.addRecipe(dbHelper, recipe, id);
                         adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
+                        findIngredientsInRecipe(recipe, id);
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
@@ -155,5 +161,33 @@ public class MealListActivity extends AppCompatActivity implements MealDialogFra
 
     public CoNaObiadDbHelper getDbHelper() {
         return dbHelper;
+    }
+
+    private void findIngredientsInRecipe(String recipe, long mealId) {
+        MealIngredientContract mealIngredientContract = new MealIngredientContract();
+        HashSet<Ingredient> foundIngredients = new HashSet<>();
+
+        Ingredient[] ingredients = mealIngredientContract.getIngredientsWithMeal(mealId, dbHelper);
+        String[] tokens = recipe.replaceAll(".,", " ").replaceAll("[^A-Za-ząęćżźśłóń ]", "").split(" ");
+        for (String token : tokens) {
+            if (token.equals("")) {
+                continue;
+            }
+            for (Ingredient ingredient : ingredients) {
+                String normalizeToken = token.toLowerCase();
+                String normalizeIngredient = ingredient.getName().toLowerCase();
+                if (normalizeToken.contains(normalizeIngredient)) {
+                    foundIngredients.add(ingredient);
+                    break;
+                }
+            }
+        }
+
+        for (Ingredient foundIngredient : foundIngredients) {
+            if (!foundIngredient.isChecked()) {
+                mealIngredientContract.insert(dbHelper, mealId, foundIngredient.getId());
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 }
