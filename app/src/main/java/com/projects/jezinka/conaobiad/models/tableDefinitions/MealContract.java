@@ -11,6 +11,7 @@ import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.Meal;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static android.database.DatabaseUtils.queryNumEntries;
 
@@ -84,7 +85,15 @@ public class MealContract extends BaseTable implements BaseColumns {
     }
 
     public ArrayList<Meal> getRandomMeals(SQLiteOpenHelper helper, int size) {
-        return getArrayList(helper, null, getRandomMealsQuery(size));
+        ArrayList<Meal> mealList = getArrayList(helper, null, getRandomMealsQuery(size));
+        if (mealList.size() < size) {
+            Random random = new Random();
+            while (mealList.size() < size) {
+                int randomIndex = random.nextInt(mealList.size());
+                mealList.add(mealList.get(randomIndex));
+            }
+        }
+        return mealList;
     }
 
     private static String getRandomMealsQuery(int size) {
