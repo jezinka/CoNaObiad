@@ -30,6 +30,7 @@
     <string name="recipe">Przepis</string>
     <string name="add_recipe">Dodaj przepis</string>
     <string name="show_recipe">Wyświetl przepis</string>
+    <string name="no_recipe">**Brak przepisu**</string>
 
     <string name="first_day">Pierwszy dzień</string>
     <string name="first_day_summ">Wybierz początek tygodnia</string>

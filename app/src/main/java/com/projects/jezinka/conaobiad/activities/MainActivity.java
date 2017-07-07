@@ -98,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
 
         for (Dinner dinner : dinners) {
             sb.append(getFormattedTitle(dinner));
-            sb.append(dinner.getRecipe());
+            String recipe = dinner.getRecipe();
+            sb.append(recipe != null ? recipe : getResources().getString(R.string.no_recipe));
             sb.append("\n\n");
         }
 
