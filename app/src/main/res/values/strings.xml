@@ -13,16 +13,17 @@
 
     <string name="settings">Ustawienia</string>
 
+    <string name="dinners">Obiady</string>
     <string name="pick_date">Wybierz datę</string>
     <string name="add_dinner">Dodaj obiad</string>
     <string name="empty_dinner_list_message">Nie masz żadnego zapisanego obiadu</string>
 
-    <string name="meal_list">Posiłki</string>
+    <string name="meals">Posiłki</string>
     <string name="pick_meal">Wybierz posiłek</string>
     <string name="empty_meal_list_message">Nie masz żadnego zapisanego posiłku. Czy przejść do ekranu dodawania?</string>
     <string name="put_meal_name">Wpisz nazwę posiłku</string>
 
-    <string name="ingredient_list">Składniki</string>
+    <string name="ingredients">Składniki</string>
     <string name="put_ingredient_name">Wpisz nazwę składnika</string>
     <string name="add_ingredients">Dodaj składniki</string>
     <string name="show_ingredients">Wyświetl składniki</string>

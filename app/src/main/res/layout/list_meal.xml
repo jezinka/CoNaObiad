@@ -33,7 +33,7 @@
     <ImageButton
         android:id="@+id/ingredient_button"
         style="@style/dinner_buttons"
-        android:contentDescription="@string/ingredient_list"
+        android:contentDescription="@string/ingredients"
         android:src="@drawable/ic_list_verification" />
 
 </LinearLayout>

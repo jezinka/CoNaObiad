@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         new AlertDialog.Builder(this)
-                .setTitle(R.string.ingredient_list)
+                .setTitle(R.string.ingredients)
                 .setPositiveButton(android.R.string.ok, null)
                 .setMessage(sb.toString())
                 .show();
