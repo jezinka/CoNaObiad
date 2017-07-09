@@ -2,6 +2,7 @@ package com.projects.jezinka.conaobiad.models.tableDefinitions;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import com.projects.jezinka.conaobiad.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 public class DinnerContract extends BaseTable implements BaseColumns {
 
@@ -108,4 +110,33 @@ public class DinnerContract extends BaseTable implements BaseColumns {
     public void delete(Long id, String columnName, CoNaObiadDbHelper helper) {
         helper.delete(tableName, id, columnName);
     }
+
+    private String getCountDinnersQuery() {
+        String mealName = MealContract.columnName;
+        return "select " + mealName + ", count(" + mealName + ") as quantity from " + tableName
+                + " join " + MealContract.tableName
+                + " on " + tableName + "." + columnMealId + "= " + MealContract.tableName + "." + _ID
+                + " group by " + mealName
+                + " order by 2";
+    }
+
+    public LinkedHashMap<String, Long> getDinnerStatistics(CoNaObiadDbHelper helper) {
+        LinkedHashMap<String, Long> mealsCount = new LinkedHashMap<>();
+
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor res = db.rawQuery(getCountDinnersQuery(), null);
+        if (res != null && res.getCount() > 0) {
+            res.moveToFirst();
+
+            do {
+                String name = res.getString(0);
+                long count = res.getLong(1);
+                mealsCount.put(name, count);
+            } while (res.moveToNext());
+        }
+
+        db.close();
+        return mealsCount;
+    }
+
 }

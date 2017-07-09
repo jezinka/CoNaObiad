@@ -162,6 +162,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(settingsIntent);
                 return true;
 
+            case R.id.statistic_item:
+                Intent statisticIntent = new Intent(this, StatisticsActivity.class);
+                startActivity(statisticIntent);
+                return true;
+
             case R.id.application_info_item:
                 showInfoDialog();
                 return true;

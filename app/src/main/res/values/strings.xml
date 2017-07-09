@@ -27,6 +27,8 @@
     <string name="add_ingredients">Dodaj składniki</string>
     <string name="show_ingredients">Wyświetl składniki</string>
 
+    <string name="statistics_item">Statystyki</string>
+
     <string name="recipe">Przepis</string>
     <string name="add_recipe">Dodaj przepis</string>
     <string name="show_recipe">Wyświetl przepis</string>

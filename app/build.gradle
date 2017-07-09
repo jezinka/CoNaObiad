@@ -38,6 +38,7 @@ dependencies {
     compile 'com.android.support:percent:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:design:25.3.1'
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'cglib:cglib-nodep:3.1'

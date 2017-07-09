@@ -27,6 +27,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/statistic_item"
+        android:title="@string/statistics_item"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/settings_item"
         android:title="@string/settings"
         app:showAsAction="never" />
