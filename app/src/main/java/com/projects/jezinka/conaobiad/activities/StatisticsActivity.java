@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -31,6 +33,22 @@ public class StatisticsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
+        createDinnerBarChart();
+
+        Spinner spinner = (Spinner) findViewById(R.id.statistics_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.statistics_items, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.statistics_toolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeAsUpIndicator(R.drawable.ic_back_arrow_sketch);
+    }
+
+    private void createDinnerBarChart() {
         dbHelper = new CoNaObiadDbHelper(this);
         DinnerContract dinnerContract = new DinnerContract();
 
@@ -56,6 +74,7 @@ public class StatisticsActivity extends AppCompatActivity {
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
+        xAxis.setLabelCount(i);
         xAxis.setDrawGridLines(false);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
@@ -65,17 +84,11 @@ public class StatisticsActivity extends AppCompatActivity {
         });
 
         YAxis yAxis = chart.getAxisLeft();
-        yAxis.setGranularity(1f);
+        yAxis.setGranularity(0.5f);
 
         chart.getAxisRight().setDrawLabels(false);
         chart.getAxisRight().setDrawGridLines(false);
         chart.setData(data);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.statistics_toolbar);
-        setSupportActionBar(toolbar);
-
-        ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setHomeAsUpIndicator(R.drawable.ic_back_arrow_sketch);
+        chart.setVisibleXRange(0, i);
     }
 }
