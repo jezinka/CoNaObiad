@@ -21,7 +21,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
     public static String tableName = "dinner";
 
     public static String columnDate = "date";
-    private static String columnMealId = "meal_id";
+    public static String columnMealId = "meal_id";
 
     public static String getCreateEntriesQuery() {
         return "CREATE TABLE " + tableName + " (" +
@@ -113,7 +113,8 @@ public class DinnerContract extends BaseTable implements BaseColumns {
 
     private String getCountDinnersQuery() {
         String mealName = MealContract.columnName;
-        return "select " + mealName + ", count(" + mealName + ") as quantity from " + tableName
+        return "select " + mealName + ", count(" + mealName + ") as quantity " +
+                "from " + tableName
                 + " join " + MealContract.tableName
                 + " on " + tableName + "." + columnMealId + "= " + MealContract.tableName + "." + _ID
                 + " group by " + mealName

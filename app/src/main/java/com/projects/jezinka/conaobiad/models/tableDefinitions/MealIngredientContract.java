@@ -22,8 +22,8 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
 
     public static String tableName = "meal_ingredient";
 
-    private static String columnIngredientId = "ingredient_id";
-    private static String columnMealId = "meal_id";
+    public static String columnIngredientId = "ingredient_id";
+    public static String columnMealId = "meal_id";
 
     public static String getCreateEntriesQuery() {
         return "CREATE TABLE " + tableName + " (" +

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -18,6 +20,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -26,6 +29,8 @@ import java.util.Map;
 
 public class StatisticsActivity extends AppCompatActivity {
 
+    public static final int DINNER_POSITION = 0;
+    public static final int INGREDIENT_POSITION = 1;
     CoNaObiadDbHelper dbHelper;
 
     @Override
@@ -33,12 +38,31 @@ public class StatisticsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
-        createDinnerBarChart();
+        dbHelper = new CoNaObiadDbHelper(this);
 
         Spinner spinner = (Spinner) findViewById(R.id.statistics_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.statistics_items, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case INGREDIENT_POSITION:
+                        createIngredientBarChart();
+                        break;
+                    case DINNER_POSITION:
+                    default:
+                        createDinnerBarChart();
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.statistics_toolbar);
         setSupportActionBar(toolbar);
@@ -49,10 +73,22 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void createDinnerBarChart() {
-        dbHelper = new CoNaObiadDbHelper(this);
+
         DinnerContract dinnerContract = new DinnerContract();
 
         LinkedHashMap<String, Long> mealData = dinnerContract.getDinnerStatistics(dbHelper);
+        createBarChart(mealData);
+    }
+
+    private void createIngredientBarChart() {
+
+        IngredientContract ingredientContract = new IngredientContract();
+
+        LinkedHashMap<String, Long> mealData = ingredientContract.getIngredientsStatistics(dbHelper);
+        createBarChart(mealData);
+    }
+
+    private void createBarChart(LinkedHashMap<String, Long> mealData) {
         List<BarEntry> entries = new ArrayList<>();
 
         int i = 0;
@@ -84,11 +120,12 @@ public class StatisticsActivity extends AppCompatActivity {
         });
 
         YAxis yAxis = chart.getAxisLeft();
-        yAxis.setGranularity(0.5f);
+        yAxis.setGranularity(1f);
 
         chart.getAxisRight().setDrawLabels(false);
         chart.getAxisRight().setDrawGridLines(false);
         chart.setData(data);
         chart.setVisibleXRange(0, i);
+        chart.invalidate();
     }
 }

@@ -11,6 +11,7 @@ import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.Ingredient;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 import static android.database.DatabaseUtils.queryNumEntries;
 
@@ -78,4 +79,38 @@ public class IngredientContract extends BaseTable implements BaseColumns {
         SQLiteDatabase db = helper.getReadableDatabase();
         return queryNumEntries(db, tableName) > 0;
     }
+
+    private String getCountIngredientsQuery() {
+        String ingredientName = this.tableName + '.' + this.columnName;
+        return "select " + ingredientName + ", count(" + ingredientName + ") as quantity " +
+                "from " + tableName
+                + " join " + MealIngredientContract.tableName
+                + " on " + tableName + "." + _ID + "= " + MealIngredientContract.tableName + "." + MealIngredientContract.columnIngredientId
+                + " join " + MealContract.tableName
+                + " on " + MealIngredientContract.tableName + "." + MealIngredientContract.columnMealId + "= " + MealContract.tableName + "." + _ID
+                + " join " + DinnerContract.tableName
+                + " on " + DinnerContract.tableName + "." + DinnerContract.columnMealId + "= " + MealContract.tableName + "." + _ID
+                + " group by " + ingredientName
+                + " order by 2";
+    }
+
+    public LinkedHashMap<String, Long> getIngredientsStatistics(CoNaObiadDbHelper helper) {
+        LinkedHashMap<String, Long> ingredientsCount = new LinkedHashMap<>();
+
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor res = db.rawQuery(getCountIngredientsQuery(), null);
+        if (res != null && res.getCount() > 0) {
+            res.moveToFirst();
+
+            do {
+                String name = res.getString(0);
+                long count = res.getLong(1);
+                ingredientsCount.put(name, count);
+            } while (res.moveToNext());
+        }
+
+        db.close();
+        return ingredientsCount;
+    }
 }
+
