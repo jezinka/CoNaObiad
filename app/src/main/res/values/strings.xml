@@ -52,5 +52,5 @@
     <string name="friday">Piątek</string>
     <string name="saturday">Sobota</string>
     <string name="sunday">Niedziela</string>
-    <string name="statistics_label">Pokaż statystyki dla:</string>
+    <string name="statistics_label">Wykres dla:</string>
 </resources>

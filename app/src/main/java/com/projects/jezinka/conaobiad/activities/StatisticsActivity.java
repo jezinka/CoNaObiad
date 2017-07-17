@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
@@ -22,9 +23,12 @@ import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class StatisticsActivity extends AppCompatActivity {
@@ -60,9 +64,17 @@ public class StatisticsActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                createDinnerBarChart();
             }
         });
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", new Locale("pl-pl"));
+
+        EditText minDate = (EditText) findViewById(R.id.min_date);
+        minDate.setText(df.format(new Date()));
+
+        EditText maxDate = (EditText) findViewById(R.id.max_date);
+        maxDate.setText(df.format(new Date()));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.statistics_toolbar);
         setSupportActionBar(toolbar);
@@ -121,6 +133,10 @@ public class StatisticsActivity extends AppCompatActivity {
 
         YAxis yAxis = chart.getAxisLeft();
         yAxis.setGranularity(1f);
+        yAxis.setStartAtZero(true);
+
+//        Bitmap starBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_background_png);
+//        chart.setRenderer(new ImageBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler(), starBitmap));
 
         chart.getAxisRight().setDrawLabels(false);
         chart.getAxisRight().setDrawGridLines(false);

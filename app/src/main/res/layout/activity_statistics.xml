@@ -29,7 +29,22 @@
         <Spinner
             android:id="@+id/statistics_spinner"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp" />
+
+        <EditText
+            android:id="@+id/min_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:editable="false" />
+
+        <EditText
+            android:id="@+id/max_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:editable="false" />
 
     </LinearLayout>
 
