@@ -1,5 +1,6 @@
 package com.projects.jezinka.conaobiad.activities;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -25,6 +27,7 @@ import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,6 +35,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class StatisticsActivity extends AppCompatActivity {
+
+    static final SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", new Locale("pl-pl"));
 
     public static final int DINNER_POSITION = 0;
     public static final int INGREDIENT_POSITION = 1;
@@ -67,8 +72,6 @@ public class StatisticsActivity extends AppCompatActivity {
                 createDinnerBarChart();
             }
         });
-
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", new Locale("pl-pl"));
 
         EditText minDate = (EditText) findViewById(R.id.min_date);
         minDate.setText(df.format(new Date()));
@@ -143,5 +146,22 @@ public class StatisticsActivity extends AppCompatActivity {
         chart.setData(data);
         chart.setVisibleXRange(0, i);
         chart.invalidate();
+    }
+
+    public void showDatePickerDialog(final View v) {
+        Calendar cal = Calendar.getInstance();
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(),
+                android.R.style.Theme_Holo_Dialog_MinWidth,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar calendarInstance = Calendar.getInstance();
+                        calendarInstance.set(year, monthOfYear, dayOfMonth);
+                        ((EditText) v).setText(df.format(calendarInstance.getTime()));
+                    }
+                }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+
+        datePickerDialog.show();
     }
 }
