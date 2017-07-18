@@ -7,9 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
@@ -50,9 +50,6 @@ public class StatisticsActivity extends AppCompatActivity {
         dbHelper = new CoNaObiadDbHelper(this);
 
         Spinner spinner = (Spinner) findViewById(R.id.statistics_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.statistics_items, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -73,11 +70,33 @@ public class StatisticsActivity extends AppCompatActivity {
             }
         });
 
-        EditText minDate = (EditText) findViewById(R.id.min_date);
-        minDate.setText(df.format(new Date()));
+        Spinner timeSpinner = (Spinner) findViewById(R.id.time_duration_spinner);
+        timeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LinearLayout layout = (LinearLayout) findViewById(R.id.custom_dates_layout);
+                switch (position) {
+                    case 0:
+                    case 1:
+                        layout.setVisibility(View.GONE);
+                        break;
+                    case 2:
+                        EditText minDate = (EditText) findViewById(R.id.min_date);
+                        minDate.setText(df.format(new Date()));
 
-        EditText maxDate = (EditText) findViewById(R.id.max_date);
-        maxDate.setText(df.format(new Date()));
+                        EditText maxDate = (EditText) findViewById(R.id.max_date);
+                        maxDate.setText(df.format(new Date()));
+
+                        layout.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.statistics_toolbar);
         setSupportActionBar(toolbar);
@@ -138,7 +157,7 @@ public class StatisticsActivity extends AppCompatActivity {
         yAxis.setGranularity(1f);
         yAxis.setStartAtZero(true);
 
-//        Bitmap starBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_background_png);
+//        Bitmap starBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_square_sketch);
 //        chart.setRenderer(new ImageBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler(), starBitmap));
 
         chart.getAxisRight().setDrawLabels(false);
@@ -152,7 +171,7 @@ public class StatisticsActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(v.getContext(),
-                android.R.style.Theme_Holo_Dialog_MinWidth,
+                android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {

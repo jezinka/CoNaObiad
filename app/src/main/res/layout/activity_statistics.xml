@@ -30,7 +30,22 @@
             android:id="@+id/statistics_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp" />
+            android:layout_marginEnd="20dp"
+            android:entries="@array/statistics_items" />
+
+        <Spinner
+            android:id="@+id/time_duration_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/time_duration_items" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/custom_dates_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/min_date"
@@ -48,8 +63,12 @@
             android:inputType="date"
             android:onClick="showDatePickerDialog" />
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_two_arrows_sketch" />
     </LinearLayout>
-
 
     <com.github.mikephil.charting.charts.HorizontalBarChart
         android:id="@+id/chart"

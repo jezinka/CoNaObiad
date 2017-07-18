@@ -53,4 +53,9 @@
     <string name="saturday">Sobota</string>
     <string name="sunday">Niedziela</string>
     <string name="statistics_label">Wykres dla:</string>
+
+    <string name="current_year">Bieżący rok</string>
+    <string name="current_month">Bieżący miesiąc</string>
+    <string name="custom_dates">Własne daty</string>
+    <string name="whole_history">Cała historia</string>
 </resources>
