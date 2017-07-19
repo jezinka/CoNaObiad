@@ -80,7 +80,7 @@ public class IngredientContract extends BaseTable implements BaseColumns {
         return queryNumEntries(db, tableName) > 0;
     }
 
-    private String getCountIngredientsQuery() {
+    private String getCountIngredientsQuery(String whereClause) {
         String ingredientName = this.tableName + '.' + this.columnName;
         return "select " + ingredientName + ", count(" + ingredientName + ") as quantity " +
                 "from " + tableName
@@ -90,15 +90,16 @@ public class IngredientContract extends BaseTable implements BaseColumns {
                 + " on " + MealIngredientContract.tableName + "." + MealIngredientContract.columnMealId + "= " + MealContract.tableName + "." + _ID
                 + " join " + DinnerContract.tableName
                 + " on " + DinnerContract.tableName + "." + DinnerContract.columnMealId + "= " + MealContract.tableName + "." + _ID
+                + whereClause
                 + " group by " + ingredientName
                 + " order by 2";
     }
 
-    public LinkedHashMap<String, Long> getIngredientsStatistics(CoNaObiadDbHelper helper) {
+    public LinkedHashMap<String, Long> getIngredientsStatistics(String whereClause, CoNaObiadDbHelper helper) {
         LinkedHashMap<String, Long> ingredientsCount = new LinkedHashMap<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor res = db.rawQuery(getCountIngredientsQuery(), null);
+        Cursor res = db.rawQuery(getCountIngredientsQuery(whereClause), null);
         if (res != null && res.getCount() > 0) {
             res.moveToFirst();
 

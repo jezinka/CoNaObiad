@@ -111,21 +111,22 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         helper.delete(tableName, id, columnName);
     }
 
-    private String getCountDinnersQuery() {
+    private String getCountDinnersQuery(String whereClause) {
         String mealName = MealContract.columnName;
         return "select " + mealName + ", count(" + mealName + ") as quantity " +
                 "from " + tableName
                 + " join " + MealContract.tableName
                 + " on " + tableName + "." + columnMealId + "= " + MealContract.tableName + "." + _ID
+                + whereClause
                 + " group by " + mealName
                 + " order by 2";
     }
 
-    public LinkedHashMap<String, Long> getDinnerStatistics(CoNaObiadDbHelper helper) {
+    public LinkedHashMap<String, Long> getDinnerStatistics(String whereClause, CoNaObiadDbHelper helper) {
         LinkedHashMap<String, Long> mealsCount = new LinkedHashMap<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor res = db.rawQuery(getCountDinnersQuery(), null);
+        Cursor res = db.rawQuery(getCountDinnersQuery(whereClause), null);
         if (res != null && res.getCount() > 0) {
             res.moveToFirst();
 

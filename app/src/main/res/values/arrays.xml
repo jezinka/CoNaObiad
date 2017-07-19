@@ -44,9 +44,9 @@
     </string-array>
 
     <string-array name="time_duration_items">
+        <item>@string/whole_history</item>
         <item>@string/current_month</item>
         <item>@string/current_year</item>
-        <item>@string/whole_history</item>
         <item>@string/custom_dates</item>
     </string-array>
 </resources>
