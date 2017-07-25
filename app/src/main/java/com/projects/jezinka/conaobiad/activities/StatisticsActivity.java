@@ -195,6 +195,8 @@ public class StatisticsActivity extends AppCompatActivity {
         }
 
         final BarDataSet set = new BarDataSet(entries, "");
+        set.setDrawValues(false);
+
         BarData data = new BarData(set);
         data.setBarWidth(0.2f);
 
