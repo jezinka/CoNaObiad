@@ -11,8 +11,8 @@ public class IngredientCategoryContract implements BaseColumns {
     public static String getCreateEntriesQuery() {
         return "CREATE TABLE " + tableName + " (" +
                 ingredientColumn + " int," +
-                categoryColumn + " int)" +
+                categoryColumn + " int," +
                 " FOREIGN KEY(" + ingredientColumn + ") REFERENCES " + IngredientContract.tableName + "(" + _ID + ") ON DELETE CASCADE," +
-                " FOREIGN KEY(" + categoryColumn + ") REFERENCES " + CategoryContract.tableName + "(" + _ID + ") ON DELETE CASCADE";
+                " FOREIGN KEY(" + categoryColumn + ") REFERENCES " + CategoryContract.tableName + "(" + _ID + ") ON DELETE CASCADE)";
     }
 }

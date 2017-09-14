@@ -11,8 +11,8 @@ public class MealCategoryContract implements BaseColumns {
     public static String getCreateEntriesQuery() {
         return "CREATE TABLE " + tableName + " (" +
                 mealColumn + " int," +
-                categoryColumn + " int)" +
+                categoryColumn + " int," +
                 " FOREIGN KEY(" + mealColumn + ") REFERENCES " + MealContract.tableName + "(" + _ID + ") ON DELETE CASCADE," +
-                " FOREIGN KEY(" + categoryColumn + ") REFERENCES " + CategoryContract.tableName + "(" + _ID + ") ON DELETE CASCADE";
+                " FOREIGN KEY(" + categoryColumn + ") REFERENCES " + CategoryContract.tableName + "(" + _ID + ") ON DELETE CASCADE)";
     }
 }
