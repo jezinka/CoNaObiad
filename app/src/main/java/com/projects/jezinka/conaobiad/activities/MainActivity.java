@@ -176,7 +176,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.fill_list_item:
-                fillList();
+                fillList(false);
+                return true;
+
+            case R.id.fill_list_empty_item:
+                fillList(true);
                 return true;
 
             default:
@@ -226,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.shopping_list)
                 .setPositiveButton(android.R.string.ok, null)
+                .setNeutralButton("na zewnątrz", null)
                 .setMessage(mealIngredientContract.getShoppingList(meals, dbHelper))
                 .show();
     }
@@ -249,17 +254,17 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void fillList() {
+    private void fillList(boolean onlyEmpty) {
 
         Calendar calendarInstance = Calendar.getInstance();
         calendarInstance.setTime(TimeUtils.getWeekStartDate(new Date()));
 
-        //TODO: wstaw w puste
-
         List<Meal> meals = mealContract.getRandomMeals(dbHelper, getPlanLength());
 
         for (Meal meal : meals) {
-            dinnerContract.insert(dbHelper, meal.getId(), calendarInstance.getTime());
+            if (!onlyEmpty || dinnerAdapter.isDayEmpty(calendarInstance.getTime())) {
+                dinnerContract.insert(dbHelper, meal.getId(), calendarInstance.getTime());
+            }
             calendarInstance.add(Calendar.DATE, 1);
         }
 

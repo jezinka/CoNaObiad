@@ -57,6 +57,10 @@ public class DinnerAdapter extends BaseAdapter {
         return this.dinners.get(date);
     }
 
+    public boolean isDayEmpty(Date date) {
+        return getDinners(date).size() == 0;
+    }
+
     public long getItemId(int position) {
         return 0;
     }

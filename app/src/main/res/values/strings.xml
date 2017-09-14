@@ -43,6 +43,7 @@
     <string name="ingredient_added_message">Składnik został dodany</string>
     <string name="shopping_list">Lista zakupów</string>
     <string name="fill_list">Wypełnij losowo</string>
+    <string name="fill_only_empty_list">Wypełnij puste</string>
     <string name="only_date_info">Możesz zmienić tylko datę</string>
 
     <string name="monday">Poniedziałek</string>
