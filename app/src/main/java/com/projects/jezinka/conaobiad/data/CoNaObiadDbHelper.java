@@ -7,9 +7,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
+import com.projects.jezinka.conaobiad.models.tableDefinitions.CategoryContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientCategoryContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.MealCategoryContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
 
@@ -20,7 +22,7 @@ import java.io.InputStreamReader;
 public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
     Context context;
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "CoNaObiad.db";
 
     public CoNaObiadDbHelper(Context context) {
@@ -40,7 +42,9 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
         db.execSQL(DinnerContract.getCreateEntriesQuery());
         db.execSQL(IngredientContract.getCreateEntriesQuery());
         db.execSQL(MealIngredientContract.getCreateEntriesQuery());
+        db.execSQL(CategoryContract.getCreateEntriesQuery());
         db.execSQL(IngredientCategoryContract.getCreateEntriesQuery());
+        db.execSQL(MealCategoryContract.getCreateEntriesQuery());
     }
 
     @Override
@@ -50,6 +54,8 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
         dropTable(IngredientContract.tableName, db);
         dropTable(MealIngredientContract.tableName, db);
         dropTable(IngredientCategoryContract.tableName, db);
+        dropTable(MealCategoryContract.tableName, db);
+        dropTable(CategoryContract.tableName, db);
         onCreate(db);
     }
 
