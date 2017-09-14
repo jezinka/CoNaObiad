@@ -4,7 +4,6 @@
 
     <!-- Settings, should always be in the overflow -->
     <item
-        android:id="@+id/fill_list_item"
         android:icon="@drawable/ic_light_bulb"
         android:title="@string/fill_list"
         app:showAsAction="always">
