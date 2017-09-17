@@ -59,4 +59,9 @@
     <string name="current_month">Bieżący miesiąc</string>
     <string name="custom_dates">Własne daty</string>
     <string name="whole_history">Cała historia</string>
+
+    <string name="categories">Kategorie</string>
+    <string name="put_category_name">Wpisz nazwę kategorii</string>
+    <string name="add_category">Dodaj kategorię</string>
+    <string name="show_category">Wyświetl kategorię</string>
 </resources>

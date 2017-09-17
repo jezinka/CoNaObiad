@@ -37,6 +37,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/category_list_item"
+        android:title="@string/categories"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/statistic_item"
         android:title="@string/statistics_item"
         app:showAsAction="never" />

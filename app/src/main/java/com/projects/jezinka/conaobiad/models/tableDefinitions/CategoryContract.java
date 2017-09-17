@@ -1,8 +1,17 @@
 package com.projects.jezinka.conaobiad.models.tableDefinitions;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 
-public class CategoryContract implements BaseColumns {
+import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
+import com.projects.jezinka.conaobiad.models.Category;
+
+import java.util.ArrayList;
+
+public class CategoryContract extends BaseTable implements BaseColumns {
 
     public static String tableName = "category";
     private static String columnName = "name";
@@ -12,4 +21,50 @@ public class CategoryContract implements BaseColumns {
                 _ID + " INTEGER PRIMARY KEY," +
                 columnName + " TEXT)";
     }
+
+    public long insert(CoNaObiadDbHelper dbHelper, String name) {
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", name);
+
+        return dbHelper.insert(tableName, contentValues);
+    }
+
+    public boolean update(CoNaObiadDbHelper dbHelper, String name, long categoryId) {
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", name);
+
+        dbHelper.update(tableName, contentValues, categoryId);
+        return true;
+    }
+
+    public Category[] getAllCategoriesArray(SQLiteOpenHelper helper) {
+        ArrayList<Category> result = getAllCategories(helper);
+        return result.toArray(new Category[result.size()]);
+    }
+
+    @NonNull
+    private ArrayList<Category> getAllCategories(SQLiteOpenHelper helper) {
+        return getArrayList(helper, null, getAllRecordQuery());
+    }
+
+    @NonNull
+    private String getAllRecordQuery() {
+        return "select " + _ID + ", " + columnName +
+                " from " + tableName +
+                " order by " + columnName + " COLLATE NOCASE";
+    }
+
+    @NonNull
+    Category getFromCursor(Cursor res) {
+        String name = res.getString(res.getColumnIndex(columnName));
+        long id = res.getLong(res.getColumnIndex(_ID));
+        return new Category(id, name);
+    }
+
+    public void delete(Long[] ids, CoNaObiadDbHelper helper) {
+        helper.delete(tableName, ids);
+    }
+
 }

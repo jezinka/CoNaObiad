@@ -183,6 +183,11 @@ public class MainActivity extends AppCompatActivity {
                 fillList(true);
                 return true;
 
+            case R.id.category_list_item:
+                Intent categoriesIntent = new Intent(this, CategoryListActivity.class);
+                startActivity(categoriesIntent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
 
