@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class CategoryContract extends BaseTable implements BaseColumns {
 
     public static String tableName = "category";
-    private static String columnName = "name";
 
     public static String getCreateEntriesQuery() {
         return "CREATE TABLE " + tableName + " (" +
@@ -67,4 +66,7 @@ public class CategoryContract extends BaseTable implements BaseColumns {
         helper.delete(tableName, ids);
     }
 
+    public boolean isAnyCategorySaved(SQLiteOpenHelper helper) {
+        return isAnyRecordSaved(helper, tableName);
+    }
 }

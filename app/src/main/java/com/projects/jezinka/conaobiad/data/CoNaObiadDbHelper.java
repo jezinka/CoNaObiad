@@ -22,7 +22,7 @@ import java.io.InputStreamReader;
 public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
     Context context;
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
     private static final String DATABASE_NAME = "CoNaObiad.db";
 
     public CoNaObiadDbHelper(Context context) {
@@ -91,16 +91,24 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
     }
 
     public void initializeIngredients() {
+        initializeTable("ingredients.txt", IngredientContract.columnName, IngredientContract.tableName);
+    }
+
+    public void initializeCategories() {
+        initializeTable("categories.txt", CategoryContract.columnName, CategoryContract.tableName);
+    }
+
+    private void initializeTable(String fileName, String columnName, String tableName) {
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(context.getAssets().open("ingredients.txt"), "UTF-8"));
+            reader = new BufferedReader(new InputStreamReader(context.getAssets().open(fileName), "UTF-8"));
 
             String mLine;
             while ((mLine = reader.readLine()) != null) {
                 ContentValues contentValues = new ContentValues();
-                contentValues.put(IngredientContract.columnName, mLine);
+                contentValues.put(columnName, mLine);
 
-                this.insert(IngredientContract.tableName, contentValues);
+                this.insert(tableName, contentValues);
             }
         } catch (IOException e) {
             e.printStackTrace();

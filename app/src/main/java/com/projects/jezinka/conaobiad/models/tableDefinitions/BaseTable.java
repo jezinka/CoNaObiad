@@ -7,7 +7,11 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
+import static android.database.DatabaseUtils.queryNumEntries;
+
 public abstract class BaseTable {
+
+    public static String columnName = "name";
 
     abstract Object getFromCursor(Cursor res);
 
@@ -27,5 +31,10 @@ public abstract class BaseTable {
 
         db.close();
         return array_list;
+    }
+
+    public boolean isAnyRecordSaved(SQLiteOpenHelper helper, String tableName) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        return queryNumEntries(db, tableName) > 0;
     }
 }

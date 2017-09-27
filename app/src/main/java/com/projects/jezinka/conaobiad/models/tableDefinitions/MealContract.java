@@ -2,7 +2,6 @@ package com.projects.jezinka.conaobiad.models.tableDefinitions;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
@@ -13,12 +12,9 @@ import com.projects.jezinka.conaobiad.models.Meal;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static android.database.DatabaseUtils.queryNumEntries;
-
 public class MealContract extends BaseTable implements BaseColumns {
 
     public static String tableName = "meal";
-    static String columnName = "name";
     static String columnRecipe = "recipe";
 
     public static String getCreateEntriesQuery() {
@@ -72,8 +68,7 @@ public class MealContract extends BaseTable implements BaseColumns {
     }
 
     public boolean isAnyMealSaved(SQLiteOpenHelper helper) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        return queryNumEntries(db, tableName) > 0;
+        return isAnyRecordSaved(helper, tableName);
     }
 
     public void delete(Long[] ids, CoNaObiadDbHelper helper) {

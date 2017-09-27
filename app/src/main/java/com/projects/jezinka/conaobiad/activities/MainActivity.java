@@ -26,6 +26,7 @@ import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.dialogs.DinnerDialogFragment;
 import com.projects.jezinka.conaobiad.models.Dinner;
 import com.projects.jezinka.conaobiad.models.Meal;
+import com.projects.jezinka.conaobiad.models.tableDefinitions.CategoryContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
 import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         mealContract = new MealContract();
         dinnerContract = new DinnerContract();
 
-        initializeIngredientsTable();
+        initializeTables();
 
         if (!mealContract.isAnyMealSaved(dbHelper)) {
             showEmptyMealListMessage(this);
@@ -85,10 +86,22 @@ public class MainActivity extends AppCompatActivity {
         myToolbar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_overflow_sketch, null));
     }
 
+    private void initializeTables() {
+        initializeIngredientsTable();
+        initializeCategoriesTable();
+    }
+
     private void initializeIngredientsTable() {
         IngredientContract ingredientContract = new IngredientContract();
         if (!ingredientContract.isAnyIngredientSaved(dbHelper)) {
             dbHelper.initializeIngredients();
+        }
+    }
+
+    private void initializeCategoriesTable() {
+        CategoryContract categoryContract = new CategoryContract();
+        if (!categoryContract.isAnyCategorySaved(dbHelper)) {
+            dbHelper.initializeCategories();
         }
     }
 

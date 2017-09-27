@@ -13,12 +13,9 @@ import com.projects.jezinka.conaobiad.models.Ingredient;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import static android.database.DatabaseUtils.queryNumEntries;
-
 public class IngredientContract extends BaseTable implements BaseColumns {
 
     public static String tableName = "ingredient";
-    public static String columnName = "name";
 
     public static String getCreateEntriesQuery() {
         return "CREATE TABLE " + tableName + " (" +
@@ -76,8 +73,7 @@ public class IngredientContract extends BaseTable implements BaseColumns {
     }
 
     public boolean isAnyIngredientSaved(SQLiteOpenHelper helper) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        return queryNumEntries(db, tableName) > 0;
+        return isAnyRecordSaved(helper, tableName);
     }
 
     private String getCountIngredientsQuery(String whereClause) {
