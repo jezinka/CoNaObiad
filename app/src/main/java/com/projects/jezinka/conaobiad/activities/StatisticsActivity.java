@@ -38,7 +38,7 @@ import java.util.Map;
 
 public class StatisticsActivity extends AppCompatActivity {
 
-    static final SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", new Locale("pl-pl"));
+    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", new Locale("pl-pl"));
 
     public static final int DINNER_POSITION = 0;
     public static final int INGREDIENT_POSITION = 1;
