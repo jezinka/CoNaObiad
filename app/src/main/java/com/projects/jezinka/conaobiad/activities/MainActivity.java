@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showRecipeDialog(Dinner[] dinners) {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         for (Dinner dinner : dinners) {
             sb.append(getFormattedTitle(dinner));
@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
     public void showIngredients(Dinner[] dinners) {
 
         MealIngredientContract mealIngredientContract = new MealIngredientContract();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         for (Dinner dinner : dinners) {
             sb.append(getFormattedTitle(dinner));
