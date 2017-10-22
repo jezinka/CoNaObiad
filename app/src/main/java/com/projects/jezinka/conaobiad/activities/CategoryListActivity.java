@@ -27,7 +27,7 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryD
     private CoNaObiadDbHelper helper;
     private CategoryListAdapter adapter;
     private CategoryContract categoryContract;
-    public Toolbar myToolbar;
+    private Toolbar myToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +52,9 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryD
 
                 if (viewId == R.id.text1) {
                     showCategoryDialog(category);
-                } else if (viewId == R.id.checkBox) {
-                    if (category != null) {
-                        category.setChecked(!category.isChecked());
-                        adapter.notifyDataSetChanged();
-                    }
+                } else if (viewId == R.id.checkBox && category != null) {
+                    category.setChecked(!category.isChecked());
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
@@ -95,7 +93,7 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryD
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete_menu_button:
-                ArrayList<Long> categoriesIds = new ArrayList<Long>();
+                ArrayList<Long> categoriesIds = new ArrayList<>();
 
                 for (int i = 0; i < adapter.getCount(); i++) {
                     Category category = adapter.getItem(i);
