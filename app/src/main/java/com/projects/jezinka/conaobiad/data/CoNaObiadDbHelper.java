@@ -22,7 +22,7 @@ import java.io.InputStreamReader;
 public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
     Context context;
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "CoNaObiad.db";
 
     public CoNaObiadDbHelper(Context context) {
@@ -49,13 +49,13 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        dropTable(MealContract.tableName, db);
-        dropTable(DinnerContract.tableName, db);
-        dropTable(IngredientContract.tableName, db);
-        dropTable(MealIngredientContract.tableName, db);
-        dropTable(IngredientCategoryContract.tableName, db);
-        dropTable(MealCategoryContract.tableName, db);
-        dropTable(CategoryContract.tableName, db);
+        dropTable(MealContract.getTableName(), db);
+        dropTable(DinnerContract.getTableName(), db);
+        dropTable(IngredientContract.getTableName(), db);
+        dropTable(MealIngredientContract.getTableName(), db);
+        dropTable(IngredientCategoryContract.getTableName(), db);
+        dropTable(MealCategoryContract.getTableName(), db);
+        dropTable(CategoryContract.getTableName(), db);
         onCreate(db);
     }
 
@@ -91,11 +91,11 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
     }
 
     public void initializeIngredients() {
-        initializeTable("ingredients.txt", IngredientContract.columnName, IngredientContract.tableName);
+        initializeTable("ingredients.txt", IngredientContract.columnName, IngredientContract.getTableName());
     }
 
     public void initializeCategories() {
-        initializeTable("categories.txt", CategoryContract.columnName, CategoryContract.tableName);
+        initializeTable("categories.txt", CategoryContract.columnName, CategoryContract.getTableName());
     }
 
     private void initializeTable(String fileName, String columnName, String tableName) {

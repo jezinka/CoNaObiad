@@ -18,7 +18,11 @@ import java.util.LinkedHashMap;
 
 public class DinnerContract extends BaseTable implements BaseColumns {
 
-    public static String tableName = "dinner";
+    private static final String tableName = "dinner";
+
+    public static String getTableName() {
+        return tableName;
+    }
 
     public static String columnDate = "date";
     public static String columnMealId = "meal_id";
@@ -28,7 +32,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
                 _ID + " INTEGER PRIMARY KEY," +
                 columnMealId + " INT, " +
                 columnDate + " INT," +
-                " FOREIGN KEY(" + columnMealId + ") REFERENCES " + MealContract.tableName + "(" + _ID + ") ON DELETE CASCADE " +
+                " FOREIGN KEY(" + columnMealId + ") REFERENCES " + MealContract.getTableName() + "(" + _ID + ") ON DELETE CASCADE " +
                 ")";
     }
 
@@ -97,8 +101,8 @@ public class DinnerContract extends BaseTable implements BaseColumns {
                 MealContract.columnName + ", " +
                 MealContract.columnRecipe +
                 " from " + tableName +
-                " join " + MealContract.tableName +
-                " on " + tableName + "." + columnMealId + "= " + MealContract.tableName + "." + _ID +
+                " join " + MealContract.getTableName() +
+                " on " + tableName + "." + columnMealId + "= " + MealContract.getTableName() + "." + _ID +
                 whereClause +
                 " order by " + columnDate;
     }
@@ -115,8 +119,8 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         String mealName = MealContract.columnName;
         return "select " + mealName + ", count(" + mealName + ") as quantity " +
                 "from " + tableName
-                + " join " + MealContract.tableName
-                + " on " + tableName + "." + columnMealId + "= " + MealContract.tableName + "." + _ID
+                + " join " + MealContract.getTableName()
+                + " on " + tableName + "." + columnMealId + "= " + MealContract.getTableName() + "." + _ID
                 + whereClause
                 + " group by " + mealName
                 + " order by 2";

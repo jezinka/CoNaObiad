@@ -14,7 +14,12 @@ import java.util.Random;
 
 public class MealContract extends BaseTable implements BaseColumns {
 
-    public static String tableName = "meal";
+    public static final String tableName = "meal";
+
+    public static String getTableName() {
+        return tableName;
+    }
+
     static String columnRecipe = "recipe";
 
     public static String getCreateEntriesQuery() {

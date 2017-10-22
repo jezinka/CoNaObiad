@@ -13,7 +13,11 @@ import java.util.ArrayList;
 
 public class CategoryContract extends BaseTable implements BaseColumns {
 
-    public static String tableName = "category";
+    private static final String tableName = "category";
+
+    public static String getTableName() {
+        return tableName;
+    }
 
     public static String getCreateEntriesQuery() {
         return "CREATE TABLE " + tableName + " (" +

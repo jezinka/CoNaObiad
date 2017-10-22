@@ -15,7 +15,11 @@ import java.util.LinkedHashMap;
 
 public class IngredientContract extends BaseTable implements BaseColumns {
 
-    public static String tableName = "ingredient";
+    private static final String tableName = "ingredient";
+
+    public static String getTableName() {
+        return tableName;
+    }
 
     public static String getCreateEntriesQuery() {
         return "CREATE TABLE " + tableName + " (" +
@@ -80,12 +84,12 @@ public class IngredientContract extends BaseTable implements BaseColumns {
         String ingredientName = this.tableName + '.' + this.columnName;
         return "select " + ingredientName + ", count(" + ingredientName + ") as quantity " +
                 "from " + tableName
-                + " join " + MealIngredientContract.tableName
-                + " on " + tableName + "." + _ID + "= " + MealIngredientContract.tableName + "." + MealIngredientContract.columnIngredientId
-                + " join " + MealContract.tableName
-                + " on " + MealIngredientContract.tableName + "." + MealIngredientContract.columnMealId + "= " + MealContract.tableName + "." + _ID
-                + " join " + DinnerContract.tableName
-                + " on " + DinnerContract.tableName + "." + DinnerContract.columnMealId + "= " + MealContract.tableName + "." + _ID
+                + " join " + MealIngredientContract.getTableName()
+                + " on " + tableName + "." + _ID + "= " + MealIngredientContract.getTableName() + "." + MealIngredientContract.columnIngredientId
+                + " join " + MealContract.getTableName()
+                + " on " + MealIngredientContract.getTableName() + "." + MealIngredientContract.columnMealId + "= " + MealContract.getTableName() + "." + _ID
+                + " join " + DinnerContract.getTableName()
+                + " on " + DinnerContract.getTableName() + "." + DinnerContract.columnMealId + "= " + MealContract.getTableName() + "." + _ID
                 + whereClause
                 + " group by " + ingredientName
                 + " order by 2";

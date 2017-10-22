@@ -20,33 +20,40 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
 
     private static final String CHECKED_COLUMN_NAME = "checked";
 
-    public static String tableName = "meal_ingredient";
+    private static final String tableName = "meal_ingredient";
 
-    public static String columnIngredientId = "ingredient_id";
-    public static String columnMealId = "meal_id";
+    public static String getTableName() {
+        return tableName;
+    }
+
+    static final String columnIngredientId = "ingredient_id";
+    static final String columnMealId = "meal_id";
 
     public static String getCreateEntriesQuery() {
         return "CREATE TABLE " + tableName + " (" +
                 columnIngredientId + " int, " +
                 columnMealId + " int, " +
-                " FOREIGN KEY(" + columnMealId + ") REFERENCES " + MealContract.tableName + "(" + _ID + ") ON DELETE CASCADE," +
-                " FOREIGN KEY(" + columnIngredientId + ") REFERENCES " + IngredientContract.tableName + "(" + _ID + ") ON DELETE CASCADE" +
+                " FOREIGN KEY(" + columnMealId + ") REFERENCES " + MealContract.getTableName() + "(" + _ID + ") ON DELETE CASCADE," +
+                " FOREIGN KEY(" + columnIngredientId + ") REFERENCES " + IngredientContract.getTableName() + "(" + _ID + ") ON DELETE CASCADE" +
                 ")";
     }
 
     @NonNull
     private String getIngredientsWithChecked() {
-        return "select ingredient._id, ingredient.name, " +
+        return "select " +
+                IngredientContract.getTableName() + "." + _ID + ", " +
+                IngredientContract.getTableName() + "." + IngredientContract.columnName + ", " +
                 "  CASE WHEN EXISTS( " +
-                "             SELECT 1 from ingredient as ingredient2    " +
-                "               join meal_ingredient as meal_ingredient2  on ingredient2._id= meal_ingredient2.ingredient_id     " +
-                "               join meal as meal2 on meal2._id= meal_ingredient2.meal_id     " +
-                "               where ingredient2._id = ingredient._id and meal2._id = ? " +
+                "             SELECT 1 from " + IngredientContract.getTableName() + " as ingredient2 " +
+                "               join " + MealIngredientContract.getTableName() + " as meal_ingredient2 on ingredient2._id = meal_ingredient2.ingredient_id " +
+                "               join " + MealContract.getTableName() + " as meal2 on meal2._id = meal_ingredient2.meal_id " +
+                "               where ingredient2._id = " + IngredientContract.getTableName() + "." + _ID + " and meal2." + _ID + " = ? " +
                 "        ) THEN 1 " +
                 "        ELSE 0  " +
                 "    END as checked  " +
-                "  from ingredient " +
-                " order by checked desc, ingredient.name COLLATE NOCASE";
+                "  from " + IngredientContract.getTableName() +
+                " order by checked desc, " +
+                IngredientContract.getTableName() + "." + IngredientContract.columnName + " COLLATE NOCASE";
     }
 
     @NonNull
@@ -57,13 +64,13 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
     @NonNull
     private String getIngredientsQuery() {
 
-        return "select " + IngredientContract.tableName + "." + IngredientContract.columnName +
+        return "select " + IngredientContract.getTableName() + "." + IngredientContract.columnName +
                 " from " + tableName +
-                " join " + MealContract.tableName +
-                " on " + MealContract.tableName + "." + _ID + "= " + tableName + "." + columnMealId +
-                " join " + IngredientContract.tableName +
-                " on " + IngredientContract.tableName + "." + _ID + "= " + tableName + "." + columnIngredientId +
-                " where " + MealContract.tableName + "." + _ID + "=? ";
+                " join " + MealContract.getTableName() +
+                " on " + MealContract.getTableName() + "." + _ID + "= " + tableName + "." + columnMealId +
+                " join " + IngredientContract.getTableName() +
+                " on " + IngredientContract.getTableName() + "." + _ID + "= " + tableName + "." + columnIngredientId +
+                " where " + MealContract.getTableName() + "." + _ID + "=? ";
     }
 
     public boolean insert(CoNaObiadDbHelper dbHelper, long mealId, long ingredientId) {
@@ -83,7 +90,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
     }
 
     public List<String> getIngredientsForMeal(long mealId, SQLiteOpenHelper helper) {
-        ArrayList<String> array_list = new ArrayList<>();
+        ArrayList<String> ingredients = new ArrayList<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor res = db.rawQuery(getIngredientsSortedQuery(), new String[]{Long.toString(mealId)});
@@ -92,16 +99,16 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
             res.moveToFirst();
 
             do {
-                array_list.add(res.getString(0));
+                ingredients.add(res.getString(0));
             } while (res.moveToNext());
         }
 
         db.close();
-        return array_list;
+        return ingredients;
     }
 
     public Ingredient[] getIngredientsWithMeal(long mealId, SQLiteOpenHelper helper) {
-        ArrayList<Ingredient> array_list = new ArrayList<>();
+        ArrayList<Ingredient> ingredients = new ArrayList<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor res = db.rawQuery(getIngredientsWithChecked(), new String[]{Long.toString(mealId)});
@@ -113,12 +120,12 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
                 Long id = res.getLong(res.getColumnIndex(_ID));
                 String name = res.getString(res.getColumnIndex(IngredientContract.columnName));
                 int checked = res.getInt(res.getColumnIndex(CHECKED_COLUMN_NAME));
-                array_list.add(new Ingredient(id, name, checked == 1));
+                ingredients.add(new Ingredient(id, name, checked == 1));
             } while (res.moveToNext());
         }
 
         db.close();
-        return array_list.toArray(new Ingredient[array_list.size()]);
+        return ingredients.toArray(new Ingredient[ingredients.size()]);
     }
 
     public void deleteForMeal(CoNaObiadDbHelper helper, long mealId) {
@@ -127,7 +134,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
 
     public String getShoppingList(List<Meal> meals, SQLiteOpenHelper helper) {
 
-        ArrayList<String> array_list = new ArrayList<>();
+        ArrayList<String> ingredients = new ArrayList<>();
 
         String[] queryArgs = getMealIds(meals);
         String query = getShoppingListQuery(meals);
@@ -139,12 +146,12 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
             res.moveToFirst();
 
             do {
-                array_list.add(res.getString(0));
+                ingredients.add(res.getString(0));
             } while (res.moveToNext());
         }
 
         db.close();
-        return TextUtils.join("\n", array_list);
+        return TextUtils.join("\n", ingredients);
     }
 
     @NonNull
