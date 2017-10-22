@@ -13,7 +13,7 @@ import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.activities.MainActivity;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.Dinner;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
+import com.projects.jezinka.conaobiad.models.tables.DinnerContract;
 import com.projects.jezinka.conaobiad.utils.TimeUtils;
 
 import java.text.DateFormat;

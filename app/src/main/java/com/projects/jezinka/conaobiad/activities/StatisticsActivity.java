@@ -23,8 +23,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
+import com.projects.jezinka.conaobiad.models.tables.DinnerContract;
+import com.projects.jezinka.conaobiad.models.tables.IngredientContract;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

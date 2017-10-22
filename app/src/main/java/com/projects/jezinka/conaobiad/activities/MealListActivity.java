@@ -22,8 +22,8 @@ import com.projects.jezinka.conaobiad.dialogs.IngredientPickerDialogFragment;
 import com.projects.jezinka.conaobiad.dialogs.MealDialogFragment;
 import com.projects.jezinka.conaobiad.models.Ingredient;
 import com.projects.jezinka.conaobiad.models.Meal;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
+import com.projects.jezinka.conaobiad.models.tables.MealContract;
+import com.projects.jezinka.conaobiad.models.tables.MealIngredientContract;
 
 import java.util.ArrayList;
 import java.util.HashSet;

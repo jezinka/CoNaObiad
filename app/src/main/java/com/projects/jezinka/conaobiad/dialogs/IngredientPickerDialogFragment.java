@@ -23,8 +23,8 @@ import com.projects.jezinka.conaobiad.activities.MealListActivity;
 import com.projects.jezinka.conaobiad.adapters.IngredientListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.Ingredient;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
+import com.projects.jezinka.conaobiad.models.tables.IngredientContract;
+import com.projects.jezinka.conaobiad.models.tables.MealIngredientContract;
 
 public class IngredientPickerDialogFragment extends DialogFragment {
 

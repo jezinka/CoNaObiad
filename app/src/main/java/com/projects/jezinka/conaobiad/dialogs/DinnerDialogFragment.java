@@ -25,8 +25,8 @@ import com.projects.jezinka.conaobiad.adapters.MealListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.Dinner;
 import com.projects.jezinka.conaobiad.models.Meal;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
+import com.projects.jezinka.conaobiad.models.tables.DinnerContract;
+import com.projects.jezinka.conaobiad.models.tables.MealContract;
 
 import java.text.DateFormat;
 import java.text.ParseException;

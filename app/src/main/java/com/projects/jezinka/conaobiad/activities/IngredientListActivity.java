@@ -18,7 +18,7 @@ import com.projects.jezinka.conaobiad.adapters.IngredientListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.dialogs.IngredientDialogFragment;
 import com.projects.jezinka.conaobiad.models.Ingredient;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
+import com.projects.jezinka.conaobiad.models.tables.IngredientContract;
 
 import java.util.ArrayList;
 

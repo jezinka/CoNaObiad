@@ -18,7 +18,7 @@ import com.projects.jezinka.conaobiad.adapters.CategoryListAdapter;
 import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.dialogs.CategoryDialogFragment;
 import com.projects.jezinka.conaobiad.models.Category;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.CategoryContract;
+import com.projects.jezinka.conaobiad.models.tables.CategoryContract;
 
 import java.util.ArrayList;
 

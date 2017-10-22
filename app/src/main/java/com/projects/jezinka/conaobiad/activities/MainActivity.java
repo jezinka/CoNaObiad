@@ -26,11 +26,11 @@ import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.dialogs.DinnerDialogFragment;
 import com.projects.jezinka.conaobiad.models.Dinner;
 import com.projects.jezinka.conaobiad.models.Meal;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.CategoryContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
+import com.projects.jezinka.conaobiad.models.tables.CategoryContract;
+import com.projects.jezinka.conaobiad.models.tables.DinnerContract;
+import com.projects.jezinka.conaobiad.models.tables.IngredientContract;
+import com.projects.jezinka.conaobiad.models.tables.MealContract;
+import com.projects.jezinka.conaobiad.models.tables.MealIngredientContract;
 import com.projects.jezinka.conaobiad.utils.TimeUtils;
 
 import java.util.ArrayList;

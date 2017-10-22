@@ -1,4 +1,4 @@
-package com.projects.jezinka.conaobiad.models.tableDefinitions;
+package com.projects.jezinka.conaobiad.models.tables;
 
 import android.content.ContentValues;
 import android.database.Cursor;

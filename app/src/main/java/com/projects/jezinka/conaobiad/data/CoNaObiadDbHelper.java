@@ -7,13 +7,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 
-import com.projects.jezinka.conaobiad.models.tableDefinitions.CategoryContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.DinnerContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientCategoryContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.IngredientContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.MealCategoryContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.MealContract;
-import com.projects.jezinka.conaobiad.models.tableDefinitions.MealIngredientContract;
+import com.projects.jezinka.conaobiad.models.tables.CategoryContract;
+import com.projects.jezinka.conaobiad.models.tables.DinnerContract;
+import com.projects.jezinka.conaobiad.models.tables.IngredientCategoryContract;
+import com.projects.jezinka.conaobiad.models.tables.IngredientContract;
+import com.projects.jezinka.conaobiad.models.tables.MealCategoryContract;
+import com.projects.jezinka.conaobiad.models.tables.MealContract;
+import com.projects.jezinka.conaobiad.models.tables.MealIngredientContract;
 
 import java.io.BufferedReader;
 import java.io.IOException;
