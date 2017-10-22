@@ -27,7 +27,7 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
     private CoNaObiadDbHelper helper;
     private IngredientListAdapter adapter;
     private IngredientContract ingredientContract;
-    public Toolbar myToolbar;
+    private Toolbar myToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +52,9 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
 
                 if (viewId == R.id.text1) {
                     showIngredientDialog(ingredient);
-                } else if (viewId == R.id.checkBox) {
-                    if (ingredient != null) {
-                        ingredient.setChecked(!ingredient.isChecked());
-                        adapter.notifyDataSetChanged();
-                    }
+                } else if (viewId == R.id.checkBox && ingredient != null) {
+                    ingredient.setChecked(!ingredient.isChecked());
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
@@ -95,7 +93,7 @@ public class IngredientListActivity extends AppCompatActivity implements Ingredi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete_menu_button:
-                ArrayList<Long> ingredientIds = new ArrayList<Long>();
+                ArrayList<Long> ingredientIds = new ArrayList<>();
 
                 for (int i = 0; i < adapter.getCount(); i++) {
                     Ingredient ingredient = adapter.getItem(i);
