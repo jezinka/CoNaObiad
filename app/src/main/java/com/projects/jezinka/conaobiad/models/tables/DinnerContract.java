@@ -24,15 +24,15 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         return TABLE_NAME;
     }
 
-    public static String columnDate = "date";
-    public static String columnMealId = "meal_id";
+    public static final String COLUMN_DATE = "date";
+    public static final String COLUMN_MEAL_ID = "meal_id";
 
     public static String getCreateEntriesQuery() {
         return "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
-                columnMealId + " INT, " +
-                columnDate + " INT," +
-                " FOREIGN KEY(" + columnMealId + ") REFERENCES " + MealContract.getTableName() + "(" + _ID + ") ON DELETE CASCADE " +
+                COLUMN_MEAL_ID + " INT, " +
+                COLUMN_DATE + " INT," +
+                " FOREIGN KEY(" + COLUMN_MEAL_ID + ") REFERENCES " + MealContract.getTableName() + "(" + _ID + ") ON DELETE CASCADE " +
                 ")";
     }
 
@@ -61,7 +61,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         long weekStartDate = TimeUtils.getWeekStartDate(date).getTime();
         String[] sqlArgs = {String.valueOf(weekStartDate), String.valueOf(weekStartDate + TimeUtils.getTimeDeltaMilliseconds())};
 
-        return getArrayList(helper, sqlArgs, getRecordsByDateSql(" where " + columnDate + " between ? and ?"));
+        return getArrayList(helper, sqlArgs, getRecordsByDateSql(" where " + COLUMN_DATE + " between ? and ?"));
     }
 
     @NonNull
@@ -70,16 +70,16 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         long weekStartDate = date.getTime();
         String[] sqlArgs = {String.valueOf(weekStartDate)};
 
-        return getArrayList(helper, sqlArgs, getRecordsByDateSql(" where " + columnDate + " = ? "));
+        return getArrayList(helper, sqlArgs, getRecordsByDateSql(" where " + COLUMN_DATE + " = ? "));
     }
 
     @NonNull
     Dinner getFromCursor(Cursor res) {
         long id = res.getLong(res.getColumnIndex(_ID));
-        long mealId = res.getLong(res.getColumnIndex(columnMealId));
+        long mealId = res.getLong(res.getColumnIndex(COLUMN_MEAL_ID));
         String mealName = res.getString(res.getColumnIndex(MealContract.COLUMN_NAME));
         String recipe = res.getString(res.getColumnIndex(MealContract.columnRecipe));
-        Date dinnerDate = new Date(res.getLong(res.getColumnIndex(columnDate)));
+        Date dinnerDate = new Date(res.getLong(res.getColumnIndex(COLUMN_DATE)));
         Meal meal = new Meal(mealId, mealName, recipe);
         return new Dinner(id, meal, dinnerDate);
     }
@@ -96,15 +96,15 @@ public class DinnerContract extends BaseTable implements BaseColumns {
 
     private String getRecordsByDateSql(String whereClause) {
         return "select " + TABLE_NAME + "." + _ID + ", " +
-                columnMealId + ", " +
-                columnDate + ", " +
+                COLUMN_MEAL_ID + ", " +
+                COLUMN_DATE + ", " +
                 MealContract.COLUMN_NAME + ", " +
                 MealContract.columnRecipe +
                 " from " + TABLE_NAME +
                 " join " + MealContract.getTableName() +
-                " on " + TABLE_NAME + "." + columnMealId + "= " + MealContract.getTableName() + "." + _ID +
+                " on " + TABLE_NAME + "." + COLUMN_MEAL_ID + "= " + MealContract.getTableName() + "." + _ID +
                 whereClause +
-                " order by " + columnDate;
+                " order by " + COLUMN_DATE;
     }
 
     public void delete(Long[] ids, CoNaObiadDbHelper helper) {
@@ -120,7 +120,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         return "select " + mealName + ", count(" + mealName + ") as quantity " +
                 "from " + TABLE_NAME
                 + " join " + MealContract.getTableName()
-                + " on " + TABLE_NAME + "." + columnMealId + "= " + MealContract.getTableName() + "." + _ID
+                + " on " + TABLE_NAME + "." + COLUMN_MEAL_ID + "= " + MealContract.getTableName() + "." + _ID
                 + whereClause
                 + " group by " + mealName
                 + " order by 2";

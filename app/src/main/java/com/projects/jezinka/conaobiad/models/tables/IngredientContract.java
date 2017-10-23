@@ -89,7 +89,7 @@ public class IngredientContract extends BaseTable implements BaseColumns {
                 + " join " + MealContract.getTableName()
                 + " on " + MealIngredientContract.getTableName() + "." + MealIngredientContract.COLUMN_MEAL_ID + "= " + MealContract.getTableName() + "." + _ID
                 + " join " + DinnerContract.getTableName()
-                + " on " + DinnerContract.getTableName() + "." + DinnerContract.columnMealId + "= " + MealContract.getTableName() + "." + _ID
+                + " on " + DinnerContract.getTableName() + "." + DinnerContract.COLUMN_MEAL_ID + "= " + MealContract.getTableName() + "." + _ID
                 + whereClause
                 + " group by " + ingredientName
                 + " order by 2";

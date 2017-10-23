@@ -137,17 +137,17 @@ public class StatisticsActivity extends AppCompatActivity {
             case CURRENT_MONTH_POSITION:
                 Calendar cMonth = Calendar.getInstance();
                 cMonth.set(Calendar.DAY_OF_MONTH, 1);
-                whereClause = " where " + DinnerContract.columnDate + " > " + cMonth.getTime().getTime();
+                whereClause = " where " + DinnerContract.COLUMN_DATE + " > " + cMonth.getTime().getTime();
                 break;
             case CURRENT_YEAR_POSITION:
                 Calendar cYear = Calendar.getInstance();
                 cYear.set(Calendar.DAY_OF_YEAR, 1);
-                whereClause = " where " + DinnerContract.columnDate + " > " + cYear.getTime().getTime();
+                whereClause = " where " + DinnerContract.COLUMN_DATE + " > " + cYear.getTime().getTime();
                 break;
             case CUSTOM_DATES_POSITION:
                 long minDate = getTimeFromEditText(R.id.min_date);
                 long maxDate = getTimeFromEditText(R.id.max_date);
-                whereClause = " where " + DinnerContract.columnDate + " between " + minDate + " and " + maxDate;
+                whereClause = " where " + DinnerContract.COLUMN_DATE + " between " + minDate + " and " + maxDate;
                 break;
         }
         return whereClause;

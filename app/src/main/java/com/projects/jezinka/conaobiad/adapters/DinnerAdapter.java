@@ -94,7 +94,7 @@ public class DinnerAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Date date = getItem(position);
-                dinnerContract.delete(date.getTime(), DinnerContract.columnDate, dbHelper);
+                dinnerContract.delete(date.getTime(), DinnerContract.COLUMN_DATE, dbHelper);
                 updateResults();
             }
         });
