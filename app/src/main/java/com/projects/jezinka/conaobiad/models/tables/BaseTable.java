@@ -11,13 +11,13 @@ import static android.database.DatabaseUtils.queryNumEntries;
 
 public abstract class BaseTable {
 
-    public static String columnName = "name";
+    public static final String COLUMN_NAME = "name";
 
     abstract Object getFromCursor(Cursor res);
 
     @NonNull
     ArrayList getArrayList(SQLiteOpenHelper helper, String[] sqlArgs, String sqlQuery) {
-        ArrayList array_list = new ArrayList<>();
+        ArrayList list = new ArrayList<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor res = db.rawQuery(sqlQuery, sqlArgs);
@@ -25,12 +25,12 @@ public abstract class BaseTable {
             res.moveToFirst();
 
             do {
-                array_list.add(getFromCursor(res));
+                list.add(getFromCursor(res));
             } while (res.moveToNext());
         }
 
         db.close();
-        return array_list;
+        return list;
     }
 
     public boolean isAnyRecordSaved(SQLiteOpenHelper helper, String tableName) {

@@ -15,16 +15,16 @@ import java.util.LinkedHashMap;
 
 public class IngredientContract extends BaseTable implements BaseColumns {
 
-    private static final String tableName = "ingredient";
+    private static final String TABLE_NAME = "ingredient";
 
     public static String getTableName() {
-        return tableName;
+        return TABLE_NAME;
     }
 
     public static String getCreateEntriesQuery() {
-        return "CREATE TABLE " + tableName + " (" +
+        return "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
-                columnName + " TEXT)";
+                COLUMN_NAME + " TEXT)";
     }
 
     public long insert(CoNaObiadDbHelper dbHelper, String name) {
@@ -32,7 +32,7 @@ public class IngredientContract extends BaseTable implements BaseColumns {
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
-        return dbHelper.insert(tableName, contentValues);
+        return dbHelper.insert(TABLE_NAME, contentValues);
     }
 
     public boolean update(CoNaObiadDbHelper dbHelper, String name, long ingredientId) {
@@ -40,7 +40,7 @@ public class IngredientContract extends BaseTable implements BaseColumns {
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
-        dbHelper.update(tableName, contentValues, ingredientId);
+        dbHelper.update(TABLE_NAME, contentValues, ingredientId);
         return true;
     }
 
@@ -56,38 +56,38 @@ public class IngredientContract extends BaseTable implements BaseColumns {
 
     @NonNull
     private String getAllRecordQuery() {
-        return "select " + _ID + ", " + columnName +
-                " from " + tableName +
-                " order by " + columnName + " COLLATE NOCASE";
+        return "select " + _ID + ", " + COLUMN_NAME +
+                " from " + TABLE_NAME +
+                " order by " + COLUMN_NAME + " COLLATE NOCASE";
     }
 
     @NonNull
     Ingredient getFromCursor(Cursor res) {
-        String name = res.getString(res.getColumnIndex(columnName));
+        String name = res.getString(res.getColumnIndex(COLUMN_NAME));
         long id = res.getLong(res.getColumnIndex(_ID));
         return new Ingredient(id, name);
     }
 
     public void delete(Long[] ids, CoNaObiadDbHelper helper) {
-        helper.delete(tableName, ids);
+        helper.delete(TABLE_NAME, ids);
     }
 
     public void delete(Long id, CoNaObiadDbHelper helper) {
-        helper.delete(tableName, id, "_ID");
+        helper.delete(TABLE_NAME, id, "_ID");
     }
 
     public boolean isAnyIngredientSaved(SQLiteOpenHelper helper) {
-        return isAnyRecordSaved(helper, tableName);
+        return isAnyRecordSaved(helper, TABLE_NAME);
     }
 
     private String getCountIngredientsQuery(String whereClause) {
-        String ingredientName = this.tableName + '.' + this.columnName;
+        String ingredientName = this.TABLE_NAME + '.' + this.COLUMN_NAME;
         return "select " + ingredientName + ", count(" + ingredientName + ") as quantity " +
-                "from " + tableName
+                "from " + TABLE_NAME
                 + " join " + MealIngredientContract.getTableName()
-                + " on " + tableName + "." + _ID + "= " + MealIngredientContract.getTableName() + "." + MealIngredientContract.columnIngredientId
+                + " on " + TABLE_NAME + "." + _ID + "= " + MealIngredientContract.getTableName() + "." + MealIngredientContract.COLUMN_INGREDIENT_ID
                 + " join " + MealContract.getTableName()
-                + " on " + MealIngredientContract.getTableName() + "." + MealIngredientContract.columnMealId + "= " + MealContract.getTableName() + "." + _ID
+                + " on " + MealIngredientContract.getTableName() + "." + MealIngredientContract.COLUMN_MEAL_ID + "= " + MealContract.getTableName() + "." + _ID
                 + " join " + DinnerContract.getTableName()
                 + " on " + DinnerContract.getTableName() + "." + DinnerContract.columnMealId + "= " + MealContract.getTableName() + "." + _ID
                 + whereClause

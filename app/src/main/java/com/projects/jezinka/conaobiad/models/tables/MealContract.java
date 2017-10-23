@@ -14,27 +14,27 @@ import java.util.Random;
 
 public class MealContract extends BaseTable implements BaseColumns {
 
-    public static final String tableName = "meal";
+    private static final String TABLE_NAME = "meal";
 
     public static String getTableName() {
-        return tableName;
+        return TABLE_NAME;
     }
 
     static String columnRecipe = "recipe";
 
     public static String getCreateEntriesQuery() {
-        return "CREATE TABLE " + tableName + " (" +
+        return "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
-                columnName + " TEXT," +
+                COLUMN_NAME + " TEXT," +
                 columnRecipe + " TEXT" +
                 ")";
     }
 
     @NonNull
     private String getAllRecordsQuery() {
-        return "select " + _ID + ", " + columnName + ", " + columnRecipe +
-                " from " + tableName +
-                " order by " + columnName + " COLLATE NOCASE";
+        return "select " + _ID + ", " + COLUMN_NAME + ", " + columnRecipe +
+                " from " + TABLE_NAME +
+                " order by " + COLUMN_NAME + " COLLATE NOCASE";
     }
 
     public boolean insert(CoNaObiadDbHelper helper, String name) {
@@ -42,7 +42,7 @@ public class MealContract extends BaseTable implements BaseColumns {
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
-        helper.insert(tableName, contentValues);
+        helper.insert(TABLE_NAME, contentValues);
         return true;
     }
 
@@ -51,7 +51,7 @@ public class MealContract extends BaseTable implements BaseColumns {
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
 
-        helper.update(tableName, contentValues, mealId);
+        helper.update(TABLE_NAME, contentValues, mealId);
         return true;
     }
 
@@ -61,7 +61,7 @@ public class MealContract extends BaseTable implements BaseColumns {
 
     @NonNull
     Meal getFromCursor(Cursor res) {
-        String name = res.getString(res.getColumnIndex(columnName));
+        String name = res.getString(res.getColumnIndex(COLUMN_NAME));
         long id = res.getLong(res.getColumnIndex(_ID));
         String recipe = res.getString(res.getColumnIndex(columnRecipe));
         return new Meal(id, name, recipe);
@@ -73,15 +73,15 @@ public class MealContract extends BaseTable implements BaseColumns {
     }
 
     public boolean isAnyMealSaved(SQLiteOpenHelper helper) {
-        return isAnyRecordSaved(helper, tableName);
+        return isAnyRecordSaved(helper, TABLE_NAME);
     }
 
     public void delete(Long[] ids, CoNaObiadDbHelper helper) {
-        helper.delete(tableName, ids);
+        helper.delete(TABLE_NAME, ids);
     }
 
     public void delete(Long id, CoNaObiadDbHelper helper) {
-        helper.delete(tableName, id, "_ID");
+        helper.delete(TABLE_NAME, id, "_ID");
     }
 
     public ArrayList<Meal> getRandomMeals(SQLiteOpenHelper helper, int size) {
@@ -97,7 +97,7 @@ public class MealContract extends BaseTable implements BaseColumns {
     }
 
     private static String getRandomMealsQuery(int size) {
-        return "SELECT  " + _ID + ", " + columnName + ", " + columnRecipe + " FROM " + tableName +
+        return "SELECT  " + _ID + ", " + COLUMN_NAME + ", " + columnRecipe + " FROM " + TABLE_NAME +
                 " ORDER BY RANDOM() LIMIT " + size;
     }
 
@@ -106,7 +106,7 @@ public class MealContract extends BaseTable implements BaseColumns {
         ContentValues contentValues = new ContentValues();
         contentValues.put("recipe", recipe);
 
-        helper.update(tableName, contentValues, mealId);
+        helper.update(TABLE_NAME, contentValues, mealId);
         return true;
     }
 }

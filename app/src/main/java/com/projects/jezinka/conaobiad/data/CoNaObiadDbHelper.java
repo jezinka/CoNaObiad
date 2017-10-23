@@ -91,11 +91,11 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
     }
 
     public void initializeIngredients() {
-        initializeTable("ingredients.txt", IngredientContract.columnName, IngredientContract.getTableName());
+        initializeTable("ingredients.txt", IngredientContract.COLUMN_NAME, IngredientContract.getTableName());
     }
 
     public void initializeCategories() {
-        initializeTable("categories.txt", CategoryContract.columnName, CategoryContract.getTableName());
+        initializeTable("categories.txt", CategoryContract.COLUMN_NAME, CategoryContract.getTableName());
     }
 
     private void initializeTable(String fileName, String columnName, String tableName) {

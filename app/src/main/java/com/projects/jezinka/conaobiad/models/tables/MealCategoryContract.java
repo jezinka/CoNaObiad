@@ -4,17 +4,18 @@ import android.provider.BaseColumns;
 
 public class MealCategoryContract implements BaseColumns {
 
-    private static final String tableName = "meal_category";
+    private static final String TABLE_NAME = "meal_category";
 
     public static String getTableName() {
-        return tableName;
+        return TABLE_NAME;
     }
 
-    private static String mealColumn = "ingredient_id";
-    private static String categoryColumn = "category_id";
-
     public static String getCreateEntriesQuery() {
-        return "CREATE TABLE " + tableName + " (" +
+
+        String mealColumn = "ingredient_id";
+        String categoryColumn = "category_id";
+
+        return "CREATE TABLE " + TABLE_NAME + " (" +
                 mealColumn + " int," +
                 categoryColumn + " int," +
                 " FOREIGN KEY(" + mealColumn + ") REFERENCES " + MealContract.getTableName() + "(" + _ID + ") ON DELETE CASCADE," +

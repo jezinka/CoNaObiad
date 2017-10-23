@@ -18,17 +18,17 @@ import java.util.LinkedHashMap;
 
 public class DinnerContract extends BaseTable implements BaseColumns {
 
-    private static final String tableName = "dinner";
+    private static final String TABLE_NAME = "dinner";
 
     public static String getTableName() {
-        return tableName;
+        return TABLE_NAME;
     }
 
     public static String columnDate = "date";
     public static String columnMealId = "meal_id";
 
     public static String getCreateEntriesQuery() {
-        return "CREATE TABLE " + tableName + " (" +
+        return "CREATE TABLE " + TABLE_NAME + " (" +
                 _ID + " INTEGER PRIMARY KEY," +
                 columnMealId + " INT, " +
                 columnDate + " INT," +
@@ -42,7 +42,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         contentValues.put("meal_id", mealID);
         contentValues.put("date", date.getTime());
 
-        helper.insert(tableName, contentValues);
+        helper.insert(TABLE_NAME, contentValues);
         return true;
     }
 
@@ -51,7 +51,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         ContentValues contentValues = new ContentValues();
         contentValues.put("date", date.getTime());
 
-        helper.update(tableName, contentValues, dinnerId);
+        helper.update(TABLE_NAME, contentValues, dinnerId);
         return true;
     }
 
@@ -77,7 +77,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
     Dinner getFromCursor(Cursor res) {
         long id = res.getLong(res.getColumnIndex(_ID));
         long mealId = res.getLong(res.getColumnIndex(columnMealId));
-        String mealName = res.getString(res.getColumnIndex(MealContract.columnName));
+        String mealName = res.getString(res.getColumnIndex(MealContract.COLUMN_NAME));
         String recipe = res.getString(res.getColumnIndex(MealContract.columnRecipe));
         Date dinnerDate = new Date(res.getLong(res.getColumnIndex(columnDate)));
         Meal meal = new Meal(mealId, mealName, recipe);
@@ -95,32 +95,32 @@ public class DinnerContract extends BaseTable implements BaseColumns {
     }
 
     private String getRecordsByDateSql(String whereClause) {
-        return "select " + tableName + "." + _ID + ", " +
+        return "select " + TABLE_NAME + "." + _ID + ", " +
                 columnMealId + ", " +
                 columnDate + ", " +
-                MealContract.columnName + ", " +
+                MealContract.COLUMN_NAME + ", " +
                 MealContract.columnRecipe +
-                " from " + tableName +
+                " from " + TABLE_NAME +
                 " join " + MealContract.getTableName() +
-                " on " + tableName + "." + columnMealId + "= " + MealContract.getTableName() + "." + _ID +
+                " on " + TABLE_NAME + "." + columnMealId + "= " + MealContract.getTableName() + "." + _ID +
                 whereClause +
                 " order by " + columnDate;
     }
 
     public void delete(Long[] ids, CoNaObiadDbHelper helper) {
-        helper.delete(tableName, ids);
+        helper.delete(TABLE_NAME, ids);
     }
 
     public void delete(Long id, String columnName, CoNaObiadDbHelper helper) {
-        helper.delete(tableName, id, columnName);
+        helper.delete(TABLE_NAME, id, columnName);
     }
 
     private String getCountDinnersQuery(String whereClause) {
-        String mealName = MealContract.columnName;
+        String mealName = MealContract.COLUMN_NAME;
         return "select " + mealName + ", count(" + mealName + ") as quantity " +
-                "from " + tableName
+                "from " + TABLE_NAME
                 + " join " + MealContract.getTableName()
-                + " on " + tableName + "." + columnMealId + "= " + MealContract.getTableName() + "." + _ID
+                + " on " + TABLE_NAME + "." + columnMealId + "= " + MealContract.getTableName() + "." + _ID
                 + whereClause
                 + " group by " + mealName
                 + " order by 2";
