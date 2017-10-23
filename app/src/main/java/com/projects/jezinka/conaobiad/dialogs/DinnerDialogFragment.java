@@ -37,6 +37,8 @@ import java.util.Locale;
 
 public class DinnerDialogFragment extends DialogFragment {
 
+    public static final String DINNER_ID = "dinnerId";
+    public static final String MEAL_ID = "mealId";
     private TextView dateView;
     private TextView mealNameTextView;
 
@@ -53,8 +55,8 @@ public class DinnerDialogFragment extends DialogFragment {
         args.putLong("date", date);
 
         if (dinner != null) {
-            args.putLong("dinnerId", dinner.getId());
-            args.putLong("mealId", dinner.getMealId());
+            args.putLong(DINNER_ID, dinner.getId());
+            args.putLong(MEAL_ID, dinner.getMealId());
             args.putString("mealName", dinner.getMealName());
         }
 
@@ -69,7 +71,7 @@ public class DinnerDialogFragment extends DialogFragment {
         dinnerAdapter = ((MainActivity) getActivity()).getAdapter();
         dbHelper = ((MainActivity) getActivity()).getDbHelper();
 
-        final long dinnerId = getArguments().getLong("dinnerId", -1);
+        final long dinnerId = getArguments().getLong(DINNER_ID, -1);
 
         View view = getActivity().getLayoutInflater().inflate(R.layout.custom_dialog_add_dinner, null);
 
@@ -93,7 +95,7 @@ public class DinnerDialogFragment extends DialogFragment {
                                 if (dinnerId != -1) {
                                     dinnerContract.update(dbHelper, dinnerId, date);
                                 } else {
-                                    dinnerContract.insert(dbHelper, getArguments().getLong("mealId"), date);
+                                    dinnerContract.insert(dbHelper, getArguments().getLong(MEAL_ID), date);
                                 }
                                 dinnerAdapter.updateResults();
                             }
@@ -105,7 +107,7 @@ public class DinnerDialogFragment extends DialogFragment {
         mealNameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getArguments().getLong("mealId", -1) == -1) {
+                if (getArguments().getLong(MEAL_ID, -1) == -1) {
                     showMealPickerDialog();
                 } else {
                     Toast.makeText(getActivity(), R.string.only_date_info, Toast.LENGTH_SHORT).show();
@@ -148,7 +150,7 @@ public class DinnerDialogFragment extends DialogFragment {
 
                 if (meal != null) {
                     mealNameTextView.setText(meal.getName());
-                    getArguments().putLong("mealId", meal.getId());
+                    getArguments().putLong(MEAL_ID, meal.getId());
                 }
 
                 alertDialog.dismiss();

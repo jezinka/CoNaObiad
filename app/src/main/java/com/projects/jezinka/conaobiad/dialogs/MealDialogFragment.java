@@ -40,6 +40,7 @@ public class MealDialogFragment extends DialogFragment {
     }
 
     @NonNull
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getActivity().getLayoutInflater();

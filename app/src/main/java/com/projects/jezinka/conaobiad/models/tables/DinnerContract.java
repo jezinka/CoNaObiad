@@ -15,6 +15,7 @@ import com.projects.jezinka.conaobiad.utils.TimeUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class DinnerContract extends BaseTable implements BaseColumns {
 
@@ -126,7 +127,7 @@ public class DinnerContract extends BaseTable implements BaseColumns {
                 + " order by 2";
     }
 
-    public LinkedHashMap<String, Long> getDinnerStatistics(String whereClause, CoNaObiadDbHelper helper) {
+    public Map getDinnerStatistics(String whereClause, CoNaObiadDbHelper helper) {
         LinkedHashMap<String, Long> mealsCount = new LinkedHashMap<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();

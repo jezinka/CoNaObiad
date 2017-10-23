@@ -12,6 +12,7 @@ import com.projects.jezinka.conaobiad.models.Ingredient;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class IngredientContract extends BaseTable implements BaseColumns {
 
@@ -81,7 +82,7 @@ public class IngredientContract extends BaseTable implements BaseColumns {
     }
 
     private String getCountIngredientsQuery(String whereClause) {
-        String ingredientName = this.TABLE_NAME + '.' + this.COLUMN_NAME;
+        String ingredientName = TABLE_NAME + '.' + COLUMN_NAME;
         return "select " + ingredientName + ", count(" + ingredientName + ") as quantity " +
                 "from " + TABLE_NAME
                 + " join " + MealIngredientContract.getTableName()
@@ -95,7 +96,7 @@ public class IngredientContract extends BaseTable implements BaseColumns {
                 + " order by 2";
     }
 
-    public LinkedHashMap<String, Long> getIngredientsStatistics(String whereClause, CoNaObiadDbHelper helper) {
+    public Map getIngredientsStatistics(String whereClause, CoNaObiadDbHelper helper) {
         LinkedHashMap<String, Long> ingredientsCount = new LinkedHashMap<>();
 
         SQLiteDatabase db = helper.getReadableDatabase();

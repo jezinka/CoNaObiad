@@ -58,7 +58,7 @@ public class DinnerAdapter extends BaseAdapter {
     }
 
     public boolean isDayEmpty(Date date) {
-        return getDinners(date).size() == 0;
+        return getDinners(date).isEmpty();
     }
 
     public long getItemId(int position) {
@@ -141,7 +141,7 @@ public class DinnerAdapter extends BaseAdapter {
 
     @NonNull
     private String getTextForTile(int position) {
-        StringBuffer text = new StringBuffer();
+        StringBuilder text = new StringBuilder();
 
         Date date = getItem(position);
 
@@ -154,7 +154,7 @@ public class DinnerAdapter extends BaseAdapter {
 
     private TreeMap<Date, List<Dinner>> getDinners() {
         DinnerContract dinnerContract = new DinnerContract();
-        Dinner[] dinners = dinnerContract.getDinnersForActualWeek(dbHelper);
+        Dinner[] dinnersForActualWeek = dinnerContract.getDinnersForActualWeek(dbHelper);
         TreeMap<Date, List<Dinner>> preparedRows = new TreeMap<>();
 
         Calendar calendarInstance = Calendar.getInstance();
@@ -164,7 +164,7 @@ public class DinnerAdapter extends BaseAdapter {
             Date date = calendarInstance.getTime();
 
             List<Dinner> dinnersList = new ArrayList<>();
-            for (Dinner dinner : dinners) {
+            for (Dinner dinner : dinnersForActualWeek) {
                 if (dinner.getDate().getTime() == date.getTime()) {
                     dinnersList.add(dinner);
                 }

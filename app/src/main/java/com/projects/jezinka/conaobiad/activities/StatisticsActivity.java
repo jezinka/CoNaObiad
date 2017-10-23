@@ -31,10 +31,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class StatisticsActivity extends AppCompatActivity {
 
@@ -169,7 +169,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
         DinnerContract dinnerContract = new DinnerContract();
 
-        LinkedHashMap<String, Long> mealData = dinnerContract.getDinnerStatistics(whereClause, dbHelper);
+        Map mealData = dinnerContract.getDinnerStatistics(whereClause, dbHelper);
         HorizontalBarChart chart = createBarChart(mealData);
         chart.invalidate();
     }
@@ -178,16 +178,16 @@ public class StatisticsActivity extends AppCompatActivity {
 
         IngredientContract ingredientContract = new IngredientContract();
 
-        LinkedHashMap<String, Long> mealData = ingredientContract.getIngredientsStatistics(whereClause, dbHelper);
+        Map mealData = ingredientContract.getIngredientsStatistics(whereClause, dbHelper);
         HorizontalBarChart chart = createBarChart(mealData);
         chart.invalidate();
     }
 
-    private HorizontalBarChart createBarChart(LinkedHashMap<String, Long> mealData) {
+    private HorizontalBarChart createBarChart(Map<String, Long> mealData) {
         List<BarEntry> entries = new ArrayList<>();
 
         int i = 0;
-        for (Map.Entry<String, Long> entry : mealData.entrySet()) {
+        for (Entry<String, Long> entry : mealData.entrySet()) {
             String mealName = entry.getKey();
             Long quantity = entry.getValue();
             entries.add(new BarEntry(i, quantity, mealName));

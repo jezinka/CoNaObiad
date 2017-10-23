@@ -10,6 +10,7 @@ import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.models.Meal;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class MealContract extends BaseTable implements BaseColumns {
@@ -55,7 +56,7 @@ public class MealContract extends BaseTable implements BaseColumns {
         return true;
     }
 
-    public ArrayList<Meal> getAllMeals(SQLiteOpenHelper helper) {
+    public List getAllMeals(SQLiteOpenHelper helper) {
         return getArrayList(helper, null, getAllRecordsQuery());
     }
 
@@ -68,7 +69,7 @@ public class MealContract extends BaseTable implements BaseColumns {
     }
 
     public Meal[] getAllMealsArray(SQLiteOpenHelper helper) {
-        ArrayList<Meal> result = getAllMeals(helper);
+        List<Meal> result = getAllMeals(helper);
         return result.toArray(new Meal[result.size()]);
     }
 
@@ -84,7 +85,7 @@ public class MealContract extends BaseTable implements BaseColumns {
         helper.delete(TABLE_NAME, id, "_ID");
     }
 
-    public ArrayList<Meal> getRandomMeals(SQLiteOpenHelper helper, int size) {
+    public List getRandomMeals(SQLiteOpenHelper helper, int size) {
         ArrayList<Meal> mealList = getArrayList(helper, null, getRandomMealsQuery(size));
         if (mealList.size() < size) {
             Random random = new Random();
