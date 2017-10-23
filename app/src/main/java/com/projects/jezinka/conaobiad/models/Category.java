@@ -1,5 +1,6 @@
 package com.projects.jezinka.conaobiad.models;
 
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class Category {
     private long id;
     private String name;
