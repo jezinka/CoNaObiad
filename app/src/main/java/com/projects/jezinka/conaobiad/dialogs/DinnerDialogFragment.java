@@ -65,6 +65,7 @@ public class DinnerDialogFragment extends DialogFragment {
         return f;
     }
 
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         dinnerContract = new DinnerContract();
@@ -173,10 +174,12 @@ public class DinnerDialogFragment extends DialogFragment {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // do nothing
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                // do nothing
             }
         };
     }

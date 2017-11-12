@@ -13,8 +13,8 @@ import com.projects.jezinka.conaobiad.R;
 
 public class SettingsActivity extends PreferenceActivity {
 
-    final static String PREFS_FIRST_DAY = "PREFS_FIRST_DAY";
-    final static String PREFS_DAYS_NO = "PREFS_DAYS_NO";
+    static final String PREFS_FIRST_DAY = "PREFS_FIRST_DAY";
+    static final String PREFS_DAYS_NO = "PREFS_DAYS_NO";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

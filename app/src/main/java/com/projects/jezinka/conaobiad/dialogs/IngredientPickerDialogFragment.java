@@ -58,7 +58,7 @@ public class IngredientPickerDialogFragment extends DialogFragment {
                 R.layout.multicheck_list,
                 mealIngredientContract.getIngredientsWithMeal(mealId, dbHelper));
 
-        adapter.showCheckboxes = true;
+        adapter.setShowCheckboxes(true);
 
         final ListView listView = (ListView) view.findViewById(R.id.filterable_list_view);
         listView.setAdapter(adapter);
@@ -156,10 +156,12 @@ public class IngredientPickerDialogFragment extends DialogFragment {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // do nothing
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                // do nothing
             }
         };
     }

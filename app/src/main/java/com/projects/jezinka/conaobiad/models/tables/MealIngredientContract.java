@@ -76,7 +76,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
     public boolean insert(CoNaObiadDbHelper dbHelper, long mealId, long ingredientId) {
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("meal_id", mealId);
+        contentValues.put(COLUMN_MEAL_ID, mealId);
         contentValues.put("ingredient_id", ingredientId);
 
         dbHelper.insert(TABLE_NAME, contentValues);
@@ -129,7 +129,7 @@ public class MealIngredientContract extends BaseTable implements BaseColumns {
     }
 
     public void deleteForMeal(CoNaObiadDbHelper helper, long mealId) {
-        helper.delete(TABLE_NAME, mealId, "meal_id");
+        helper.delete(TABLE_NAME, mealId, COLUMN_MEAL_ID);
     }
 
     public String getShoppingList(List<Meal> meals, SQLiteOpenHelper helper) {

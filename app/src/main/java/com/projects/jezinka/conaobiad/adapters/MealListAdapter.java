@@ -19,7 +19,7 @@ import com.projects.jezinka.conaobiad.models.Meal;
 
 import java.util.ArrayList;
 
-public class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
+public class MealListAdapter extends ArrayAdapter<Meal> implements Filterable, CheckboxesArrayAdapterInterface {
 
     private Meal[] data;
     private Meal[] filteredData;
@@ -27,7 +27,15 @@ public class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
     private Context context;
     private int layoutResourceId;
 
-    public boolean showCheckboxes;
+    private boolean showCheckboxes = false;
+
+    public boolean isShowCheckboxes() {
+        return showCheckboxes;
+    }
+
+    public void setShowCheckboxes(boolean showCheckboxes) {
+        this.showCheckboxes = showCheckboxes;
+    }
 
     public MealListAdapter(Context context, int layoutResourceId, Meal[] data) {
         super(context, layoutResourceId, data);
@@ -56,15 +64,6 @@ public class MealListAdapter extends ArrayAdapter<Meal> implements Filterable {
     @Override
     public long getItemId(int position) {
         return filteredData[position].getId();
-    }
-
-    public boolean isAnyItemSelected() {
-        for (Meal meal : data) {
-            if (meal.isChecked()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @NonNull

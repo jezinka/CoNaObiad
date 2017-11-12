@@ -38,6 +38,7 @@ import java.util.Map.Entry;
 
 public class StatisticsActivity extends AppCompatActivity {
 
+    private static final String WHERE = " where ";
     SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", new Locale("pl-pl"));
 
     public static final int DINNER_POSITION = 0;
@@ -80,7 +81,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                // do nothing
             }
         });
 
@@ -95,12 +96,6 @@ public class StatisticsActivity extends AppCompatActivity {
     private void showHideCustomDates(int position) {
         LinearLayout layout = (LinearLayout) findViewById(R.id.custom_dates_layout);
         switch (position) {
-            case WHOLE_HISTORY_POSITION:
-            case CURRENT_MONTH_POSITION:
-            case CURRENT_YEAR_POSITION:
-            default:
-                layout.setVisibility(View.GONE);
-                break;
             case CUSTOM_DATES_POSITION:
                 EditText minDate = (EditText) findViewById(R.id.min_date);
                 minDate.setText(df.format(new Date()));
@@ -109,6 +104,12 @@ public class StatisticsActivity extends AppCompatActivity {
                 maxDate.setText(df.format(new Date()));
 
                 layout.setVisibility(View.VISIBLE);
+                break;
+            case WHOLE_HISTORY_POSITION:
+            case CURRENT_MONTH_POSITION:
+            case CURRENT_YEAR_POSITION:
+            default:
+                layout.setVisibility(View.GONE);
                 break;
         }
     }
@@ -130,24 +131,24 @@ public class StatisticsActivity extends AppCompatActivity {
         String whereClause;
         Spinner timeSpinner = (Spinner) findViewById(R.id.time_duration_spinner);
         switch (timeSpinner.getSelectedItemPosition()) {
-            default:
-            case WHOLE_HISTORY_POSITION:
-                whereClause = WHOLE_HISTORY_CLAUSE;
-                break;
             case CURRENT_MONTH_POSITION:
                 Calendar cMonth = Calendar.getInstance();
                 cMonth.set(Calendar.DAY_OF_MONTH, 1);
-                whereClause = " where " + DinnerContract.COLUMN_DATE + " > " + cMonth.getTime().getTime();
+                whereClause = WHERE + DinnerContract.COLUMN_DATE + " > " + cMonth.getTime().getTime();
                 break;
             case CURRENT_YEAR_POSITION:
                 Calendar cYear = Calendar.getInstance();
                 cYear.set(Calendar.DAY_OF_YEAR, 1);
-                whereClause = " where " + DinnerContract.COLUMN_DATE + " > " + cYear.getTime().getTime();
+                whereClause = WHERE + DinnerContract.COLUMN_DATE + " > " + cYear.getTime().getTime();
                 break;
             case CUSTOM_DATES_POSITION:
                 long minDate = getTimeFromEditText(R.id.min_date);
                 long maxDate = getTimeFromEditText(R.id.max_date);
-                whereClause = " where " + DinnerContract.COLUMN_DATE + " between " + minDate + " and " + maxDate;
+                whereClause = WHERE + DinnerContract.COLUMN_DATE + " between " + minDate + " and " + maxDate;
+                break;
+            case WHOLE_HISTORY_POSITION:
+            default:
+                whereClause = WHOLE_HISTORY_CLAUSE;
                 break;
         }
         return whereClause;
@@ -222,10 +223,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
         YAxis yAxis = chart.getAxisLeft();
         yAxis.setGranularity(1f);
-        yAxis.setStartAtZero(true);
-
-//        Bitmap starBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_square_sketch);
-//        chart.setRenderer(new ImageBarChartRenderer(chart, chart.getAnimator(), chart.getViewPortHandler(), starBitmap));
+        yAxis.setAxisMinimum(0f);
 
         chart.getAxisRight().setDrawLabels(false);
         chart.getAxisRight().setDrawGridLines(false);

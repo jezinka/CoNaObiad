@@ -3,7 +3,6 @@ package com.projects.jezinka.conaobiad.models.tables;
 import android.provider.BaseColumns;
 
 public class MealCategoryContract implements BaseColumns {
-
     private static final String TABLE_NAME = "meal_category";
 
     public static String getTableName() {

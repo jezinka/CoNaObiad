@@ -17,6 +17,8 @@ import java.util.Map;
 public class IngredientContract extends BaseTable implements BaseColumns {
 
     private static final String TABLE_NAME = "ingredient";
+    private static final String JOIN = " join ";
+    private static final String ON = " on ";
 
     public static String getTableName() {
         return TABLE_NAME;
@@ -85,12 +87,12 @@ public class IngredientContract extends BaseTable implements BaseColumns {
         String ingredientName = TABLE_NAME + '.' + COLUMN_NAME;
         return "select " + ingredientName + ", count(" + ingredientName + ") as quantity " +
                 "from " + TABLE_NAME
-                + " join " + MealIngredientContract.getTableName()
-                + " on " + TABLE_NAME + "." + _ID + "= " + MealIngredientContract.getTableName() + "." + MealIngredientContract.COLUMN_INGREDIENT_ID
-                + " join " + MealContract.getTableName()
-                + " on " + MealIngredientContract.getTableName() + "." + MealIngredientContract.COLUMN_MEAL_ID + "= " + MealContract.getTableName() + "." + _ID
-                + " join " + DinnerContract.getTableName()
-                + " on " + DinnerContract.getTableName() + "." + DinnerContract.COLUMN_MEAL_ID + "= " + MealContract.getTableName() + "." + _ID
+                + JOIN + MealIngredientContract.getTableName()
+                + ON + TABLE_NAME + "." + _ID + "= " + MealIngredientContract.getTableName() + "." + MealIngredientContract.COLUMN_INGREDIENT_ID
+                + JOIN + MealContract.getTableName()
+                + ON + MealIngredientContract.getTableName() + "." + MealIngredientContract.COLUMN_MEAL_ID + "= " + MealContract.getTableName() + "." + _ID
+                + JOIN + DinnerContract.getTableName()
+                + ON + DinnerContract.getTableName() + "." + DinnerContract.COLUMN_MEAL_ID + "= " + MealContract.getTableName() + "." + _ID
                 + whereClause
                 + " group by " + ingredientName
                 + " order by 2";

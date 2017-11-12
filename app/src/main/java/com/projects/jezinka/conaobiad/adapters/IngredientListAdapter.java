@@ -17,10 +17,8 @@ import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.models.Ingredient;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 
-public class IngredientListAdapter extends ArrayAdapter<Ingredient> implements Filterable {
+public class IngredientListAdapter extends ArrayAdapter<Ingredient> implements Filterable, CheckboxesArrayAdapterInterface {
 
     private Ingredient[] data;
     private Ingredient[] filteredData;
@@ -28,7 +26,15 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> implements F
     private Context context;
     private int layoutResourceId;
 
-    public boolean showCheckboxes = false;
+    private boolean showCheckboxes = false;
+
+    public boolean isShowCheckboxes() {
+        return showCheckboxes;
+    }
+
+    public void setShowCheckboxes(boolean showCheckboxes) {
+        this.showCheckboxes = showCheckboxes;
+    }
 
     public IngredientListAdapter(Context context, int layoutResourceId, Ingredient[] data) {
         super(context, layoutResourceId, data);
@@ -47,20 +53,8 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> implements F
     @Override
     public void notifyDataSetChanged() {
         setNotifyOnChange(false);
-        Arrays.sort(this.data, new IngredientComparator());
         super.notifyDataSetChanged();
     }
-
-    class IngredientComparator implements Comparator<Ingredient> {
-        @Override
-        public int compare(Ingredient a, Ingredient b) {
-            if (a.isChecked() == b.isChecked()) {
-                return a.getName().toLowerCase().compareTo(b.getName().toLowerCase());
-            }
-            return a.isChecked() ? -1 : 1;
-        }
-    }
-
 
     @Override
     public int getCount() {

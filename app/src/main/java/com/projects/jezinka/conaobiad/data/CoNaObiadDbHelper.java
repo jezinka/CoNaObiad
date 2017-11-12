@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.projects.jezinka.conaobiad.models.tables.CategoryContract;
 import com.projects.jezinka.conaobiad.models.tables.DinnerContract;
@@ -20,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class CoNaObiadDbHelper extends SQLiteOpenHelper {
+
+    private static final String TAG = "CoNaObiadDbHelper";
 
     Context context;
     private static final int DATABASE_VERSION = 1;
@@ -99,9 +102,7 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
     }
 
     private void initializeTable(String fileName, String columnName, String tableName) {
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(context.getAssets().open(fileName), "UTF-8"));
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(context.getAssets().open(fileName), "UTF-8"));) {
 
             String mLine;
             while ((mLine = reader.readLine()) != null) {
@@ -111,15 +112,7 @@ public class CoNaObiadDbHelper extends SQLiteOpenHelper {
                 this.insert(tableName, contentValues);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+            Log.e(TAG, "Error during initialization of tables.");
+        } 
     }
 }

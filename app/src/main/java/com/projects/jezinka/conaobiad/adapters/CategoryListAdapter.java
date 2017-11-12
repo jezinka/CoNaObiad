@@ -15,14 +15,22 @@ import android.widget.TextView;
 import com.projects.jezinka.conaobiad.R;
 import com.projects.jezinka.conaobiad.models.Category;
 
-public class CategoryListAdapter extends ArrayAdapter<Category> implements Filterable {
+public class CategoryListAdapter extends ArrayAdapter<Category> implements Filterable, CheckboxesArrayAdapterInterface {
 
     private Category[] data;
 
     private Context context;
     private int layoutResourceId;
 
-    public boolean showCheckboxes = false;
+    private boolean showCheckboxes = false;
+
+    public boolean isShowCheckboxes() {
+        return showCheckboxes;
+    }
+
+    public void setShowCheckboxes(boolean showCheckboxes) {
+        this.showCheckboxes = showCheckboxes;
+    }
 
     public CategoryListAdapter(Context context, int layoutResourceId, Category[] data) {
         super(context, layoutResourceId, data);

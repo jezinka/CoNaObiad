@@ -3,7 +3,6 @@ package com.projects.jezinka.conaobiad.activities;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +23,7 @@ import com.projects.jezinka.conaobiad.models.Ingredient;
 import com.projects.jezinka.conaobiad.models.Meal;
 import com.projects.jezinka.conaobiad.models.tables.MealContract;
 import com.projects.jezinka.conaobiad.models.tables.MealIngredientContract;
+import com.projects.jezinka.conaobiad.utils.CheckboxesUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -53,7 +53,7 @@ public class MealListActivity extends AppCompatActivity implements MealDialogFra
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                toggleCheckboxesAndToolbar();
+                CheckboxesUtils.toggleCheckboxesAndToolbar(parent.getContext(), adapter, myToolbar);
                 return true;
             }
         });
@@ -89,17 +89,6 @@ public class MealListActivity extends AppCompatActivity implements MealDialogFra
                 .show();
     }
 
-    private void toggleCheckboxesAndToolbar() {
-        int colorId = adapter.showCheckboxes ? R.color.colorPrimary : android.R.color.darker_gray;
-        myToolbar.setBackgroundColor(ContextCompat.getColor(this, colorId));
-
-        MenuItem deleteMenuButton = myToolbar.getMenu().findItem(R.id.delete_menu_button);
-        deleteMenuButton.setVisible(!deleteMenuButton.isVisible());
-
-        adapter.showCheckboxes = !adapter.showCheckboxes;
-        adapter.notifyDataSetChanged();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_with_delete_icon, menu);
@@ -117,7 +106,7 @@ public class MealListActivity extends AppCompatActivity implements MealDialogFra
                         mealIds.add(meal.getId());
                     }
                 }
-                toggleCheckboxesAndToolbar();
+                CheckboxesUtils.toggleCheckboxesAndToolbar(this, adapter, myToolbar);
                 mealContract.delete(mealIds.toArray(new Long[mealIds.size()]), dbHelper);
                 adapter.updateResults(mealContract.getAllMealsArray(dbHelper));
                 return true;

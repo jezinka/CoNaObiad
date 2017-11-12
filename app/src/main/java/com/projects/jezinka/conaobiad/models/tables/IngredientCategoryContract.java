@@ -4,6 +4,10 @@ import android.provider.BaseColumns;
 
 public class IngredientCategoryContract implements BaseColumns {
 
+    private IngredientCategoryContract() {
+        throw new IllegalStateException("Contract class");
+    }
+
     private static final String TABLE_NAME = "ingredient_category";
 
     public static String getTableName() {

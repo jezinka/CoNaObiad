@@ -2,7 +2,6 @@ package com.projects.jezinka.conaobiad.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +18,7 @@ import com.projects.jezinka.conaobiad.data.CoNaObiadDbHelper;
 import com.projects.jezinka.conaobiad.dialogs.CategoryDialogFragment;
 import com.projects.jezinka.conaobiad.models.Category;
 import com.projects.jezinka.conaobiad.models.tables.CategoryContract;
+import com.projects.jezinka.conaobiad.utils.CheckboxesUtils;
 
 import java.util.ArrayList;
 
@@ -62,7 +62,7 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryD
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                toggleCheckboxesAndToolbar();
+                CheckboxesUtils.toggleCheckboxesAndToolbar(view.getContext(), adapter, myToolbar);
                 return true;
             }
         });
@@ -70,17 +70,6 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryD
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeAsUpIndicator(R.drawable.ic_back_arrow_sketch);
-    }
-
-    private void toggleCheckboxesAndToolbar() {
-        int colorId = adapter.showCheckboxes ? R.color.colorPrimary : android.R.color.darker_gray;
-        myToolbar.setBackgroundColor(ContextCompat.getColor(this, colorId));
-
-        MenuItem deleteMenuButton = myToolbar.getMenu().findItem(R.id.delete_menu_button);
-        deleteMenuButton.setVisible(!deleteMenuButton.isVisible());
-
-        adapter.showCheckboxes = !adapter.showCheckboxes;
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -101,7 +90,7 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryD
                         categoriesIds.add(category.getId());
                     }
                 }
-                toggleCheckboxesAndToolbar();
+                CheckboxesUtils.toggleCheckboxesAndToolbar(this, adapter, myToolbar);
                 categoryContract.delete(categoriesIds.toArray(new Long[categoriesIds.size()]), helper);
                 adapter.updateResults(categoryContract.getAllCategoriesArray(helper));
 

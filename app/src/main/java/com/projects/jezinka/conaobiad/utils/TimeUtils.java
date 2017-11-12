@@ -9,6 +9,10 @@ import java.util.Date;
 
 public class TimeUtils {
 
+    private TimeUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     @NonNull
     public static Date getWeekStartDate(Date date) {
 
