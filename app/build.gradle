@@ -3,7 +3,7 @@ apply plugin: 'groovyx.android'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.projects.jezinka.conaobiad"
         minSdkVersion 22
@@ -33,14 +33,14 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.1'
-    compile 'com.android.support:percent:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:percent:25.4.0'
+    compile 'com.android.support:support-v4:25.4.0'
+    compile 'com.android.support:design:25.4.0'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-    testCompile 'org.codehaus.groovy:groovy-all:2.4.3'
-    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.6'
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-3'
     testCompile 'cglib:cglib-nodep:3.1'
     testCompile 'junit:junit:4.12'
     testCompile 'org.objenesis:objenesis:2.2'
