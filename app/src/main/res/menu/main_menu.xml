@@ -47,13 +47,14 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/settings_item"
-        android:title="@string/settings"
+        android:id="@+id/application_info_item"
+        android:title="@string/info"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/application_info_item"
-        android:title="@string/info"
+        android:id="@+id/action_settings"
+        android:title="@string/settings"
+        android:orderInCategory="100"
         app:showAsAction="never" />
 
 </menu>

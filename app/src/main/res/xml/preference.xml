@@ -1,0 +1,13 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="@string/first_day_default_value"
+        android:entries="@array/week_days_labels"
+        android:entryValues="@array/week_days_values"
+        android:key="@string/first_day_key"
+        android:title="@string/first_day" />
+
+    <EditTextPreference
+        android:defaultValue="@string/plan_length_default_value"
+        android:key="@string/plan_length_key"
+        android:title="@string/days_no" />
+</PreferenceScreen>

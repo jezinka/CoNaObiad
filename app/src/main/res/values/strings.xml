@@ -64,4 +64,10 @@
     <string name="put_category_name">Wpisz nazwę kategorii</string>
     <string name="add_category">Dodaj kategorię</string>
     <string name="show_category">Wyświetl kategorię</string>
+
+    <string name="first_day_key" translatable="false">first_day</string>
+    <string name="first_day_default_value">6</string>
+    <string name="plan_length_key" translatable="false">plan_length</string>
+    <string name="plan_length_default_value">7</string>
+    <string name="plan_length_error_message">Długość planu może wynosić od 1 do 30</string>
 </resources>

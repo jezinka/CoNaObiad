@@ -19,7 +19,7 @@
         <item>@string/add_recipe</item>
     </string-array>
 
-    <string-array name="week_days_list_preference">
+    <string-array name="week_days_labels">
         <item>@string/monday</item>
         <item>@string/tuesday</item>
         <item>@string/wednesday</item>
@@ -28,7 +28,7 @@
         <item>@string/saturday</item>
         <item>@string/sunday</item>
     </string-array>
-    <string-array name="week_days_entryvalues_list_preference">
+    <string-array name="week_days_values">
         <item>2</item>
         <item>3</item>
         <item>4</item>
