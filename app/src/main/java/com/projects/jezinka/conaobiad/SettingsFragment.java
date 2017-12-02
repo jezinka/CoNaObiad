@@ -13,7 +13,7 @@ import android.widget.Toast;
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.preference);
+        addPreferencesFromResource(R.xml.preferences);
 
         PreferenceScreen preferenceScreen = getPreferenceScreen();
         SharedPreferences sharedPreferences = preferenceScreen.getSharedPreferences();
