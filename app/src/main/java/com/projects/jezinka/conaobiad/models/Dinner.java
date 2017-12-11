@@ -1,18 +1,18 @@
 package com.projects.jezinka.conaobiad.models;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public class Dinner {
 
     private long id;
     private Meal meal;
-    private Date date;
+    private DateTime date;
 
     public Dinner() {
         super();
     }
 
-    public Dinner(long id, Meal meal, Date date) {
+    public Dinner(long id, Meal meal, DateTime date) {
         this.id = id;
         this.meal = meal;
         this.date = date;
@@ -30,7 +30,7 @@ public class Dinner {
         return meal;
     }
 
-    public Date getDate() {
+    public DateTime getDate() {
         return date;
     }
 

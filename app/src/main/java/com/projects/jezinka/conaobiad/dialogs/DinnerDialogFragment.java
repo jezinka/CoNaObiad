@@ -28,9 +28,11 @@ import com.projects.jezinka.conaobiad.models.Meal;
 import com.projects.jezinka.conaobiad.models.tables.DinnerContract;
 import com.projects.jezinka.conaobiad.models.tables.MealContract;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -84,13 +86,14 @@ public class DinnerDialogFragment extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Date date;
+                                DateTime date;
 
                                 try {
                                     String stringDate = dateView.getText().toString();
-                                    date = new SimpleDateFormat("dd.MM.yyyy").parse(stringDate);
-                                } catch (ParseException ex) {
-                                    date = new Date();
+                                    DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy");
+                                    date = formatter.parseDateTime(stringDate);
+                                } catch (IllegalArgumentException ex) {
+                                    date = new DateTime();
                                 }
 
                                 if (dinnerId != -1) {

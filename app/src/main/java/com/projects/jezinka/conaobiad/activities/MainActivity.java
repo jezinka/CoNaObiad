@@ -35,9 +35,9 @@ import com.projects.jezinka.conaobiad.models.tables.MealContract;
 import com.projects.jezinka.conaobiad.models.tables.MealIngredientContract;
 import com.projects.jezinka.conaobiad.utils.TimeUtils;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -278,31 +278,30 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
     private void fillList(boolean onlyEmpty) {
 
-        Calendar calendarInstance = Calendar.getInstance();
-        calendarInstance.setTime(TimeUtils.getWeekStartDate(new Date()));
+        DateTime date = TimeUtils.getWeekStartDate();
 
         List<Meal> meals = mealContract.getRandomMeals(dbHelper, getPlanLength());
 
         for (Meal meal : meals) {
-            if (!onlyEmpty || dinnerAdapter.isDayEmpty(calendarInstance.getTime())) {
-                dinnerContract.insert(dbHelper, meal.getId(), calendarInstance.getTime());
+            if (!onlyEmpty || dinnerAdapter.isDayEmpty(date)) {
+                dinnerContract.insert(dbHelper, meal.getId(), date);
             }
-            calendarInstance.add(Calendar.DATE, 1);
+            date = date.plusDays(1);
         }
 
         dinnerAdapter.updateResults();
     }
 
     public void showNewDinnerDialog(View view) {
-        showNewDinnerDialog(new Date(), null);
+        showNewDinnerDialog(new DateTime(), null);
     }
 
-    public void showNewDinnerDialog(Date date) {
+    public void showNewDinnerDialog(DateTime date) {
         showNewDinnerDialog(date, null);
     }
 
-    private void showNewDinnerDialog(Date date, Dinner dinner) {
-        DialogFragment newFragment = DinnerDialogFragment.newInstance(date.getTime(), dinner);
+    private void showNewDinnerDialog(DateTime date, Dinner dinner) {
+        DialogFragment newFragment = DinnerDialogFragment.newInstance(date.getMillis(), dinner);
         newFragment.show(getSupportFragmentManager(), "DinnerDialogFragment");
     }
 

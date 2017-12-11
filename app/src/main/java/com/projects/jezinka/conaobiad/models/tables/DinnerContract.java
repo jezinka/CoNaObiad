@@ -12,8 +12,9 @@ import com.projects.jezinka.conaobiad.models.Dinner;
 import com.projects.jezinka.conaobiad.models.Meal;
 import com.projects.jezinka.conaobiad.utils.TimeUtils;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -37,38 +38,38 @@ public class DinnerContract extends BaseTable implements BaseColumns {
                 ")";
     }
 
-    public boolean insert(CoNaObiadDbHelper helper, long mealID, Date date) {
+    public boolean insert(CoNaObiadDbHelper helper, long mealID, DateTime date) {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put("meal_id", mealID);
-        contentValues.put("date", date.getTime());
+        contentValues.put("date", date.getMillis());
 
         helper.insert(TABLE_NAME, contentValues);
         return true;
     }
 
-    public boolean update(CoNaObiadDbHelper helper, long dinnerId, Date date) {
+    public boolean update(CoNaObiadDbHelper helper, long dinnerId, DateTime date) {
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("date", date.getTime());
+        contentValues.put("date", date.getMillis());
 
         helper.update(TABLE_NAME, contentValues, dinnerId);
         return true;
     }
 
     @NonNull
-    private ArrayList<Dinner> getDinnersForActualWeek(SQLiteOpenHelper helper, Date date) {
+    private ArrayList<Dinner> getDinnersForActualWeek(SQLiteOpenHelper helper, DateTime date) {
 
-        long weekStartDate = TimeUtils.getWeekStartDate(date).getTime();
+        long weekStartDate = TimeUtils.getWeekStartDate(date).getMillis();
         String[] sqlArgs = {String.valueOf(weekStartDate), String.valueOf(weekStartDate + TimeUtils.getTimeDeltaMilliseconds())};
 
         return getArrayList(helper, sqlArgs, getRecordsByDateSql(" where " + COLUMN_DATE + " between ? and ?"));
     }
 
     @NonNull
-    private ArrayList<Dinner> getDinnersForDay(SQLiteOpenHelper helper, Date date) {
+    private ArrayList<Dinner> getDinnersForDay(SQLiteOpenHelper helper, DateTime date) {
 
-        long weekStartDate = date.getTime();
+        long weekStartDate = date.getMillis();
         String[] sqlArgs = {String.valueOf(weekStartDate)};
 
         return getArrayList(helper, sqlArgs, getRecordsByDateSql(" where " + COLUMN_DATE + " = ? "));
@@ -80,17 +81,17 @@ public class DinnerContract extends BaseTable implements BaseColumns {
         long mealId = res.getLong(res.getColumnIndex(COLUMN_MEAL_ID));
         String mealName = res.getString(res.getColumnIndex(MealContract.COLUMN_NAME));
         String recipe = res.getString(res.getColumnIndex(MealContract.columnRecipe));
-        Date dinnerDate = new Date(res.getLong(res.getColumnIndex(COLUMN_DATE)));
+        DateTime dinnerDate = new DateTime(res.getLong(res.getColumnIndex(COLUMN_DATE)));
         Meal meal = new Meal(mealId, mealName, recipe);
         return new Dinner(id, meal, dinnerDate);
     }
 
     public Dinner[] getDinnersForActualWeek(SQLiteOpenHelper helper) {
-        ArrayList<Dinner> result = getDinnersForActualWeek(helper, new Date());
+        ArrayList<Dinner> result = getDinnersForActualWeek(helper, new DateTime());
         return result.toArray(new Dinner[result.size()]);
     }
 
-    public Dinner[] getDinners(SQLiteOpenHelper helper, Date date) {
+    public Dinner[] getDinners(SQLiteOpenHelper helper, DateTime date) {
         ArrayList<Dinner> result = getDinnersForDay(helper, date);
         return result.toArray(new Dinner[result.size()]);
     }

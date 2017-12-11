@@ -4,8 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.projects.jezinka.conaobiad.activities.MainActivity;
 
-import java.util.Calendar;
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public class TimeUtils {
 
@@ -13,33 +12,30 @@ public class TimeUtils {
         throw new IllegalStateException("Utility class");
     }
 
-    @NonNull
-    public static Date getWeekStartDate(Date date) {
-
-        if (date == null) {
-            date = new Date();
-        }
-
-        Calendar calendarInstance = Calendar.getInstance();
-        calendarInstance.setTime(date);
-
-        clearTime(calendarInstance);
-
-        int dayOfWeek = calendarInstance.get(Calendar.DAY_OF_WEEK);
-
-        if (dayOfWeek == MainActivity.getFirstDayOfWeek()) {
-            return calendarInstance.getTime();
-        }
-
-        calendarInstance.add(Calendar.DAY_OF_WEEK, -dayOfWeek);
-        return calendarInstance.getTime();
+    public static DateTime getWeekStartDate() {
+        return getWeekStartDate(new DateTime());
     }
 
-    private static void clearTime(Calendar calendarInstance) {
-        calendarInstance.set(Calendar.HOUR_OF_DAY, 0);
-        calendarInstance.set(Calendar.MINUTE, 0);
-        calendarInstance.set(Calendar.SECOND, 0);
-        calendarInstance.set(Calendar.MILLISECOND, 0);
+    @NonNull
+    public static DateTime getWeekStartDate(DateTime date) {
+
+        date = clearTime(date);
+
+        int dayOfWeek = date.getDayOfWeek();
+
+        if (dayOfWeek == MainActivity.getFirstDayOfWeek()) {
+            return date;
+        }
+
+        while (date.getDayOfWeek() != MainActivity.getFirstDayOfWeek()) {
+            date = date.minusDays(1);
+        }
+
+        return date;
+    }
+
+    private static DateTime clearTime(DateTime date) {
+        return date.withTimeAtStartOfDay();
     }
 
     public static int getTimeDeltaMilliseconds() {

@@ -16,19 +16,19 @@ import com.projects.jezinka.conaobiad.models.Dinner;
 import com.projects.jezinka.conaobiad.models.tables.DinnerContract;
 import com.projects.jezinka.conaobiad.utils.TimeUtils;
 
-import java.text.DateFormat;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.TreeMap;
 
 
 public class DinnerAdapter extends BaseAdapter {
     private Context mContext;
-    private List<Date> dates;
-    private TreeMap<Date, List<Dinner>> dinners;
+    private List<DateTime> dates;
+    private TreeMap<DateTime, List<Dinner>> dinners;
     private CoNaObiadDbHelper dbHelper;
 
     public DinnerAdapter(Context c) {
@@ -49,15 +49,15 @@ public class DinnerAdapter extends BaseAdapter {
         return dinners.keySet().size();
     }
 
-    public Date getItem(int position) {
+    public DateTime getItem(int position) {
         return this.dates.get(position);
     }
 
-    public List<Dinner> getDinners(Date date) {
+    public List<Dinner> getDinners(DateTime date) {
         return this.dinners.get(date);
     }
 
-    public boolean isDayEmpty(Date date) {
+    public boolean isDayEmpty(DateTime date) {
         return getDinners(date).isEmpty();
     }
 
@@ -93,8 +93,8 @@ public class DinnerAdapter extends BaseAdapter {
         holder.trashButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date date = getItem(position);
-                dinnerContract.delete(date.getTime(), DinnerContract.COLUMN_DATE, dbHelper);
+                DateTime date = getItem(position);
+                dinnerContract.delete(date.getMillis(), DinnerContract.COLUMN_DATE, dbHelper);
                 updateResults();
             }
         });
@@ -102,7 +102,7 @@ public class DinnerAdapter extends BaseAdapter {
         holder.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date date = getItem(position);
+                DateTime date = getItem(position);
                 ((MainActivity) mContext).showNewDinnerDialog(date);
             }
         });
@@ -110,14 +110,14 @@ public class DinnerAdapter extends BaseAdapter {
         holder.recipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date date = getItem(position);
+                DateTime date = getItem(position);
                 ((MainActivity) mContext).showRecipeDialog(dinnerContract.getDinners(dbHelper, date));
             }
         });
         holder.ingredientsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date date = getItem(position);
+                DateTime date = getItem(position);
                 ((MainActivity) mContext).showIngredients(dinnerContract.getDinners(dbHelper, date));
             }
         });
@@ -135,15 +135,15 @@ public class DinnerAdapter extends BaseAdapter {
     }
 
     private String getTextForDate(int position) {
-        DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, new Locale("pl", "pl"));
-        return df.format(getItem(position));
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy");
+        return getItem(position).toString(formatter);
     }
 
     @NonNull
     private String getTextForTile(int position) {
         StringBuilder text = new StringBuilder();
 
-        Date date = getItem(position);
+        DateTime date = getItem(position);
 
         for (Dinner dinner : getDinners(date)) {
             text.append(dinner.getMealName());
@@ -152,26 +152,24 @@ public class DinnerAdapter extends BaseAdapter {
         return text.toString();
     }
 
-    private TreeMap<Date, List<Dinner>> getDinners() {
+    private TreeMap<DateTime, List<Dinner>> getDinners() {
         DinnerContract dinnerContract = new DinnerContract();
         Dinner[] dinnersForActualWeek = dinnerContract.getDinnersForActualWeek(dbHelper);
-        TreeMap<Date, List<Dinner>> preparedRows = new TreeMap<>();
+        TreeMap<DateTime, List<Dinner>> preparedRows = new TreeMap<>();
 
-        Calendar calendarInstance = Calendar.getInstance();
-        calendarInstance.setTime(TimeUtils.getWeekStartDate(new Date()));
+        DateTime date = TimeUtils.getWeekStartDate();
 
         for (int i = 0; i < MainActivity.getPlanLength(); i++) {
-            Date date = calendarInstance.getTime();
 
             List<Dinner> dinnersList = new ArrayList<>();
             for (Dinner dinner : dinnersForActualWeek) {
-                if (dinner.getDate().getTime() == date.getTime()) {
+                if (dinner.getDate().getMillis() == date.getMillis()) {
                     dinnersList.add(dinner);
                 }
             }
             preparedRows.put(date, dinnersList);
 
-            calendarInstance.add(Calendar.DATE, 1);
+            date = date.plusDays(1);
         }
         return preparedRows;
     }

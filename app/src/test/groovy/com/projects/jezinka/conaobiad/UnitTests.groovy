@@ -2,6 +2,7 @@ package com.projects.jezinka.conaobiad
 
 import com.projects.jezinka.conaobiad.activities.MainActivity
 import com.projects.jezinka.conaobiad.utils.TimeUtils
+import org.joda.time.DateTime
 import org.spockframework.util.Assert
 import spock.lang.Specification
 
@@ -48,14 +49,12 @@ class UnitTests extends Specification {
 
     def "GetSaturdayDate time always cleared"() {
         when:
-        def result = TimeUtils.getWeekStartDate()
-        Calendar calendarInstance = Calendar.getInstance()
-        calendarInstance.setTime(result)
+        def result = TimeUtils.getWeekStartDate(new DateTime())
 
         then:
         noExceptionThrown()
-        assert calendarInstance.get(Calendar.HOUR) == 0
-        assert calendarInstance.get(Calendar.MINUTE) == 0
-        assert calendarInstance.get(Calendar.SECOND) == 0
+        assert result.getHourOfDay() == 0
+        assert result.getMinuteOfHour() == 0
+        assert result.getSecondOfMinute() == 0
     }
 }

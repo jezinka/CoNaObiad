@@ -40,6 +40,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.4.0'
     compile 'com.android.support:design:25.4.0'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    compile 'joda-time:joda-time:2.9.9'
     testCompile 'org.codehaus.groovy:groovy-all:2.4.6'
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4-rc-3'
     testCompile 'cglib:cglib-nodep:3.1'
